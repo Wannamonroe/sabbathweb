@@ -18,4 +18,5 @@ Official website for Sabbath Events, a monthly themed virtual event in Second Li
 - `img/` - Images and assets
 
 ## Contact
-[Your contact information]
+Developer: marcausente@gmail.com
+Event owner: https://www.flickr.com/photos/192849221@N06/,  https://www.instagram.com/sabbathevent.sl/, https://www.facebook.com/groups/3425981114290586
