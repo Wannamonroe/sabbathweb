@@ -48,6 +48,24 @@ body {
     text-decoration: none;
     margin-left: 2rem;
     transition: color 0.3s ease;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--lime);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .nav-links a:hover, .nav-links a.active {
@@ -91,6 +109,48 @@ body {
     border-radius: 15px;
     border: 1px solid rgba(50, 205, 50, 0.2);
     backdrop-filter: blur(5px);
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+    transition: all 0.3s ease;
+}
+
+/* Efecto de expansión y resplandor al hover */
+.hero-content:hover {
+    transform: scale(1.02);
+    box-shadow: 
+        0 0 30px rgba(50, 205, 50, 0.2),
+        0 0 60px rgba(50, 205, 50, 0.1),
+        0 0 90px rgba(50, 205, 50, 0.05);
+    border-color: rgba(50, 205, 50, 0.4);
+}
+
+/* Efecto de resplandor detrás del cuadro */
+.hero-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.2), transparent 70%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 15px;
+    transform: scale(1.1);
+}
+
+.hero-content:hover::before {
+    opacity: 1;
+}
+
+/* Mejora en la animación de entrada */
+@keyframes fadeInUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .hero-content h1 {
@@ -130,6 +190,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.about-content:hover {
+    transform: scale(1.02);
 }
 
 .about-text {
@@ -143,6 +208,23 @@ body {
     margin-bottom: 1.5rem;
     font-weight: 300;
     letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+}
+
+.about-text .tagline::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 100%;
+    background: rgba(50, 205, 50, 0.1);
+    left: -10px;
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.about-text .tagline:hover::before {
+    width: calc(100% + 20px);
 }
 
 .about-text .event-type {
@@ -158,6 +240,12 @@ body {
     border-radius: 10px;
     margin: 2rem 0;
     border: 1px solid rgba(50, 205, 50, 0.2);
+    transition: all 0.3s ease;
+}
+
+.about-text .event-dates:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(50, 205, 50, 0.2);
 }
 
 .about-text .event-dates p {
@@ -166,6 +254,12 @@ body {
 
 .about-text .event-dates strong {
     color: var(--lime);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.about-text .event-dates strong:hover {
+    text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
 }
 
 .about-text .event-description {
