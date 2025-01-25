@@ -225,13 +225,14 @@ body {
 }
 
 .about-text .tagline {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: var(--lime);
     margin-bottom: 1.5rem;
     font-weight: 300;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     position: relative;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .about-text .tagline::before {
@@ -373,6 +374,12 @@ body {
     
     .social-link {
         flex-direction: column;
+    }
+
+    .about-text .tagline {
+        font-size: 1.1rem;
+        white-space: normal;
+        letter-spacing: normal;
     }
 }
 
