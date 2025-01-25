@@ -113,10 +113,13 @@ body {
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
     transition: all 0.3s ease;
+    width: auto;
+    max-width: 800px;
 }
 
 .hero-logo {
-    max-width: 450px;
+    max-width: 400px;
+    width: auto;
     height: auto;
     margin-bottom: 1rem;
     filter: drop-shadow(0 0 10px rgba(50, 205, 50, 0.3));
@@ -343,13 +346,38 @@ body {
         margin: 0.5rem 0;
     }
     
+    .hero-content {
+        width: 85%;
+        padding: 1.5rem;
+    }
+
+    .hero-logo {
+        max-width: 280px;
+    }
+
     .hero-content p {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
         white-space: normal;
+        padding: 0 1rem;
     }
     
     .social-link {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .hero-logo {
+        max-width: 220px;
+    }
+
+    .hero-content p {
+        font-size: 0.8rem;
     }
 }
 
