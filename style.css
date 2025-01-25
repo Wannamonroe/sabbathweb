@@ -137,8 +137,41 @@ body {
     line-height: 1.6;
 }
 
-.about-text p {
-    margin-bottom: 1rem;
+.about-text .tagline {
+    font-size: 1.8rem;
+    color: var(--lime);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.about-text .event-type {
+    font-size: 1.4rem;
+    color: var(--white);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.about-text .event-dates {
+    background: rgba(50, 205, 50, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+    border: 1px solid rgba(50, 205, 50, 0.2);
+}
+
+.about-text .event-dates p {
+    margin: 0.5rem 0;
+}
+
+.about-text .event-dates strong {
+    color: var(--lime);
+}
+
+.about-text .event-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: justify;
 }
 
 /* Hamburger Menu (mobile) */
