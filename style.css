@@ -88,6 +88,16 @@ body {
     background-position: center;
     position: relative;
     overflow: hidden;
+    animation: backgroundMove 20s linear infinite;
+}
+
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 100% center;
+    }
 }
 
 .hero::before {
@@ -118,7 +128,7 @@ body {
 }
 
 .hero-logo {
-    max-width: 400px;
+    max-width: 500px;
     width: auto;
     height: auto;
     margin-bottom: 1rem;
