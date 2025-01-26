@@ -37,11 +37,54 @@ document.addEventListener('DOMContentLoaded', () => {
         aboutSection.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Efecto de parallax en el hero
-    const hero = document.querySelector('.hero');
-    window.addEventListener('mousemove', (e) => {
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
+    // Efecto de typing mejorado
+    function typeWriter(element, text, speed = 50) {
+        const originalWidth = element.offsetWidth;
+        element.classList.add('typing');
+        let i = 0;
+        element.textContent = '';
+        
+        function type() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            } else {
+                element.classList.remove('typing');
+            }
+        }
+        
+        type();
+    }
+
+    // Preparar el contenedor antes del typing
+    const heroText = document.querySelector('.hero-content p');
+    const originalText = heroText.textContent;
+    // Establecemos el texto completo primero para obtener el ancho correcto
+    heroText.textContent = originalText;
+    heroText.style.width = heroText.offsetWidth + 'px';
+    // Luego iniciamos el efecto
+    heroText.textContent = '';
+    setTimeout(() => {
+        typeWriter(heroText, originalText);
+    }, 1000);
+
+    // Efecto de parallax mejorado
+    document.addEventListener('mousemove', (e) => {
+        const hero = document.querySelector('.hero');
+        const heroContent = document.querySelector('.hero-content');
+        const mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+        const mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+
+        heroContent.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        hero.style.backgroundPosition = `${-mouseX}px ${-mouseY}px`;
+    });
+
+    // Efecto de resplandor al scroll
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const hero = document.querySelector('.hero');
+        const opacity = Math.max(0, Math.min(1, 1 - (scrolled / 500)));
         
         hero.style.backgroundPosition = `${mouseX * 50}px ${mouseY * 50}px`;
     });

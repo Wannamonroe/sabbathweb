@@ -185,9 +185,16 @@ body {
     color: var(--white);
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     letter-spacing: 1px;
-    white-space: nowrap;
     margin: 0 auto;
     line-height: 1.4;
+    position: relative;
+    min-height: 2.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    width: auto;
+    max-width: none;
 }
 
 /* About Us Section */
@@ -358,7 +365,7 @@ body {
     }
     
     .hero-content {
-        width: 85%;
+        width: 95%;
         padding: 1.5rem;
     }
 
@@ -367,9 +374,11 @@ body {
     }
 
     .hero-content p {
-        font-size: 0.9rem;
-        white-space: normal;
-        padding: 0 1rem;
+        font-size: 1rem;
+        white-space: nowrap;
+        padding: 0 10px;
+        width: 100%;
+        justify-content: center;
     }
     
     .social-link {
@@ -385,7 +394,7 @@ body {
 
 @media (max-width: 480px) {
     .hero-content {
-        width: 90%;
+        width: 100%;
         padding: 1rem;
     }
 
@@ -394,7 +403,8 @@ body {
     }
 
     .hero-content p {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
     }
 }
 
