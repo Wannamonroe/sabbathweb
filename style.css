@@ -478,3 +478,222 @@ body {
         gap: 1rem;
     }
 }
+
+/* Rounds Section */
+.rounds {
+    padding: 5rem 2rem;
+    min-height: 100vh;
+    background-color: var(--black);
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
+    background-size: cover, 50px 50px, 50px 50px;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    animation: backgroundMove 20s linear infinite;
+}
+
+/* Efecto de fondo con gradiente */
+.rounds::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 100% center;
+    }
+}
+
+.rounds h2 {
+    color: var(--lime);
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+    position: relative;
+}
+
+.rounds-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.round-card {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(50, 205, 50, 0.2);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    position: relative;
+}
+
+.round-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.round-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--lime);
+    box-shadow: 
+        0 0 30px rgba(50, 205, 50, 0.2),
+        0 0 60px rgba(50, 205, 50, 0.1);
+}
+
+.round-card:hover::before {
+    opacity: 1;
+}
+
+.round-image {
+    width: 300px;
+    min-width: 300px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.round-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(50, 205, 50, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.round-card:hover .round-image::after {
+    opacity: 1;
+}
+
+.round-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.round-card:hover .round-image img {
+    transform: scale(1.1);
+}
+
+.round-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.round-card:hover .round-content {
+    transform: translateX(10px);
+}
+
+.round-content h3 {
+    color: var(--lime);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+    transition: color 0.3s ease;
+}
+
+.round-content p {
+    color: var(--white);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.round-dates {
+    color: var(--lime);
+    font-size: 1rem;
+    opacity: 0.8;
+    font-style: italic;
+    transition: all 0.3s ease;
+}
+
+.round-card:hover .round-dates {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+/* Animación de entrada */
+.round-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .rounds {
+        padding: 3rem 1rem;
+    }
+
+    .round-card {
+        flex-direction: column;
+    }
+
+    .round-image {
+        width: 100%;
+        height: 200px;
+        min-width: auto;
+    }
+
+    .round-content {
+        padding: 1.5rem;
+    }
+
+    .round-card:hover .round-content {
+        transform: translateY(5px);
+    }
+
+    .round-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .round-content p {
+        font-size: 1rem;
+    }
+}
