@@ -375,10 +375,12 @@ body {
 
     .hero-content p {
         font-size: 1rem;
-        white-space: nowrap;
-        padding: 0 10px;
+        white-space: normal;
+        padding: 0 15px;
         width: 100%;
-        justify-content: center;
+        text-align: center;
+        min-height: auto;
+        line-height: 1.6;
     }
     
     .social-link {
@@ -403,8 +405,9 @@ body {
     }
 
     .hero-content p {
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+        padding: 0 10px;
+        line-height: 1.5;
     }
 }
 
