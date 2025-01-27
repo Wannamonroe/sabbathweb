@@ -200,7 +200,7 @@ body {
 /* About Us Section */
 .about-us {
     padding: 5rem 2rem;
-    background-color: rgba(50, 205, 50, 0.1);
+    background-color: var(--black);
 }
 
 .container {
@@ -229,6 +229,12 @@ body {
 .about-text {
     max-width: 800px;
     line-height: 1.6;
+    background: rgba(50, 205, 50, 0.1);
+    border: 1px solid rgba(50, 205, 50, 0.2);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(50, 205, 50, 0.1);
 }
 
 .about-text .tagline {
@@ -325,6 +331,12 @@ body {
     cursor: pointer;
     text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
     z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.scroll-arrow:hover {
+    animation-play-state: paused;
+    filter: brightness(1.2);
 }
 
 @keyframes bounce {

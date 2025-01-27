@@ -30,12 +30,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Scroll arrow functionality
-    const scrollArrow = document.querySelector('.scroll-arrow');
-    scrollArrow.addEventListener('click', () => {
-        const aboutSection = document.querySelector('.about-us');
-        aboutSection.scrollIntoView({ behavior: 'smooth' });
-    });
+    // Scroll arrow functionality - versión super simple
+    const scrollArrow = document.querySelector('.scroll-arrow i');
+    console.log('Scroll Arrow Element:', scrollArrow);
+
+    if (scrollArrow) {
+        scrollArrow.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Flecha clickeada');
+            window.scrollBy({
+                top: 700,
+                behavior: 'smooth'
+            });
+        });
+
+        // Efectos visuales
+        scrollArrow.style.cursor = 'pointer';
+        scrollArrow.addEventListener('mouseenter', () => {
+            scrollArrow.style.transform = 'translateY(5px)';
+            scrollArrow.style.color = '#4dff4d';
+        });
+
+        scrollArrow.addEventListener('mouseleave', () => {
+            scrollArrow.style.transform = 'translateY(0)';
+            scrollArrow.style.color = 'var(--lime)';
+        });
+    }
 
     // Efecto de typing mejorado
     function typeWriter(element, text, speed = 50) {
