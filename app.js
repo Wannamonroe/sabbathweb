@@ -274,6 +274,37 @@ document.addEventListener('DOMContentLoaded', () => {
             rounds.style.setProperty('--scroll-progress', progress);
         }
     });
+
+    // Interactividad para la galería de sim
+    document.querySelectorAll('.sim-image').forEach(image => {
+        // Efecto de parallax al mover el mouse
+        image.addEventListener('mousemove', (e) => {
+            const bounds = image.getBoundingClientRect();
+            const mouseX = e.clientX - bounds.left;
+            const mouseY = e.clientY - bounds.top;
+            const centerX = bounds.width / 2;
+            const centerY = bounds.height / 2;
+            
+            const moveX = (mouseX - centerX) / 20;
+            const moveY = (mouseY - centerY) / 20;
+
+            const img = image.querySelector('img');
+            img.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Reset de la posición al salir
+        image.addEventListener('mouseleave', () => {
+            const img = image.querySelector('img');
+            img.style.transform = 'scale(1) translate(0, 0)';
+        });
+
+        // Añadir efecto de brillo al hover
+        image.addEventListener('mouseenter', () => {
+            image.style.borderColor = 'var(--lime)';
+            const overlay = image.querySelector('.sim-overlay');
+            overlay.style.background = 'rgba(0, 0, 0, 0.5)';
+        });
+    });
 });
 
 // Añade estos estilos CSS para los nuevos efectos
