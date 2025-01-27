@@ -217,7 +217,7 @@ body::before {
 
 /* About Us Section */
 .about-us {
-    padding: 5rem 2rem;
+    padding-top: 4.5rem;
     background-color: var(--black);
 }
 
@@ -733,7 +733,8 @@ body::before {
 
 /* Our Sim Section */
 .our-sim {
-    padding: 5rem 2rem;
+    padding-bottom: 5.5rem;
+    padding-top: 5.5rem;
     background-color: var(--black);
 }
 
@@ -838,6 +839,7 @@ body::before {
     text-align: center;
     position: relative;
     overflow: hidden;
+    padding-bottom: 4rem;
 }
 
 .round-header::before {
@@ -869,8 +871,38 @@ body::before {
 
 /* Gallery Styles */
 .round-gallery {
-    padding: 2rem;
     background-color: var(--black);
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
+    background-size: cover, 50px 50px, 50px 50px;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    animation: backgroundMove 20s linear infinite;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.round-gallery::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 100% center;
+    }
 }
 
 .gallery-grid {
