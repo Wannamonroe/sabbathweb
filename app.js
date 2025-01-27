@@ -331,6 +331,46 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.style.background = 'rgba(0, 0, 0, 0.5)';
         });
     });
+
+    // Interactividad para la galería
+    document.addEventListener('DOMContentLoaded', () => {
+        // Configuración de Fancybox
+        Fancybox.bind("[data-fancybox]", {
+            animated: true,
+            showClass: "fancybox-fadeIn",
+            hideClass: "fancybox-fadeOut",
+            dragToClose: false,
+            Image: {
+                zoom: true,
+            },
+            Toolbar: {
+                display: {
+                    left: [],
+                    middle: [],
+                    right: ["close"],
+                },
+            }
+        });
+
+        // Efecto de parallax en el header
+        const roundHeader = document.querySelector('.round-header');
+        if (roundHeader) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                roundHeader.style.backgroundPositionY = scrolled * 0.5 + 'px';
+            });
+        }
+
+        // Animación suave para los botones de teleport
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const button = item.querySelector('.teleport-button');
+                if (button) {
+                    button.style.transform = 'translateX(-50%) translateY(0)';
+                }
+            });
+        });
+    });
 });
 
 // Añade estos estilos CSS para los nuevos efectos
