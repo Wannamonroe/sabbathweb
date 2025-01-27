@@ -370,7 +370,82 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Animación del fondo
+        const shapes = document.querySelectorAll('.shape');
+        shapes.forEach(shape => {
+            setInterval(() => {
+                const x = Math.random() * 100 - 50;
+                const y = Math.random() * 100 - 50;
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+            }, 20000);
+        });
     });
+
+    // Efecto de seguimiento del ratón en las imágenes
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('mousemove', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            item.style.setProperty('--mouse-x', `${x}%`);
+            item.style.setProperty('--mouse-y', `${y}%`);
+            
+            // Efecto de inclinación 3D suave
+            const rotateX = (y - 50) * 0.1;
+            const rotateY = (x - 50) * 0.1;
+            
+            item.style.transform = `
+                perspective(1000px)
+                rotateX(${-rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale3d(1.02, 1.02, 1.02)
+            `;
+        });
+
+        // Reset de la transformación
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+    });
+
+    // Efecto de partículas en el fondo
+    const createParticle = () => {
+        const particle = document.createElement('div');
+        particle.className = 'background-particle';
+        
+        const size = Math.random() * 3 + 1;
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        
+        particle.style.cssText = `
+            position: fixed;
+            width: ${size}px;
+            height: ${size}px;
+            background: rgba(50, 205, 50, ${Math.random() * 0.3});
+            left: ${x}px;
+            top: ${y}px;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 0;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        const animation = particle.animate([
+            { transform: 'translate(0, 0)', opacity: 1 },
+            { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
+        ], {
+            duration: Math.random() * 3000 + 2000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+        
+        animation.onfinish = () => particle.remove();
+    };
+
+    // Crear partículas periódicamente
+    setInterval(createParticle, 300);
 });
 
 // Añade estos estilos CSS para los nuevos efectos
