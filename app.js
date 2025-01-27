@@ -240,26 +240,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Efecto de partículas en hover (opcional)
-    function createParticle(x, y, card) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        card.appendChild(particle);
-        
-        setTimeout(() => {
-            particle.remove();
-        }, 1000);
-    }
+    // Funcionalidad de expansión de imagen y partículas combinada
+    console.log('DOM Loaded');
 
-    document.querySelectorAll('.round-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            if (Math.random() > 0.9) {
-                const rect = card.getBoundingClientRect();
-                createParticle(e.clientX - rect.left, e.clientY - rect.top, card);
-            }
+    // Funcionalidad de expansión de imagen
+    const overlay = document.querySelector('.overlay');
+    const galleryItems = document.querySelectorAll('.gallery-item img');
+    
+    console.log('Found images:', galleryItems.length);
+
+    galleryItems.forEach(img => {
+        img.addEventListener('click', (e) => {
+            console.log('Image clicked');
+            e.preventDefault();
+            
+            const expandedView = document.createElement('div');
+            expandedView.className = 'expanded-view';
+            
+            const expandedImg = document.createElement('img');
+            expandedImg.src = img.src;
+            expandedView.appendChild(expandedImg);
+            
+            overlay.classList.add('active');
+            document.body.appendChild(expandedView);
+            document.body.style.overflow = 'hidden';
+
+            const closeExpanded = () => {
+                overlay.classList.remove('active');
+                expandedView.remove();
+                document.body.style.overflow = 'auto';
+            };
+
+            overlay.addEventListener('click', closeExpanded);
+            expandedView.addEventListener('click', closeExpanded);
         });
+    });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const expandedView = document.querySelector('.expanded-view');
+            if (expandedView) {
+                overlay.classList.remove('active');
+                expandedView.remove();
+                document.body.style.overflow = 'auto';
+            }
+        }
     });
 
     // Efecto de resplandor al scroll
