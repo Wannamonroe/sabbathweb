@@ -839,7 +839,6 @@ body::before {
     text-align: center;
     position: relative;
     overflow: hidden;
-    padding-bottom: 4rem;
 }
 
 .round-header::before {
@@ -892,7 +891,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, transparent 0%, transparent 100%);
     pointer-events: none;
 }
 
@@ -914,43 +913,52 @@ body::before {
 }
 
 .gallery-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(50, 205, 50, 0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    border: 1px solid rgba(50, 205, 50, 0.2);
-}
-
-.gallery-item a {
-    width: 100%;
-    padding-top: 1rem;
+    gap: 0.5rem;
 }
 
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    transition: transform 0.3s ease;
+    margin-top: 0.5rem; /* Añadido margen superior */
 }
 
 .gallery-item-title {
     color: var(--lime);
     font-size: 1rem;
     text-align: center;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
     opacity: 0.8;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
+    width: 100%;
+    padding: 0 10px;
 }
 
-.gallery-item:hover {
-    border-color: var(--lime);
-    box-shadow: 0 0 20px rgba(50, 205, 50, 0.2);
+.gallery-item:hover .gallery-item-title {
+    opacity: 1;
+    transform: translateY(-5px);
+}
+
+.gallery-item a {
+    order: 1;
+}
+
+.gallery-item-title {
+    order: 2;
 }
 
 .teleport-button {
+    order: 3;
     position: absolute;
     bottom: -50px;
     left: 50%;
@@ -966,6 +974,10 @@ body::before {
     gap: 8px;
     font-weight: bold;
     opacity: 0;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
 }
 
 .gallery-item:hover .teleport-button {
@@ -1155,7 +1167,7 @@ body::before {
 .shape {
     position: absolute;
     border-radius: 50%;
-    background: rgba(50, 205, 50, 0.1);
+    background: rgba(50, 205, 50, 0.05);
     filter: blur(60px);
     animation: moveShape 20s infinite alternate;
     pointer-events: none;
