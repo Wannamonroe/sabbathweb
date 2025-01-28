@@ -30,19 +30,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Scroll arrow functionality - versión super simple
-    const scrollArrow = document.querySelector('.scroll-arrow i');
+    // Scroll arrow functionality - versión corregida
+    const scrollArrow = document.querySelector('.scroll-arrow');
     console.log('Scroll Arrow Element:', scrollArrow);
 
     if (scrollArrow) {
-        scrollArrow.addEventListener('click', (e) => {
+        // Añadir evento al elemento y al ícono
+        const arrowIcon = scrollArrow.querySelector('i');
+        
+        const scrollToAbout = (e) => {
             e.preventDefault();
             console.log('Flecha clickeada');
-            window.scrollBy({
-                top: 700,
-                behavior: 'smooth'
-            });
-        });
+            
+            const aboutSection = document.querySelector('.about-us');
+            if (aboutSection) {
+                console.log('Sección about-us encontrada');
+                aboutSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            } else {
+                console.log('Fallback: scrolling one viewport height');
+                window.scrollTo({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                });
+            }
+        };
+
+        // Añadir el evento tanto al contenedor como al ícono
+        scrollArrow.addEventListener('click', scrollToAbout);
+        if (arrowIcon) {
+            arrowIcon.addEventListener('click', scrollToAbout);
+        }
 
         // Efectos visuales
         scrollArrow.style.cursor = 'pointer';
@@ -55,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollArrow.style.transform = 'translateY(0)';
             scrollArrow.style.color = 'var(--lime)';
         });
+    } else {
+        console.log('No se encontró el elemento scroll-arrow');
     }
 
     // Efecto de typing mejorado
@@ -145,16 +166,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Efecto de partículas en el hero (opcional)
-    const createParticle = (x, y) => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        hero.appendChild(particle);
-        
-        setTimeout(() => {
-            particle.remove();
-        }, 1000);
+    const createParticle = (x, y, isBackground = false) => {
+        if (isBackground) {
+            // Partículas de fondo
+            const particle = document.createElement('div');
+            particle.className = 'background-particle';
+            
+            const size = Math.random() * 3 + 1;
+            const posX = x || Math.random() * window.innerWidth;
+            const posY = y || Math.random() * window.innerHeight;
+            
+            particle.style.cssText = `
+                position: fixed;
+                width: ${size}px;
+                height: ${size}px;
+                background: rgba(50, 205, 50, ${Math.random() * 0.3});
+                left: ${posX}px;
+                top: ${posY}px;
+                pointer-events: none;
+                border-radius: 50%;
+                z-index: 0;
+            `;
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        } else {
+            // Partículas de interacción
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.querySelector('.hero').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
     };
 
     hero.addEventListener('mousemove', (e) => {
@@ -410,42 +466,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Efecto de partículas en el fondo
-    const createParticle = () => {
-        const particle = document.createElement('div');
-        particle.className = 'background-particle';
-        
-        const size = Math.random() * 3 + 1;
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
-        
-        particle.style.cssText = `
-            position: fixed;
-            width: ${size}px;
-            height: ${size}px;
-            background: rgba(50, 205, 50, ${Math.random() * 0.3});
-            left: ${x}px;
-            top: ${y}px;
-            pointer-events: none;
-            border-radius: 50%;
-            z-index: 0;
-        `;
-        
-        document.body.appendChild(particle);
-        
-        const animation = particle.animate([
-            { transform: 'translate(0, 0)', opacity: 1 },
-            { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
-        ], {
-            duration: Math.random() * 3000 + 2000,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-        });
-        
-        animation.onfinish = () => particle.remove();
-    };
-
-    // Crear partículas periódicamente
-    setInterval(createParticle, 300);
+    // Crear partículas de fondo periódicamente
+    setInterval(() => createParticle(null, null, true), 300);
 
     // Función específica para la navbar en round1
     const isRound1Page = document.querySelector('.round-header') !== null;
@@ -473,77 +495,77 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.style.zIndex = '99999';
         });
     }
-});
 
-// Añade estos estilos CSS para los nuevos efectos
-const styles = `
-    .particle {
-        position: absolute;
-        pointer-events: none;
-        background: rgba(50, 205, 50, 0.5);
-        border-radius: 50%;
-        width: 4px;
-        height: 4px;
-        animation: particle-fade 1s ease-out forwards;
-    }
-
-    @keyframes particle-fade {
-        0% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+    // Añade estos estilos CSS para los nuevos efectos
+    const styles = `
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(50, 205, 50, 0.5);
+            border-radius: 50%;
+            width: 4px;
+            height: 4px;
+            animation: particle-fade 1s ease-out forwards;
         }
-        100% {
-            opacity: 0;
-            transform: scale(0) translateY(-20px);
+
+        @keyframes particle-fade {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) translateY(-20px);
+            }
         }
-    }
 
-    .card-exit {
-        animation: card-exit 0.5s ease forwards;
-    }
-
-    @keyframes card-exit {
-        to {
-            transform: translateX(100%) scale(0.9);
-            opacity: 0;
+        .card-exit {
+            animation: card-exit 0.5s ease forwards;
         }
-    }
-`;
 
-// Añade los estilos al documento
-const styleSheet = document.createElement("style");
-styleSheet.textContent = styles;
-document.head.appendChild(styleSheet);
+        @keyframes card-exit {
+            to {
+                transform: translateX(100%) scale(0.9);
+                opacity: 0;
+            }
+        }
+    `;
 
-// Efecto parallax suave en el banner
-document.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('.round-header');
-    const title = header.querySelector('h1');
-    
-    // Efecto parallax al mover el mouse
-    header.addEventListener('mousemove', (e) => {
-        const { offsetWidth: width, offsetHeight: height } = header;
-        const { clientX: x, clientY: y } = e;
+    // Añade los estilos al documento
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+
+    // Efecto parallax suave en el banner
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.round-header');
+        const title = header.querySelector('h1');
         
-        const moveX = (x - width/2) * 0.01;
-        const moveY = (y - height/2) * 0.01;
+        // Efecto parallax al mover el mouse
+        header.addEventListener('mousemove', (e) => {
+            const { offsetWidth: width, offsetHeight: height } = header;
+            const { clientX: x, clientY: y } = e;
+            
+            const moveX = (x - width/2) * 0.01;
+            const moveY = (y - height/2) * 0.01;
+            
+            title.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
         
-        title.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    });
-    
-    // Reset al salir del área
-    header.addEventListener('mouseleave', () => {
-        title.style.transform = 'translate(0, 0)';
-    });
-    
-    // Efecto de resplandor al hacer hover
-    title.addEventListener('mouseenter', () => {
-        title.style.transition = 'all 0.3s ease';
-        title.style.textShadow = '0 0 30px rgba(50, 205, 50, 0.7)';
-    });
-    
-    title.addEventListener('mouseleave', () => {
-        title.style.textShadow = '0 0 15px rgba(50, 205, 50, 0.3)';
+        // Reset al salir del área
+        header.addEventListener('mouseleave', () => {
+            title.style.transform = 'translate(0, 0)';
+        });
+        
+        // Efecto de resplandor al hacer hover
+        title.addEventListener('mouseenter', () => {
+            title.style.transition = 'all 0.3s ease';
+            title.style.textShadow = '0 0 30px rgba(50, 205, 50, 0.7)';
+        });
+        
+        title.addEventListener('mouseleave', () => {
+            title.style.textShadow = '0 0 15px rgba(50, 205, 50, 0.3)';
+        });
     });
 });
 
