@@ -437,8 +437,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Crear partículas de fondo periódicamente
-    setInterval(() => createParticle(null, null, true), 300);
+    // Crear partículas de fondo periódicamente (aumentar frecuencia)
+    setInterval(() => {
+        createParticle(null, null, true);
+        createParticle(null, null, true);
+        createParticle(null, null, true);
+        createParticle(null, null, true);
+        createParticle(null, null, true);
+    }, 100); // Reducido de 300 a 100ms
 
     // Función específica para la navbar en round1
     const isRound1Page = document.querySelector('.round-header') !== null;
