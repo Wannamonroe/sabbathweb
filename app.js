@@ -446,6 +446,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Crear partículas periódicamente
     setInterval(createParticle, 300);
+
+    // Función específica para la navbar en round1
+    const isRound1Page = document.querySelector('.round-header') !== null;
+    
+    if (isRound1Page) {
+        // Configuración específica para round1
+        navbar.style.position = 'fixed';
+        navbar.style.top = '0';
+        navbar.style.left = '0';
+        navbar.style.width = '100%';
+        navbar.style.zIndex = '99999';
+        navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+        
+        // Ajustar el header para compensar la navbar fija
+        const roundHeader = document.querySelector('.round-header');
+        if (roundHeader) {
+            roundHeader.style.marginTop = '73px';
+            roundHeader.style.zIndex = '1';
+        }
+        
+        // Asegurar que la navbar permanezca fija y por encima durante el scroll
+        window.addEventListener('scroll', () => {
+            navbar.style.position = 'fixed';
+            navbar.style.top = '0';
+            navbar.style.zIndex = '99999';
+        });
+    }
 });
 
 // Añade estos estilos CSS para los nuevos efectos
@@ -487,3 +514,36 @@ const styles = `
 const styleSheet = document.createElement("style");
 styleSheet.textContent = styles;
 document.head.appendChild(styleSheet);
+
+// Efecto parallax suave en el banner
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.round-header');
+    const title = header.querySelector('h1');
+    
+    // Efecto parallax al mover el mouse
+    header.addEventListener('mousemove', (e) => {
+        const { offsetWidth: width, offsetHeight: height } = header;
+        const { clientX: x, clientY: y } = e;
+        
+        const moveX = (x - width/2) * 0.01;
+        const moveY = (y - height/2) * 0.01;
+        
+        title.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+    
+    // Reset al salir del área
+    header.addEventListener('mouseleave', () => {
+        title.style.transform = 'translate(0, 0)';
+    });
+    
+    // Efecto de resplandor al hacer hover
+    title.addEventListener('mouseenter', () => {
+        title.style.transition = 'all 0.3s ease';
+        title.style.textShadow = '0 0 30px rgba(50, 205, 50, 0.7)';
+    });
+    
+    title.addEventListener('mouseleave', () => {
+        title.style.textShadow = '0 0 15px rgba(50, 205, 50, 0.3)';
+    });
+});
+
