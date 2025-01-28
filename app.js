@@ -30,7 +30,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Scroll arrow functionality - versión corregida
+    // Función unificada para crear partículas
+    const createParticle = (x, y, isBackground = false) => {
+        if (isBackground) {
+            // Partículas de fondo
+            const particle = document.createElement('div');
+            particle.className = 'background-particle';
+            
+            const size = Math.random() * 3 + 1;
+            const posX = x || Math.random() * window.innerWidth;
+            const posY = y || Math.random() * window.innerHeight;
+            
+            particle.style.cssText = `
+                position: fixed;
+                width: ${size}px;
+                height: ${size}px;
+                background: rgba(50, 205, 50, ${Math.random() * 0.3});
+                left: ${posX}px;
+                top: ${posY}px;
+                pointer-events: none;
+                border-radius: 50%;
+                z-index: 0;
+            `;
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        } else {
+            // Partículas de interacción
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.querySelector('.hero').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
+    };
+
+    // Resto del código de la flecha de scroll
     const scrollArrow = document.querySelector('.scroll-arrow');
     console.log('Scroll Arrow Element:', scrollArrow);
 
@@ -78,37 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('No se encontró el elemento scroll-arrow');
     }
 
-    // Efecto de typing mejorado
-    function typeWriter(element, text, speed = 50) {
-        const originalWidth = element.offsetWidth;
-        element.classList.add('typing');
-        let i = 0;
-        element.textContent = '';
-        
-        function type() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            } else {
-                element.classList.remove('typing');
-            }
-        }
-        
-        type();
-    }
-
-    // Preparar el contenedor antes del typing
-    const heroText = document.querySelector('.hero-content p');
-    const originalText = heroText.textContent;
-    // Establecemos el texto completo primero para obtener el ancho correcto
-    heroText.textContent = originalText;
-    heroText.style.width = heroText.offsetWidth + 'px';
-    // Luego iniciamos el efecto
-    heroText.textContent = '';
-    setTimeout(() => {
-        typeWriter(heroText, originalText);
-    }, 1000);
 
     // Efecto de parallax mejorado
     document.addEventListener('mousemove', (e) => {
@@ -166,53 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Efecto de partículas en el hero (opcional)
-    const createParticle = (x, y, isBackground = false) => {
-        if (isBackground) {
-            // Partículas de fondo
-            const particle = document.createElement('div');
-            particle.className = 'background-particle';
-            
-            const size = Math.random() * 3 + 1;
-            const posX = x || Math.random() * window.innerWidth;
-            const posY = y || Math.random() * window.innerHeight;
-            
-            particle.style.cssText = `
-                position: fixed;
-                width: ${size}px;
-                height: ${size}px;
-                background: rgba(50, 205, 50, ${Math.random() * 0.3});
-                left: ${posX}px;
-                top: ${posY}px;
-                pointer-events: none;
-                border-radius: 50%;
-                z-index: 0;
-            `;
-            
-            document.body.appendChild(particle);
-            
-            const animation = particle.animate([
-                { transform: 'translate(0, 0)', opacity: 1 },
-                { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
-            ], {
-                duration: Math.random() * 3000 + 2000,
-                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-            });
-            
-            animation.onfinish = () => particle.remove();
-        } else {
-            // Partículas de interacción
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = x + 'px';
-            particle.style.top = y + 'px';
-            document.querySelector('.hero').appendChild(particle);
-            
-            setTimeout(() => {
-                particle.remove();
-            }, 1000);
-        }
-    };
-
+    const hero = document.querySelector('.hero');
     hero.addEventListener('mousemove', (e) => {
         if (Math.random() > 0.9) {
             createParticle(e.clientX, e.clientY);
