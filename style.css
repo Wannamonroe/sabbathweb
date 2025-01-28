@@ -219,6 +219,7 @@ body::before {
 .about-us {
     padding-top: 4.5rem;
     background-color: var(--black);
+    margin-bottom: 80px;
 }
 
 .container {
