@@ -146,10 +146,10 @@ body::before {
 }
 
 .hero-logo {
-    max-width: 500px;
+    max-width: 600px;
     width: auto;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: -3rem;
     filter: drop-shadow(0 0 10px rgba(50, 205, 50, 0.3));
 }
 
