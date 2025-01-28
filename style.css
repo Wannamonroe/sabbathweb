@@ -731,106 +731,6 @@ body::before {
     }
 }
 
-/* Our Sim Section */
-.our-sim {
-    padding-bottom: 5.5rem;
-    padding-top: 5.5rem;
-    background-color: var(--black);
-}
-
-.our-sim h2 {
-    color: var(--lime);
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 3rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
-}
-
-.sim-gallery {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.sim-image {
-    position: relative;
-    width: 350px;
-    height: 250px;
-    overflow: hidden;
-    border-radius: 15px;
-    border: 1px solid rgba(50, 205, 50, 0.2);
-    transition: all 0.3s ease;
-}
-
-.sim-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.sim-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.sim-overlay p {
-    color: var(--lime);
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 1rem;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-}
-
-/* Hover effects */
-.sim-image:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(50, 205, 50, 0.2);
-}
-
-.sim-image:hover img {
-    transform: scale(1.1);
-}
-
-.sim-image:hover .sim-overlay {
-    opacity: 1;
-}
-
-.sim-image:hover .sim-overlay p {
-    transform: translateY(0);
-}
-
-/* Responsive design */
-@media (max-width: 1024px) {
-    .sim-gallery {
-        flex-wrap: wrap;
-    }
-    
-    .sim-image {
-        width: calc(50% - 1rem);
-    }
-}
-
-@media (max-width: 768px) {
-    .sim-image {
-        width: 100%;
-    }
-}
 
 /* Round Header Styles */
 .round-header {
@@ -964,7 +864,7 @@ body::before {
     font-size: 1rem;
     text-align: center;
     margin-top: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 10px;
     opacity: 0.8;
     transition: all 0.3s ease;
     width: 100%;
@@ -987,7 +887,7 @@ body::before {
 .teleport-button {
     order: 3;
     position: absolute;
-    bottom: -50px;
+    bottom: 100px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(50, 205, 50, 0.9);
@@ -1008,7 +908,7 @@ body::before {
 }
 
 .gallery-item:hover .teleport-button {
-    bottom: 20px;
+    bottom: 60px;
     opacity: 1;
 }
 
