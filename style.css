@@ -144,8 +144,7 @@ body::before {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 1;
-    transform: none;
+    text-align: center;
 }
 
 .hero-logo {
@@ -197,20 +196,10 @@ body::before {
 .hero-content p {
     font-size: 1.5rem;
     color: var(--white);
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    letter-spacing: 1px;
-    margin: 0 auto;
-    line-height: 1.4;
-    text-align: center;
-    white-space: nowrap;
-    opacity: 1 !important;
-    animation: none !important;
-    -webkit-animation: none !important;
-    -moz-animation: none !important;
-    transform: none !important;
-    transition: none !important;
-    visibility: visible !important;
-    display: block !important;
+    margin: 2rem auto;
+    max-width: 800px;
+    line-height: 1.6;
+    white-space: normal;
 }
 
 /* Eliminar cualquier pseudo-elemento que pueda estar causando el efecto */
@@ -418,20 +407,44 @@ body::before {
     }
     
     .hero-content {
-        width: 95%;
-        padding: 1.5rem;
         height: auto;
         min-height: 350px;
+        padding: 2rem 1rem;
     }
 
     .hero-logo {
         max-width: 280px;
+        margin-bottom: -1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+        padding: 0 20px;
+        margin-top: 2rem;
     }
 
     .hero-content p {
-        font-size: 1rem;
-        white-space: normal;
-        padding: 0 15px;
+        font-size: 1.2rem;
+        padding: 0 20px;
+        margin: 2rem auto;
+        max-width: 280px;
+        word-wrap: break-word;
+    }
+    
+    .hero-content p::before {
+        content: "A movement for those";
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-content p::after {
+        content: "who dare to embrace the extraordinary";
+        display: block;
+    }
+
+    /* Ocultar el texto original */
+    .hero-content p span {
+        display: none;
     }
     
     .social-link {
@@ -441,18 +454,24 @@ body::before {
 
 @media (max-width: 480px) {
     .hero-content {
-        width: 100%;
-        padding: 1rem;
         min-height: 300px;
+        margin: 1rem;
     }
 
     .hero-logo {
         max-width: 220px;
+        margin-bottom: 0;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+        margin-top: 3rem;
     }
 
     .hero-content p {
-        font-size: 0.9rem;
-        padding: 0 10px;
+        font-size: 1.1rem;
+        line-height: 1.4;
+        max-width: 240px;
     }
 }
 
