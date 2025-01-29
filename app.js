@@ -437,14 +437,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Crear partículas de fondo periódicamente (aumentar frecuencia)
-    setInterval(() => {
-        createParticle(null, null, true);
-        createParticle(null, null, true);
-        createParticle(null, null, true);
-        createParticle(null, null, true);
-        createParticle(null, null, true);
-    }, 100); // Reducido de 300 a 100ms
+    // Efecto de partículas solo en la sección hero
+    const heroSection = document.querySelector('.hero');
+    
+    if (heroSection) {
+        const createParticle = () => {
+            // Crear múltiples partículas en cada intervalo
+            for (let i = 0; i < 3; i++) { // Crear 3 partículas a la vez
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 1;
+                const x = Math.random() * heroSection.offsetWidth;
+                const y = Math.random() * heroSection.offsetHeight;
+                
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: rgba(50, 205, 50, ${Math.random() * 0.3}); // Aumentado la opacidad máxima
+                    left: ${x}px;
+                    top: ${y}px;
+                    pointer-events: none;
+                    border-radius: 50%;
+                    z-index: 1;
+                `;
+                
+                heroSection.appendChild(particle);
+                
+                const animation = particle.animate([
+                    { transform: 'translate(0, 0)', opacity: 1 },
+                    { transform: `translate(${Math.random() * 300 - 150}px, ${Math.random() * 300 - 150}px)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                });
+                
+                animation.onfinish = () => particle.remove();
+            }
+        };
+
+        // Crear partículas más frecuentemente (cada 150ms en lugar de 300ms)
+        const particleInterval = setInterval(createParticle, 150);
+
+        // Detener la creación de partículas cuando el usuario scrollea más allá del hero
+        window.addEventListener('scroll', () => {
+            const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+            if (window.pageYOffset > heroBottom) {
+                clearInterval(particleInterval);
+            }
+        });
+    }
 
     // Función específica para la navbar en round1
     const isRound1Page = document.querySelector('.round-header') !== null;
