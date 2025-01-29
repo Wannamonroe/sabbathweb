@@ -1263,11 +1263,37 @@ body::before {
     padding: 120px 20px 60px;
     position: relative;
     overflow: hidden;
+    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+}
+
+/* Efecto de líneas en el fondo */
+.apply-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(90deg, transparent 0%, transparent 49%, rgba(50, 205, 50, 0.1) 50%, transparent 51%, transparent 100%),
+        linear-gradient(0deg, transparent 0%, transparent 49%, rgba(50, 205, 50, 0.1) 50%, transparent 51%, transparent 100%);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    opacity: 0.5;
+}
+
+/* Orbes flotantes en el fondo */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(50, 205, 50, 0.2), transparent);
+    filter: blur(5px);
+    pointer-events: none;
 }
 
 .apply-content {
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(50, 205, 50, 0.3);
     border-radius: 15px;
     padding: 3rem;
     max-width: 800px;
@@ -1276,9 +1302,24 @@ body::before {
     position: relative;
     backdrop-filter: blur(10px);
     animation: fadeIn 1s ease-out;
+    box-shadow: 0 0 30px rgba(50, 205, 50, 0.1);
+    overflow: hidden;
+}
+
+.apply-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1), transparent 70%);
+    animation: rotate 20s linear infinite;
+    pointer-events: none;
 }
 
 .apply-title {
+    position: relative;
     color: var(--lime);
     font-size: 3.5rem;
     margin-bottom: 2rem;
@@ -1288,29 +1329,18 @@ body::before {
     animation: glowText 2s ease-in-out infinite alternate;
 }
 
-.apply-text {
+.apply-text p {
     color: var(--white);
     font-size: 1.2rem;
     line-height: 1.8;
-    margin-bottom: 3rem;
-}
-
-.apply-text p {
     margin-bottom: 1.5rem;
     opacity: 0;
     transform: translateY(20px);
     animation: slideUp 0.5s ease-out forwards;
 }
 
-.apply-text p:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.apply-text p:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
 .apply-button {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 1rem;
@@ -1322,21 +1352,52 @@ body::before {
     font-size: 1.2rem;
     font-weight: bold;
     transition: all 0.3s ease;
-    opacity: 0;
-    animation: fadeIn 0.5s ease-out 0.6s forwards;
+    overflow: hidden;
+    margin-top: 2rem;
 }
 
-.apply-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(50, 205, 50, 0.4);
+.apply-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
 }
 
-.apply-button .fa-arrow-right {
-    transition: transform 0.3s ease;
+.apply-button:hover::before {
+    transform: translateX(100%);
 }
 
-.apply-button:hover .fa-arrow-right {
-    transform: translateX(5px);
+/* Animaciones */
+@keyframes gridMove {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(50px, 50px);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 /* Animaciones */

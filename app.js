@@ -593,23 +593,90 @@ document.addEventListener('DOMContentLoaded', () => {
         const applySection = document.querySelector('.apply-section');
         
         if (applySection) {
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                applySection.style.backgroundPositionY = scrolled * 0.5 + 'px';
-            });
-
-            // Efecto hover mejorado para el botón
-            const applyButton = document.querySelector('.apply-button');
-            if (applyButton) {
-                applyButton.addEventListener('mousemove', (e) => {
-                    const rect = applyButton.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    applyButton.style.setProperty('--x', `${x}px`);
-                    applyButton.style.setProperty('--y', `${y}px`);
+            // Crear orbes flotantes
+            function createOrb() {
+                const orb = document.createElement('div');
+                orb.className = 'orb';
+                
+                const size = Math.random() * 200 + 100;
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                
+                orb.style.width = `${size}px`;
+                orb.style.height = `${size}px`;
+                orb.style.left = `${startX}px`;
+                orb.style.top = `${startY}px`;
+                
+                applySection.appendChild(orb);
+                
+                // Animación de flotación
+                const duration = Math.random() * 10 + 10;
+                const xMove = Math.random() * 100 - 50;
+                const yMove = Math.random() * 100 - 50;
+                
+                orb.animate([
+                    { transform: 'translate(0, 0)' },
+                    { transform: `translate(${xMove}px, ${yMove}px)` },
+                    { transform: 'translate(0, 0)' }
+                ], {
+                    duration: duration * 1000,
+                    iterations: Infinity,
+                    easing: 'ease-in-out'
                 });
             }
+            
+            // Crear varios orbes
+            for (let i = 0; i < 5; i++) {
+                createOrb();
+            }
+            
+            // Efecto parallax en el contenido
+            const applyContent = document.querySelector('.apply-content');
+            window.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const xPos = (clientX / window.innerWidth - 0.5) * 20;
+                const yPos = (clientY / window.innerHeight - 0.5) * 20;
+                
+                applyContent.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            });
+            
+            // Efecto de brillo en el botón
+            const applyButton = document.querySelector('.apply-button');
+            applyButton.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const rect = applyButton.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                
+                applyButton.style.setProperty('--x', `${x}px`);
+                applyButton.style.setProperty('--y', `${y}px`);
+            });
+            
+            // Efecto de escritura para el título
+            const title = document.querySelector('.apply-title');
+            const text = title.textContent;
+            title.textContent = '';
+            
+            let charIndex = 0;
+            function typeText() {
+                if (charIndex < text.length) {
+                    title.textContent += text.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeText, 100);
+                }
+            }
+            
+            // Iniciar la animación cuando el contenido sea visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        typeText();
+                        observer.unobserve(title);
+                    }
+                });
+            });
+            
+            observer.observe(title);
         }
     });
 });
