@@ -544,5 +544,30 @@ document.addEventListener('DOMContentLoaded', () => {
             title.style.textShadow = '0 0 15px rgba(50, 205, 50, 0.3)';
         });
     });
+
+    // Efecto parallax para la sección de Apply
+    document.addEventListener('DOMContentLoaded', () => {
+        const applySection = document.querySelector('.apply-section');
+        
+        if (applySection) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                applySection.style.backgroundPositionY = scrolled * 0.5 + 'px';
+            });
+
+            // Efecto hover mejorado para el botón
+            const applyButton = document.querySelector('.apply-button');
+            if (applyButton) {
+                applyButton.addEventListener('mousemove', (e) => {
+                    const rect = applyButton.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    applyButton.style.setProperty('--x', `${x}px`);
+                    applyButton.style.setProperty('--y', `${y}px`);
+                });
+            }
+        }
+    });
 });
 

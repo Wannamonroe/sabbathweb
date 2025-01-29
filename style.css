@@ -1252,3 +1252,138 @@ body::before {
     position: relative;
     z-index: 1;
 }
+
+/* Apply Section Styles */
+.apply-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.apply-content {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(50, 205, 50, 0.2);
+    border-radius: 15px;
+    padding: 3rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(10px);
+    animation: fadeIn 1s ease-out;
+}
+
+.apply-title {
+    color: var(--lime);
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(50, 205, 50, 0.5);
+    animation: glowText 2s ease-in-out infinite alternate;
+}
+
+.apply-text {
+    color: var(--white);
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+}
+
+.apply-text p {
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.apply-text p:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.apply-text p:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.apply-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2.5rem;
+    background: var(--lime);
+    color: var(--black);
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out 0.6s forwards;
+}
+
+.apply-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(50, 205, 50, 0.4);
+}
+
+.apply-button .fa-arrow-right {
+    transition: transform 0.3s ease;
+}
+
+.apply-button:hover .fa-arrow-right {
+    transform: translateX(5px);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glowText {
+    from {
+        text-shadow: 0 0 15px rgba(50, 205, 50, 0.5);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(50, 205, 50, 0.8);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .apply-content {
+        padding: 2rem;
+    }
+
+    .apply-title {
+        font-size: 2.5rem;
+    }
+
+    .apply-text {
+        font-size: 1rem;
+    }
+
+    .apply-button {
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+    }
+}
