@@ -479,7 +479,8 @@ body::before {
 .footer {
     background-color: rgba(0, 0, 0, 0.95);
     padding: 4rem 0;
-    margin-top: 2rem;
+    margin-top: 0;
+    padding-top: 2rem;
     border-top: 1px solid rgba(50, 205, 50, 0.1);
 }
 
@@ -1255,11 +1256,11 @@ body::before {
 
 /* Apply Section Styles */
 .apply-section {
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 120px 20px;
+    padding: 120px 20px 60px;
     position: relative;
     overflow: hidden;
 }
@@ -1270,7 +1271,7 @@ body::before {
     border-radius: 15px;
     padding: 3rem;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 2rem auto 0;
     text-align: center;
     position: relative;
     backdrop-filter: blur(10px);
@@ -1370,8 +1371,13 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .apply-section {
+        min-height: 70vh;
+        padding: 100px 20px 40px;
+    }
+
     .apply-content {
-        padding: 2rem;
+        margin: 1.5rem auto 0;
     }
 
     .apply-title {
