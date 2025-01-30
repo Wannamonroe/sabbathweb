@@ -17,6 +17,7 @@ body {
     position: relative;
     min-height: 100vh;
     overflow-x: hidden;
+    cursor: url('img/mouse-32.png') 16 16, auto;
 }
 
 body::before {
@@ -358,7 +359,7 @@ body::before {
     color: var(--lime);
     font-size: 2rem;
     animation: bounce 2s infinite;
-    cursor: pointer;
+    cursor: url('img/mouse-32.png') 16 16, pointer;
     text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
     z-index: 2;
     transition: all 0.3s ease;
@@ -611,7 +612,7 @@ body::before {
     border-radius: 15px;
     overflow: hidden;
     transition: all 0.3s ease;
-    cursor: pointer;
+    cursor: url('img/mouse-32.png') 16 16, pointer;
     backdrop-filter: blur(5px);
     position: relative;
 }
@@ -893,7 +894,7 @@ body::before {
     overflow: hidden;
     border: 1px solid rgba(50, 205, 50, 0.2);
     position: relative;
-    cursor: pointer;
+    cursor: url('img/mouse-32.png') 16 16, pointer;
 }
 
 /* Ajuste del enlace de la imagen */
@@ -924,8 +925,7 @@ body::before {
     opacity: 0;
     z-index: 3;
     white-space: nowrap;
-    cursor: pointer;
-    pointer-events: auto;
+    cursor: url('img/mouseactive.png') 16 16, pointer;
 }
 
 /* Overlay para mejor visibilidad */
@@ -1080,7 +1080,7 @@ body::before {
     z-index: 9998;
     max-width: 90vw;
     max-height: 90vh;
-    cursor: pointer;
+    cursor: url('img/mouse-32.png') 16 16, pointer;
 }
 
 .expanded-view img {
@@ -1256,17 +1256,22 @@ body::before {
 
 /* Apply Section Styles */
 .apply-section {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 120px 20px 60px;
+    padding: 5rem 2rem 2rem;
+    min-height: calc(100vh - 100px);
+    background-color: var(--black);
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
+    background-size: cover, 50px 50px, 50px 50px;
+    background-position: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+    animation: backgroundMove 20s linear infinite;
+    margin-bottom: 0;
 }
 
-/* Efecto de líneas en el fondo */
+/* Efecto de fondo con gradiente */
 .apply-section::before {
     content: '';
     position: absolute;
@@ -1274,12 +1279,8 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-        linear-gradient(90deg, transparent 0%, transparent 49%, rgba(50, 205, 50, 0.1) 50%, transparent 51%, transparent 100%),
-        linear-gradient(0deg, transparent 0%, transparent 49%, rgba(50, 205, 50, 0.1) 50%, transparent 51%, transparent 100%);
-    background-size: 50px 50px;
-    animation: gridMove 20s linear infinite;
-    opacity: 0.5;
+    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 /* Orbes flotantes en el fondo */
@@ -1372,6 +1373,13 @@ body::before {
     transform: translateX(100%);
 }
 
+.apply-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 0 30px rgba(50, 205, 50, 0.2),
+        0 0 60px rgba(50, 205, 50, 0.1);
+}
+
 /* Animaciones */
 @keyframes gridMove {
     0% {
@@ -1453,4 +1461,52 @@ body::before {
         padding: 0.8rem 2rem;
         font-size: 1.1rem;
     }
+}
+
+/* Cursor por defecto usando mouse-32.png */
+*, *::before, *::after {
+    cursor: url('img/mouse-32.png') 16 16, auto;
+}
+
+body, 
+html {
+    cursor: url('img/mouse-32.png') 16 16, auto !important;
+}
+
+/* Cursor activo para elementos interactivos - incluir todos los estados */
+a, 
+button,
+.scroll-arrow,
+.gallery-item,
+.teleport-button,
+.navbar-links a,
+.social-link,
+.apply-button,
+.hamburger,
+.round-card,
+.nav-brand img,
+/* Estados activos */
+a:active, 
+button:active,
+.scroll-arrow:active,
+.gallery-item:active,
+.teleport-button:active,
+.navbar-links a:active,
+.social-link:active,
+.apply-button:active,
+.hamburger:active,
+.round-card:active,
+.nav-brand img:active,
+/* Estados de carga */
+a:link,
+a:visited,
+a[href]:hover,
+a[href]:active {
+    cursor: url('img/mouseactive.png') 16 16, pointer !important;
+}
+
+/* Mantener cursores por defecto para campos de texto */
+input, 
+textarea {
+    cursor: text;
 }
