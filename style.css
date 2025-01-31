@@ -17,7 +17,7 @@ body {
     position: relative;
     min-height: 100vh;
     overflow-x: hidden;
-    cursor: url('img/mouse-32.png') 16 16, auto;
+    cursor: url('img/ratonfix.png') 16 16, auto;
 }
 
 body::before {
@@ -359,7 +359,7 @@ body::before {
     color: var(--lime);
     font-size: 2rem;
     animation: bounce 2s infinite;
-    cursor: url('img/mouse-32.png') 16 16, pointer;
+    cursor: url('img/ratonfix.png') 16 16, pointer;
     text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
     z-index: 2;
     transition: all 0.3s ease;
@@ -612,7 +612,7 @@ body::before {
     border-radius: 15px;
     overflow: hidden;
     transition: all 0.3s ease;
-    cursor: url('img/mouse-32.png') 16 16, pointer;
+    cursor: url('img/ratonfix.png') 16 16, pointer;
     backdrop-filter: blur(5px);
     position: relative;
 }
@@ -894,7 +894,7 @@ body::before {
     overflow: hidden;
     border: 1px solid rgba(50, 205, 50, 0.2);
     position: relative;
-    cursor: url('img/mouse-32.png') 16 16, pointer;
+    cursor: url('img/ratonfix.png') 16 16, pointer;
 }
 
 /* Ajuste del enlace de la imagen */
@@ -925,7 +925,7 @@ body::before {
     opacity: 0;
     z-index: 3;
     white-space: nowrap;
-    cursor: url('img/mouseactive.png') 16 16, pointer;
+    cursor: url('img/mouseactivefix.png') 16 16, pointer;
 }
 
 /* Overlay para mejor visibilidad */
@@ -1080,7 +1080,7 @@ body::before {
     z-index: 9998;
     max-width: 90vw;
     max-height: 90vh;
-    cursor: url('img/mouse-32.png') 16 16, pointer;
+    cursor: url('img/ratonfix.png') 16 16, pointer;
 }
 
 .expanded-view img {
@@ -1465,12 +1465,12 @@ body::before {
 
 /* Cursor por defecto usando mouse-32.png */
 *, *::before, *::after {
-    cursor: url('img/mouse-32.png') 16 16, auto;
+    cursor: url('img/ratonfix.png') 16 16, auto;
 }
 
 body, 
 html {
-    cursor: url('img/mouse-32.png') 16 16, auto !important;
+    cursor: url('img/ratonfix.png') 16 16, auto !important;
 }
 
 /* Cursor activo para elementos interactivos - incluir todos los estados */
@@ -1502,7 +1502,7 @@ a:link,
 a:visited,
 a[href]:hover,
 a[href]:active {
-    cursor: url('img/mouseactive.png') 16 16, pointer !important;
+    cursor: url('img/mouseactivefix.png') 16 16, pointer !important;
 }
 
 /* Mantener cursores por defecto para campos de texto */
