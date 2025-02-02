@@ -35,24 +35,26 @@ body::before {
     z-index: 0;
 }
 
-/* Banner Section con logo más pequeño */
+/* Banner Section con logo más centrado */
 .banner-section {
     width: 100%;
-    height: 50vh; /* Reducido de 100vh a 50vh */
+    height: 40vh;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--black);
     position: relative;
     overflow: hidden;
-    margin-bottom: 2rem; /* Añadir espacio debajo del banner */
+    padding: 1rem 0;
+    margin-bottom: 0;
 }
 
 .banner-logo {
     width: auto;
-    height: 35vh; /* Reducido de 60vh a 35vh */
-    max-width: 70%; /* Reducido de 90% a 70% */
+    height: 35vh;
+    max-width: 70%;
     object-fit: contain;
+    margin-top: 5rem;
 }
 
 /* Navbar fija */
@@ -68,6 +70,7 @@ body::before {
     align-items: center;
     z-index: 1000;
     border-bottom: 1px solid rgba(50, 205, 50, 0.2);
+    margin-top: 0;
 }
 
 .nav-brand {
@@ -406,6 +409,19 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .banner-section {
+        height: 30vh;
+    }
+    
+    .banner-logo {
+        height: 25vh;
+        margin-top: 2rem;
+    }
+    
+    .navbar {
+        padding: 1rem;
+    }
+    
     .nav-links {
         display: none;
     }
@@ -476,6 +492,15 @@ body::before {
 }
 
 @media (max-width: 480px) {
+    .banner-section {
+        height: 25vh;
+    }
+    
+    .banner-logo {
+        height: 20vh;
+        margin-top: 1.5rem;
+    }
+
     .hero-content {
         min-height: 300px;
         margin: 1rem;
