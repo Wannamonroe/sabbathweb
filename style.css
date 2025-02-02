@@ -1595,16 +1595,23 @@ textarea {
 }
 
 .simple-carousel-slide {
-    min-width: 80%;
+    min-width: 85%;
     height: 100%;
     position: relative;
-    transition: opacity 0.3s ease;
-    opacity: 0.3;
-    margin: 0 -5%;
+    transition: all 0.3s ease;
+    opacity: 1;
+    margin: 0 -15%;
+    clip-path: polygon(0 0, 100% 8%, 100% 100%, 0% 92%);
+    z-index: 1;
 }
 
 .simple-carousel-slide.active {
     opacity: 1;
+    z-index: 2;
+}
+
+.simple-carousel-slide:not(.active) {
+    transform: scale(0.98);
 }
 
 .simple-carousel-slide img {
@@ -1640,12 +1647,13 @@ textarea {
 
 .simple-carousel-indicators {
     position: absolute;
-    bottom: 20px;
+    bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
     z-index: 10;
+    padding-bottom: 5px;
 }
 
 .indicator {
