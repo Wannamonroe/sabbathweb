@@ -54,10 +54,10 @@ body::before {
     height: 35vh;
     max-width: 70%;
     object-fit: contain;
-    margin-top: 5rem;
+    margin-top: 2rem;
 }
 
-/* Navbar fija */
+/* Navbar centrado sin logo */
 .navbar {
     position: fixed;
     top: 0;
@@ -66,31 +66,29 @@ body::before {
     background: rgba(0, 0, 0, 0.9);
     padding: 1rem 2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centrar contenido */
     align-items: center;
     z-index: 1000;
+    border-top: 1px solid rgba(50, 205, 50, 0.2); /* Línea superior */
     border-bottom: 1px solid rgba(50, 205, 50, 0.2);
-    margin-top: 0;
 }
 
+/* Eliminar el contenedor del logo */
 .nav-brand {
-    display: flex;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--lime);
+    display: none;
 }
 
-.logo {
-    height: 40px;  
-    width: auto;
-    margin-right: 10px;
+/* Ajustar los enlaces para que estén centrados */
+.nav-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem; /* Espacio entre enlaces */
 }
 
 .nav-links a {
     color: var(--white);
     text-decoration: none;
-    margin-left: 2rem;
     transition: color 0.3s ease;
     position: relative;
     padding-bottom: 5px;
@@ -409,117 +407,18 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .banner-section {
-        height: 30vh;
-    }
-    
-    .banner-logo {
-        height: 25vh;
-        margin-top: 2rem;
-    }
-    
     .navbar {
         padding: 1rem;
     }
     
     .nav-links {
-        display: none;
-    }
-    
-    .hamburger {
-        display: flex;
-    }
-    
-    .nav-links.active {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: rgba(0, 0, 0, 0.9);
-        padding: 1rem;
-    }
-    
-    .nav-links.active a {
-        margin: 0.5rem 0;
-    }
-    
-    .hero-content {
-        height: auto;
-        min-height: 350px;
-        padding: 2rem 1rem;
-    }
-
-    .hero-logo {
-        max-width: 280px;
-        margin-bottom: -1rem;
-    }
-
-    .hero-content h1 {
-        font-size: 2.5rem;
-        padding: 0 20px;
-        margin-top: 2rem;
-    }
-
-    .hero-content p {
-        font-size: 1.2rem;
-        padding: 0 20px;
-        margin: 2rem auto;
-        max-width: 280px;
-        word-wrap: break-word;
-    }
-    
-    .hero-content p::before {
-        content: "A movement for those";
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .hero-content p::after {
-        content: "who dare to embrace the extraordinary";
-        display: block;
-    }
-
-    /* Ocultar el texto original */
-    .hero-content p span {
-        display: none;
-    }
-    
-    .social-link {
-        flex-direction: column;
+        gap: 2rem;
     }
 }
 
 @media (max-width: 480px) {
-    .banner-section {
-        height: 25vh;
-    }
-    
-    .banner-logo {
-        height: 20vh;
-        margin-top: 1.5rem;
-    }
-
-    .hero-content {
-        min-height: 300px;
-        margin: 1rem;
-    }
-
-    .hero-logo {
-        max-width: 220px;
-        margin-bottom: 0;
-    }
-
-    .hero-content h1 {
-        font-size: 2rem;
-        margin-top: 3rem;
-    }
-
-    .hero-content p {
-        font-size: 1.1rem;
-        line-height: 1.4;
-        max-width: 240px;
+    .nav-links {
+        gap: 1.5rem;
     }
 }
 
