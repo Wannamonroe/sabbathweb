@@ -35,17 +35,39 @@ body::before {
     z-index: 0;
 }
 
+/* Banner Section con logo más pequeño */
+.banner-section {
+    width: 100%;
+    height: 50vh; /* Reducido de 100vh a 50vh */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--black);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem; /* Añadir espacio debajo del banner */
+}
+
+.banner-logo {
+    width: auto;
+    height: 35vh; /* Reducido de 60vh a 35vh */
+    max-width: 70%; /* Reducido de 90% a 70% */
+    object-fit: contain;
+}
+
+/* Navbar fija */
 .navbar {
-    position: fixed !important;
-    top: 0 !important;
+    position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
-    z-index: 99999 !important;
-    background-color: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.9);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(50, 205, 50, 0.2);
 }
 
 .nav-brand {
@@ -1509,4 +1531,25 @@ a[href]:active {
 input, 
 textarea {
     cursor: text;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .banner-logo {
+        height: 40vh;
+    }
+    
+    .navbar {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-section {
+        height: 35vh;
+    }
+    
+    .banner-logo {
+        height: 20vh;
+    }
 }
