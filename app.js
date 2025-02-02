@@ -679,5 +679,51 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.observe(title);
         }
     });
+
+    const carousel = document.querySelector('.carousel');
+    const items = carousel.querySelectorAll('.carousel-item');
+    const indicators = carousel.querySelectorAll('.indicator');
+    let currentIndex = 0;
+
+    // Función para mostrar un slide específico
+    function showSlide(index) {
+        items.forEach(item => item.classList.remove('active'));
+        indicators.forEach(ind => ind.classList.remove('active'));
+        
+        currentIndex = index;
+        if (currentIndex >= items.length) currentIndex = 0;
+        if (currentIndex < 0) currentIndex = items.length - 1;
+
+        items[currentIndex].classList.add('active');
+        indicators[currentIndex].classList.add('active');
+    }
+
+    // Event listeners para los controles
+    carousel.querySelector('.next').addEventListener('click', () => {
+        showSlide(currentIndex + 1);
+    });
+
+    carousel.querySelector('.prev').addEventListener('click', () => {
+        showSlide(currentIndex - 1);
+    });
+
+    // Event listeners para los indicadores
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            showSlide(index);
+        });
+    });
+
+    // Auto-play
+    setInterval(() => {
+        showSlide(currentIndex + 1);
+    }, 5000);
+
+    // Mantener el cursor durante la navegación
+    document.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A' || e.target.closest('a')) {
+            document.body.style.cursor = `url('img/mouseactive.png') 16 16, pointer`;
+        }
+    });
 });
 
