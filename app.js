@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
     let autoplayInterval;
-    const totalStops = 4; // Cambiado a 4 paradas
+    const totalStops = 5; // Aumentado de 4 a 5
 
     function updateCarousel() {
         const offset = (currentIndex * -80);
