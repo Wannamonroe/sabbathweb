@@ -1623,19 +1623,9 @@ textarea {
 .simple-carousel {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 450px;
     overflow: hidden;
-    background: 
-        linear-gradient(135deg, rgba(10, 15, 10, 0.97), rgba(20, 25, 20, 0.97)),
-        repeating-linear-gradient(45deg, 
-            transparent,
-            transparent 10px,
-            rgba(77, 255, 77, 0.015) 10px,
-            rgba(77, 255, 77, 0.015) 20px
-        );
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(77, 255, 77, 0.1);
-    border-radius: 0;
+    background: linear-gradient(135deg, rgba(10, 15, 10, 0.97), rgba(20, 25, 20, 0.97));
 }
 
 .simple-carousel-track {
@@ -1648,16 +1638,19 @@ textarea {
     min-width: 85%;
     height: 100%;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     margin: 0 -15%;
     margin-left: -10%;
     clip-path: polygon(0 0, 100% 8%, 100% 100%, 0% 92%);
     z-index: 1;
+    filter: brightness(1);
 }
 
 .simple-carousel-slide.active {
     opacity: 1;
+    filter: brightness(1);
+    transform: scale(1.02);
     z-index: 2;
 }
 
@@ -1678,47 +1671,58 @@ textarea {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.5);
-    border: none;
+    background: rgba(77, 255, 77, 0.1);
+    border: 2px solid rgba(77, 255, 77, 0.3);
     color: #4dff4d;
+    padding: 1rem;
     cursor: pointer;
-    z-index: 10;
-    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 3;
+}
+
+.simple-carousel-btn:hover {
+    background: rgba(77, 255, 77, 0.2);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
 }
 
 .simple-carousel-btn.prev {
-    left: 20px;
+    left: 2rem;
 }
 
 .simple-carousel-btn.next {
-    right: 20px;
+    right: 2rem;
 }
 
 .simple-carousel-indicators {
     position: absolute;
-    bottom: -5px;
+    bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
-    z-index: 10;
-    padding-bottom: 6px;
+    gap: 1rem;
+    z-index: 3;
 }
 
 .indicator {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid #4dff4d;
     background: transparent;
+    border: 2px solid #4dff4d;
     cursor: pointer;
-    padding: 0;
+    transition: all 0.3s ease;
 }
 
 .indicator.active {
     background: #4dff4d;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(77, 255, 77, 0.5);
+}
+
+.indicator:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(77, 255, 77, 0.3);
 }
 
 /* Ajustes responsivos */
