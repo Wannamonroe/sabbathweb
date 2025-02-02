@@ -35,26 +35,83 @@ body::before {
     z-index: 0;
 }
 
-/* Banner Section con logo más centrado */
+/* Estilos para la sección del banner */
 .banner-section {
-    width: 100%;
-    height: 40vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--black);
     position: relative;
+    width: 100%;
+    padding: 1.5rem;
+    padding-top: 0.5rem;
+    background: #000;
     overflow: hidden;
-    padding: 1rem 0;
-    margin-bottom: 0;
+    height: 35vh;
 }
 
+/* Efecto de gradiente sutil en el fondo */
+.banner-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(50, 205, 50, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(50, 205, 50, 0.05) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, 
+            rgba(50, 205, 50, 0.02) 0%, 
+            rgba(50, 205, 50, 0.02) 2px, 
+            transparent 2px, 
+            transparent 10px
+        ),
+        repeating-linear-gradient(-45deg, 
+            rgba(50, 205, 50, 0.02) 0%, 
+            rgba(50, 205, 50, 0.02) 2px,    
+            transparent 2px, 
+            transparent 10px
+        );
+    animation: glowingBG 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Estilo del logo del banner */
 .banner-logo {
-    width: auto;
-    height: 35vh;
-    max-width: 70%;
-    object-fit: contain;
-    margin-top: 2rem;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    height: 40vh;
+    margin-top: -1rem;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2));
+}
+
+/* Efecto hover en el logo */
+.banner-logo:hover {
+    filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4));
+    transform: scale(1.02);
+}
+
+/* Animaciones */
+@keyframes glowingBG {
+    0% {
+        opacity: 0.7;
+        background-position: 0% 0%;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        background-position: 100% 100%;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes glow {
+    0%, 100% { 
+        filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2));
+    }
+    50% { 
+        filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4));
+    }
 }
 
 /* Navbar centrado sin logo */
@@ -1088,17 +1145,6 @@ body::before {
     100% { background-position: 0% 50%; }
 }
 
-@keyframes glowingBG {
-    0% {
-        opacity: 0.3;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0.7;
-        transform: scale(1.1);
-    }
-}
-
 /* Fondo animado */
 .animated-background {
     position: fixed;
@@ -1688,4 +1734,145 @@ textarea {
 @keyframes lineMove {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
+}
+
+/* Estilos para el contenedor del logo */
+.logo-container {
+    position: relative;
+    width: 100%;
+    padding: 2rem;
+    background: 
+        linear-gradient(135deg, rgba(10, 15, 10, 0.97), rgba(20, 25, 20, 0.97)),
+        repeating-linear-gradient(45deg, 
+            transparent,
+            transparent 10px,
+            rgba(77, 255, 77, 0.015) 10px,
+            rgba(77, 255, 77, 0.015) 20px
+        );
+    overflow: hidden;
+}
+
+/* Líneas decorativas en el fondo */
+.logo-container::before,
+.logo-container::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(77, 255, 77, 0.1),
+        transparent
+    );
+    animation: lineMove 8s linear infinite;
+}
+
+.logo-container::before {
+    top: 30%;
+}
+
+.logo-container::after {
+    bottom: 30%;
+    animation-delay: -4s;
+}
+
+/* Estilo del logo */
+.logo {
+    position: relative;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2));
+}
+
+/* Efecto hover en el logo */
+.logo:hover {
+    filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4));
+    transform: scale(1.02);
+}
+
+/* Animaciones */
+@keyframes lineMove {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes glow {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2)); }
+    50% { filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4)); }
+}
+
+.event-button-container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+
+.event-button {
+    position: relative;
+    padding: 1.2rem 3rem;
+    font-size: 1.3rem;
+    color: #4dff4d;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #4dff4d;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(77, 255, 77, 0.2);
+}
+
+.event-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(77, 255, 77, 0.3),
+        transparent
+    );
+    transition: all 0.6s ease;
+}
+
+.button-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle,
+        rgba(77, 255, 77, 0.1) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.event-button:hover {
+    color: #fff;
+    background: rgba(77, 255, 77, 0.1);
+    box-shadow: 0 0 30px rgba(77, 255, 77, 0.4);
+    transform: translateY(-3px);
+    letter-spacing: 5px;
+}
+
+.event-button:hover::before {
+    left: 100%;
+}
+
+.event-button:hover .button-glow {
+    opacity: 1;
+}
+
+.event-button:active {
+    transform: translateY(0);
+    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
 }

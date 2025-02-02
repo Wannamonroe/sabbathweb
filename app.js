@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.querySelector('.simple-carousel-btn.next');
     const prevButton = document.querySelector('.simple-carousel-btn.prev');
     const indicators = document.querySelectorAll('.indicator');
+    const eventButton = document.querySelector('.event-button');
 
     let currentIndex = 0;
     let autoplayInterval;
@@ -67,5 +68,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar
     updateCarousel();
     startAutoplay();
+
+    eventButton.addEventListener('mousemove', (e) => {
+        const rect = eventButton.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const glow = eventButton.querySelector('.button-glow');
+        glow.style.transform = `translate(${x - rect.width}px, ${y - rect.height}px)`;
+    });
+
+    eventButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        eventButton.style.transform = 'scale(0.98)';
+        
+        setTimeout(() => {
+            eventButton.style.transform = 'scale(1)';
+            window.location.href = eventButton.href;
+        }, 200);
+    });
 });
 
