@@ -1083,15 +1083,9 @@ body::before {
 
 /* Animaciones */
 @keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 @keyframes glowingBG {
@@ -1536,7 +1530,7 @@ textarea {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    gap: 2px;
     z-index: 10;
 }
 
@@ -1585,7 +1579,17 @@ textarea {
     width: 100%;
     height: 400px;
     overflow: hidden;
-    background: #000;
+    background: 
+        linear-gradient(135deg, rgba(10, 15, 10, 0.97), rgba(20, 25, 20, 0.97)),
+        repeating-linear-gradient(45deg, 
+            transparent,
+            transparent 10px,
+            rgba(77, 255, 77, 0.015) 10px,
+            rgba(77, 255, 77, 0.015) 20px
+        );
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(77, 255, 77, 0.1);
+    border-radius: 0;
 }
 
 .simple-carousel-track {
@@ -1679,4 +1683,9 @@ textarea {
     .simple-carousel-slide img {
         transform: scale(1.1);
     }
+}
+
+@keyframes lineMove {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
