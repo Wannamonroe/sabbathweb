@@ -128,6 +128,8 @@ body::before {
     z-index: 1000;
     border-top: 1px solid rgba(50, 205, 50, 0.2); /* Línea superior */
     border-bottom: 1px solid rgba(50, 205, 50, 0.2);
+    margin-bottom: 1;
+    padding-bottom: 2;
 }
 
 /* Eliminar el contenedor del logo */
@@ -778,7 +780,8 @@ body::before {
 
 /* Round Header Styles */
 .round-header {
-    margin-top: 73px;
+    margin-top: 0;
+    padding-top: 0;
     height: auto;
     min-height: 200px;
     width: 100%;
@@ -835,6 +838,7 @@ body::before {
     max-width: 1200px;
     text-align: center;
     padding: 0 2rem;
+    padding-top: 2rem;
 }
 
 /* Gallery Styles */
@@ -1968,4 +1972,9 @@ textarea {
         opacity: 0.3;
         filter: blur(3px);
     }
+}
+
+/* Asegurar que no hay espacios entre navbar y round-header */
+.navbar + .round-header {
+    margin-top: 0;
 }
