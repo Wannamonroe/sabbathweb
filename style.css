@@ -1888,93 +1888,54 @@ textarea {
     box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
 }
 
-/* Separador gótico mejorado */
-.section-divider {
+/* Separador estilizado */
+.separator {
     position: relative;
-    height: 35px;
-    margin: 0.8rem 0;
+    width: 100%;
+    height: 40px;
+    margin: 30px 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s ease;
 }
 
-.divider-line {
-    width: 95%;
-    max-width: 900px;
-    height: 1px;
-    margin: 0 auto;
-    background: linear-gradient(
-        to right,
-        transparent,
-        rgba(50, 205, 50, 0.1) 10%,
-        var(--lime) 50%,
-        rgba(50, 205, 50, 0.1) 90%,
-        transparent
-    );
-    transition: all 0.3s ease;
-}
-
-.divider-symbol {
+.separator::before {
+    content: '';
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--black);
-    padding: 0 15px;
-    color: var(--lime);
-    font-size: 1.2rem;
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
-    transition: all 0.3s ease;
-}
-
-.divider-glow {
-    position: absolute;
-    width: 95%;
-    left: 2.5%;
+    width: 30%;
     height: 1px;
-    background: var(--lime);
-    filter: blur(2px);
-    opacity: 0.2;
-    animation: dividerGlow 3s ease-in-out infinite;
-    transition: all 0.3s ease;
-}
-
-/* Efectos de hover */
-.section-divider:hover .divider-line {
-    background: linear-gradient(
-        to right,
+    background: linear-gradient(90deg, 
         transparent,
-        rgba(50, 205, 50, 0.2) 10%,
-        var(--lime) 50%,
-        rgba(50, 205, 50, 0.2) 90%,
-        transparent
+        rgba(77, 255, 77, 0.5)
     );
+    left: 15%;
 }
 
-.section-divider:hover .divider-symbol {
-    transform: translateX(-50%) scale(1.1);
-    text-shadow: 0 0 15px rgba(50, 205, 50, 0.7);
+.separator::after {
+    content: '';
+    position: absolute;
+    width: 30%;
+    height: 1px;
+    background: linear-gradient(-90deg, 
+        transparent,
+        rgba(77, 255, 77, 0.5)
+    );
+    right: 15%;
 }
 
-.section-divider:hover .divider-glow {
-    opacity: 0.4;
-    filter: blur(3px);
+.separator-icon {
+    width: 8px;
+    height: 8px;
+    background: rgba(77, 255, 77, 0.8);
+    transform: rotate(45deg);
+    animation: glow 2s infinite ease-in-out;
 }
 
-@keyframes dividerGlow {
-    0%, 100% {
-        opacity: 0.2;
-        filter: blur(2px);
+@keyframes glow {
+    0%, 100% { 
+        box-shadow: 0 0 5px rgba(77, 255, 77, 0.5);
     }
-    50% {
-        opacity: 0.3;
-        filter: blur(3px);
+    50% { 
+        box-shadow: 0 0 15px rgba(77, 255, 77, 0.8);
     }
-}
-
-/* Asegurar que no hay espacios entre navbar y round-header */
-.navbar + .round-header {
-    margin-top: 0;
 }
