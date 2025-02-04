@@ -1,103 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
     const track = document.querySelector('.simple-carousel-track');
-    const slides = document.querySelectorAll('.simple-carousel-slide');
+    const slides = Array.from(track.children);
     const nextButton = document.querySelector('.simple-carousel-btn.next');
     const prevButton = document.querySelector('.simple-carousel-btn.prev');
-    const indicators = document.querySelectorAll('.indicator');
+    const dotsNav = document.querySelector('.simple-carousel-indicators');
+    const dots = Array.from(dotsNav.children);
     const eventButton = document.querySelector('.event-button');
     const banner = document.querySelector('.banner-section');
     const logo = document.querySelector('.banner-logo');
 
     let currentIndex = 0;
-    let autoplayInterval;
-    const totalStops = 5; // Aumentado de 4 a 5
+    const totalSlides = slides.length;
 
-    function updateActiveSlides(currentIndex) {
-        slides.forEach((slide, index) => {
-            const distance = Math.abs(index - currentIndex);
-            slide.style.opacity = '1';
-            slide.style.transform = distance === 0 ? 'scale(1.02)' : 'scale(1)';
-            slide.classList.toggle('active', index === currentIndex);
-        });
-    }
+    function updateSlides(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
 
-    function smoothTransition(offset) {
-        track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        const offset = -index * 100;
         track.style.transform = `translateX(${offset}%)`;
-    }
 
-    slides.forEach(slide => {
-        slide.addEventListener('mouseenter', () => {
-            if (!slide.classList.contains('active')) {
-                slide.style.opacity = '1';
-                slide.style.transform = 'scale(1.01)';
-            }
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
         });
 
-        slide.addEventListener('mouseleave', () => {
-            if (!slide.classList.contains('active')) {
-                slide.style.opacity = '1';
-                slide.style.transform = 'scale(1)';
-            }
-        });
-    });
-
-    function goToSlide(index) {
         currentIndex = index;
-        if (currentIndex < 0) currentIndex = totalStops - 1;
-        if (currentIndex >= totalStops) currentIndex = 0;
-        
-        const offset = (currentIndex * -80);
-        smoothTransition(offset);
-        updateActiveSlides(currentIndex);
-        
-        // Actualizar indicadores
-        indicators.forEach((indicator, idx) => {
-            indicator.classList.toggle('active', idx === currentIndex);
-        });
     }
 
-    function startAutoplay() {
-        stopAutoplay();
-        autoplayInterval = setInterval(() => {
-            goToSlide(currentIndex + 1);
-        }, 2000);
-    }
-
-    function stopAutoplay() {
-        if (autoplayInterval) {
-            clearInterval(autoplayInterval);
-        }
-    }
+    // Autoplay
+    let autoplayInterval = setInterval(() => {
+        updateSlides((currentIndex + 1) % totalSlides);
+    }, 3000);
 
     // Event Listeners
     nextButton.addEventListener('click', () => {
-        stopAutoplay();
-        goToSlide(currentIndex + 1);
-        startAutoplay();
+        clearInterval(autoplayInterval);
+        updateSlides(currentIndex + 1);
+        autoplayInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
     });
 
     prevButton.addEventListener('click', () => {
-        stopAutoplay();
-        goToSlide(currentIndex - 1);
-        startAutoplay();
+        clearInterval(autoplayInterval);
+        updateSlides(currentIndex - 1);
+        autoplayInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
     });
 
-    // Event listeners para los indicadores
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            stopAutoplay();
-            goToSlide(index);
-            startAutoplay();
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            clearInterval(autoplayInterval);
+            updateSlides(index);
+            autoplayInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
         });
     });
 
-    track.addEventListener('mouseenter', stopAutoplay);
-    track.addEventListener('mouseleave', startAutoplay);
+    track.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
+    track.addEventListener('mouseleave', () => {
+        autoplayInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
+    });
 
-    // Inicializar
-    updateActiveSlides(currentIndex);
-    startAutoplay();
+    updateSlides(0);
 
     eventButton.addEventListener('mousemove', (e) => {
         const rect = eventButton.getBoundingClientRect();
@@ -131,6 +91,33 @@ document.addEventListener('DOMContentLoaded', () => {
         
         button.addEventListener('mouseleave', () => {
             button.style.transform = 'translateY(-50%) scale(1)';
+        });
+    });
+
+    // Actualizar la función updateActiveSlides
+    function updateActiveSlides(currentIndex) {
+        slides.forEach((slide, index) => {
+            const distance = Math.abs(index - currentIndex);
+            slide.style.opacity = '1'; // Mantener opacidad completa
+            slide.style.transform = distance === 0 ? 'scale(1.02)' : 'scale(1)';
+            slide.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    // Actualizar el efecto hover
+    slides.forEach(slide => {
+        slide.addEventListener('mouseenter', () => {
+            if (!slide.classList.contains('active')) {
+                slide.style.opacity = '1';
+                slide.style.transform = 'scale(1.01)';
+            }
+        });
+
+        slide.addEventListener('mouseleave', () => {
+            if (!slide.classList.contains('active')) {
+                slide.style.opacity = '1';
+                slide.style.transform = 'scale(1)';
+            }
         });
     });
 });
