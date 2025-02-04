@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (index < 0) index = totalSlides - 1;
         if (index >= totalSlides) index = 0;
 
-        const offset = -index * 100;
+        const offset = -(index * 90);
         track.style.transform = `translateX(${offset}%)`;
 
         dots.forEach((dot, i) => {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event Listeners
     nextButton.addEventListener('click', () => {
         clearInterval(autoplayInterval);
-        updateSlides(currentIndex + 1);
+        updateSlides(currentIndex + 1);5000
         autoplayInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
     });
 

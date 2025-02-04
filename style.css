@@ -1540,27 +1540,47 @@ textarea {
     height: 450px;
     margin: 0 auto;
     overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .simple-carousel-track {
     display: flex;
     height: 100%;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .simple-carousel-slide {
-    flex: 0 0 100%;
-    width: 100%;
+    flex: 0 0 105%;
+    width: 105%;
     height: 100%;
-    padding: 0;
+    position: relative;
+    margin-right: -15%;
+}
+
+.simple-carousel-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 15%;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        rgba(77, 255, 77, 0.1),
+        rgba(77, 255, 77, 0.4),
+        rgba(77, 255, 77, 0.1)
+    );
+    transform: rotate(12deg);
+    z-index: 3;
+    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
 }
 
 .simple-carousel-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    box-shadow: 0 0 20px rgba(77, 255, 77, 0.2);
+    box-shadow: 0 0 25px rgba(77, 255, 77, 0.2);
     transition: all 0.3s ease;
+    clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
 }
 
 .simple-carousel-btn {
@@ -1568,7 +1588,7 @@ textarea {
     top: 50%;
     transform: translateY(-50%);
     background: rgba(77, 255, 77, 0.15);
-    border: 1px solid rgba(77, 255, 77, 0.4);
+    border: 2px solid rgba(77, 255, 77, 0.4);
     color: #4dff4d;
     width: 50px;
     height: 50px;
@@ -1579,11 +1599,17 @@ textarea {
     align-items: center;
     justify-content: center;
     z-index: 10;
+    backdrop-filter: blur(5px);
 }
 
 .simple-carousel-btn:hover {
     background: rgba(77, 255, 77, 0.25);
     transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
+}
+
+.simple-carousel-btn:active {
+    transform: translateY(-50%) scale(0.95);
 }
 
 .simple-carousel-btn.prev {
@@ -1600,16 +1626,18 @@ textarea {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
-    padding: 8px 16px;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
+    gap: 12px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 25px;
     z-index: 10;
+    border: 1px solid rgba(77, 255, 77, 0.2);
+    backdrop-filter: blur(5px);
 }
 
 .indicator {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: rgba(77, 255, 77, 0.3);
     border: none;
@@ -1617,9 +1645,15 @@ textarea {
     transition: all 0.3s ease;
 }
 
+.indicator:hover {
+    background: rgba(77, 255, 77, 0.5);
+    transform: scale(1.1);
+}
+
 .indicator.active {
     background: #4dff4d;
     transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(77, 255, 77, 0.5);
 }
 
 /* Estilos para el contenedor del logo */
