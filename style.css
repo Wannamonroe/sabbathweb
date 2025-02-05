@@ -54,10 +54,10 @@ body::before {
 /* Video de fondo */
 .banner-video {
     position: absolute;
-    top: 0;
+    top: 0px;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% + 100px);
     object-fit: cover;
     z-index: 0;
 }
