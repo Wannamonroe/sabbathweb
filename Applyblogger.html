@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply | Sabbath Event</title>
+    <title>Blogger Apply | Sabbath Event</title>
     <link rel="icon" type="image/png" href="img/logopage.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,14 +17,20 @@
         <img src="img/sabbath_logo.png" alt="Sabbath Banner" class="banner-logo">
     </section>
 
-    <!-- Navbar -->
+    <!-- Navbar --> 
     <nav class="navbar">
         <div class="nav-brand">
             <img src="img/sabbath_logo.png" alt="Sabbath Logo" class="logo">
         </div>
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <a href="#" class="active">Apply</a>
+            <div class="dropdown">
+                <a href="Apply.html" class="active">Apply</a>
+                <div class="dropdown-content">
+                    <a href="Applydesigner.html">Designer Apply</a>
+                    <a href="Applyblogger.html">Blogger Apply</a>
+                </div>
+            </div>
             <a href="Rounds.html">Rounds</a>
         </div>
         <div class="hamburger">
@@ -34,31 +40,27 @@
         </div>
     </nav>
 
-    <!-- Apply Options Section -->
-    <section class="apply-options-section">
+    <!-- Apply Section -->
+    <section class="apply-section">
         <div class="container">
-            <h1 class="section-title">Choose Your Path</h1>
-            
-            <div class="apply-cards">
-                <!-- Designer Card -->
-                <div class="apply-card">
-                    <h2>Designer Apply</h2>
-                    <p>Are you a creator of dark elegance? Join us as a designer and showcase your gothic creations in our exclusive event. Perfect for fashion designers, accessory creators, and visual artists who embrace the darkness.</p>
-                    <a href="Applydesigner.html" class="apply-button">
-                        <span class="button-text">Apply as Designer</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+            <div class="apply-content">
+                <h1 class="apply-title">Become a Sabbath Blogger</h1>
+                <div class="apply-text">
+                    <p>Join our exclusive community of content creators and photographers who bring dark elegance to life through their unique perspective.</p>
+                    <p>As a Sabbath Blogger, you'll receive:</p>
+                    <ul class="benefits-list">
+                        <li>Early access to event items</li>
+                        <li>Exclusive photo opportunities</li>
+                        <li>Recognition in our social media platforms</li>
+                        <li>Networking with top gothic fashion designers</li>
+                        <li>Special blogger events and meetups</li>
+                    </ul>
+                    <p>If you have a passion for gothic aesthetics and want to showcase the dark beauty of our event's creations, we want to hear from you.</p>
                 </div>
-
-                <!-- Blogger Card -->
-                <div class="apply-card">
-                    <h2>Blogger Apply</h2>
-                    <p>Capture the essence of darkness through your lens. Join our blogger program to photograph and showcase the stunning creations featured in our event. Ideal for photographers and content creators passionate about gothic aesthetics.</p>
-                    <a href="Applybloger.html" class="apply-button">
-                        <span class="button-text">Apply as Blogger</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+                <a href="https://forms.google.com/your-blogger-form-link" target="_blank" class="apply-button">
+                    <span class="button-text">Apply as Blogger</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -90,4 +92,4 @@
 
     <script src="app.js"></script>
 </body>
-</html>
+</html> 
