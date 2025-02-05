@@ -46,35 +46,23 @@ body::before {
     height: 35vh;
 }
 
-/* Efecto de gradiente sutil en el fondo */
+/* Reemplazar el fondo actual con el video */
 .banner-section::before {
-    content: '';
+    content: none; /* Eliminamos el efecto anterior */
+}
+
+/* Video de fondo */
+.banner-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(circle at 15% 50%, rgba(50, 205, 50, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 85% 30%, rgba(50, 205, 50, 0.05) 0%, transparent 50%),
-        repeating-linear-gradient(45deg, 
-            rgba(50, 205, 50, 0.02) 0%, 
-            rgba(50, 205, 50, 0.02) 2px, 
-            transparent 2px, 
-            transparent 10px
-        ),
-        repeating-linear-gradient(-45deg, 
-            rgba(50, 205, 50, 0.02) 0%, 
-            rgba(50, 205, 50, 0.02) 2px,    
-            transparent 2px, 
-            transparent 10px
-        );
-    animation: glowingBG 8s ease-in-out infinite alternate;
-    pointer-events: none;
+    object-fit: cover;
     z-index: 0;
 }
 
-/* Estilo del logo del banner */
+/* Mantener el logo por encima del video */
 .banner-logo {
     position: relative;
     display: block;
@@ -83,6 +71,7 @@ body::before {
     margin-top: -1rem;
     transition: all 0.3s ease;
     filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2));
+    z-index: 1;
 }
 
 /* Efecto hover en el logo */
@@ -623,22 +612,13 @@ body::before {
     position: relative;
 }
 
+.round-card::before {
+    background: none;
+}
+
 .round-card:hover, .round-card:focus {
     text-decoration: none;
     color: inherit;
-}
-
-.round-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.2), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
 }
 
 .round-card:hover {
@@ -649,10 +629,6 @@ body::before {
         0 0 60px rgba(50, 205, 50, 0.1);
 }
 
-.round-card:hover::before {
-    opacity: 1;
-}
-
 .round-image {
     width: 300px;
     min-width: 300px;
@@ -661,6 +637,7 @@ body::before {
     position: relative;
 }
 
+/* Eliminar la línea verde entre imágenes del carrusel */
 .round-image::after {
     content: '';
     position: absolute;
@@ -668,13 +645,13 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(50, 205, 50, 0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: none; /* Eliminamos el gradiente */
 }
 
-.round-card:hover .round-image::after {
-    opacity: 1;
+/* Asegurarnos de que no hay líneas decorativas */
+.round-image::before,
+.round-image::after {
+    display: none;
 }
 
 .round-image img {
