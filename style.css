@@ -610,17 +610,18 @@ body::before {
 }
 
 .round-card {
-    text-decoration: none !important;
-    color: inherit;
-    display: flex;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(50, 205, 50, 0.2);
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    cursor: url('img/ratonfix.png') 16 16, pointer;
-    backdrop-filter: blur(5px);
     position: relative;
+    clip-path: polygon(
+        0 0,
+        calc(100% - 20px) 0,
+        100% 20px,
+        100% 100%,
+        20px 100%,
+        0 calc(100% - 20px)
+    );
+    margin: 10px;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .round-card:hover, .round-card:focus {
@@ -643,7 +644,6 @@ body::before {
 
 .round-card:hover {
     transform: translateY(-5px) scale(1.02);
-    border-color: var(--lime);
     box-shadow: 
         0 0 30px rgba(50, 205, 50, 0.2),
         0 0 60px rgba(50, 205, 50, 0.1);
@@ -654,33 +654,23 @@ body::before {
 }
 
 .round-image {
-    width: 300px;
-    min-width: 300px;
-    height: 300px;
-    overflow: hidden;
     position: relative;
-}
-
-.round-image::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(50, 205, 50, 0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.round-card:hover .round-image::after {
-    opacity: 1;
+    width: 100%;
+    height: 100%;
 }
 
 .round-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    clip-path: polygon(
+        0 0,
+        calc(100% - 20px) 0,
+        100% 20px,
+        100% 100%,
+        20px 100%,
+        0 calc(100% - 20px)
+    );
     transition: transform 0.5s ease;
 }
 
@@ -690,6 +680,7 @@ body::before {
 
 .round-content {
     padding: 2rem;
+    padding-left: 2.5rem; /* Compensar el corte diagonal */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -889,7 +880,7 @@ body::before {
 .gallery-item {
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
     gap: 1rem;
 }
