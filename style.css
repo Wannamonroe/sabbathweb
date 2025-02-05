@@ -69,8 +69,9 @@ body::before {
     height: 40vh;
     max-width: 90%;
     object-fit: contain;
-    margin: 0 auto;
+    margin: 0.5rem auto;
     z-index: 1;
+    transform: translateY(20px);
 }
 
 /* Efecto hover en el logo */
@@ -480,6 +481,14 @@ body::before {
     
     .nav-links {
         gap: 2rem;
+    }
+
+    .banner-logo {
+        height: auto;
+        max-height: 20vh;
+        width: auto;
+        margin: 0.5rem auto;
+        transform: translateY(3px);
     }
 }
 
@@ -1400,7 +1409,8 @@ textarea {
         height: auto;
         max-height: 20vh;
         width: auto;
-        margin: 0 auto;
+        margin: 0.5rem auto;
+        transform: translateY(3px);
     }
     
     .navbar {
