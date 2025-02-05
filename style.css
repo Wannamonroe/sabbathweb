@@ -134,32 +134,51 @@ body::before {
     gap: 3rem; /* Espacio entre enlaces */
 }
 
+/* Eliminar todos los estilos del dropdown */
 .nav-links a {
-    color: var(--white);
+    color: var(--lime);
     text-decoration: none;
-    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
     position: relative;
-    padding-bottom: 5px;
 }
 
+.nav-links a:hover {
+    color: var(--white);
+}
+
+/* Efecto de línea debajo */
 .nav-links a::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 50%;
     width: 0;
-    height: 2px;
-    background-color: var(--lime);
+    height: 1px;
+    background: var(--lime);
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
 
 .nav-links a:hover::after {
-    width: 100%;
+    width: 80%;
 }
 
-.nav-links a:hover, .nav-links a.active {
-    color: var(--lime);
+/* Página activa */
+.nav-links a.active {
+    color: var(--white);
+}
+
+.nav-links a.active::after {
+    width: 80%;
+    background: var(--white);
+}
+
+/* Eliminar cualquier estilo residual del dropdown */
+.dropdown,
+.dropdown-content,
+.dropdown > a::after {
+    all: unset;
 }
 
 /* Hero Section */
@@ -1224,210 +1243,107 @@ body::before {
 
 /* Apply Section Styles */
 .apply-section {
-    padding: 5rem 2rem 2rem;
-    min-height: calc(100vh - 100px);
+    padding: 4rem 2rem;
+    min-height: calc(100vh - 300px);
     background-color: var(--black);
-    background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
-        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
-    background-size: cover, 50px 50px, 50px 50px;
-    background-position: center;
-    position: relative;
-    overflow: hidden;
-    animation: backgroundMove 20s linear infinite;
-    margin-bottom: 0;
-}
-
-/* Efecto de fondo con gradiente */
-.apply-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-/* Orbes flotantes en el fondo */
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(50, 205, 50, 0.2), transparent);
-    filter: blur(5px);
-    pointer-events: none;
 }
 
 .apply-content {
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(50, 205, 50, 0.3);
-    border-radius: 15px;
-    padding: 3rem;
     max-width: 800px;
-    margin: 2rem auto 0;
-    text-align: center;
-    position: relative;
-    backdrop-filter: blur(10px);
-    animation: fadeIn 1s ease-out;
-    box-shadow: 0 0 30px rgba(50, 205, 50, 0.1);
-    overflow: hidden;
-}
-
-.apply-content::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1), transparent 70%);
-    animation: rotate 20s linear infinite;
-    pointer-events: none;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(50, 205, 50, 0.2);
+    padding: 3rem;
+    backdrop-filter: blur(5px);
 }
 
 .apply-title {
-    position: relative;
     color: var(--lime);
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     margin-bottom: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px rgba(50, 205, 50, 0.5);
-    animation: glowText 2s ease-in-out infinite alternate;
+    text-align: center;
+}
+
+.apply-text {
+    color: var(--white);
+    line-height: 1.6;
+    margin-bottom: 2rem;
 }
 
 .apply-text p {
-    color: var(--white);
-    font-size: 1.2rem;
-    line-height: 1.8;
     margin-bottom: 1.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideUp 0.5s ease-out forwards;
+}
+
+.benefits-list {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.benefits-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.benefits-list li::before {
+    content: '†';
+    position: absolute;
+    left: 0;
+    color: var(--lime);
 }
 
 .apply-button {
-    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 2.5rem;
     background: var(--lime);
     color: var(--black);
+    padding: 1rem 2rem;
     text-decoration: none;
-    border-radius: 30px;
-    font-size: 1.2rem;
-    font-weight: bold;
     transition: all 0.3s ease;
-    overflow: hidden;
-    margin-top: 2rem;
-}
-
-.apply-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
-}
-
-.apply-button:hover::before {
-    transform: translateX(100%);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .apply-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 
-        0 0 30px rgba(50, 205, 50, 0.2),
-        0 0 60px rgba(50, 205, 50, 0.1);
+    background: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(50, 205, 50, 0.3);
 }
 
-/* Animaciones */
-@keyframes gridMove {
-    0% {
-        transform: translate(0, 0);
-    }
-    100% {
-        transform: translate(50px, 50px);
-    }
+.button-text {
+    font-size: 1.1rem;
 }
 
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-/* Animaciones */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes glowText {
-    from {
-        text-shadow: 0 0 15px rgba(50, 205, 50, 0.5);
-    }
-    to {
-        text-shadow: 0 0 30px rgba(50, 205, 50, 0.8);
-    }
-}
-
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
-    .apply-section {
-        min-height: 70vh;
-        padding: 100px 20px 40px;
-    }
-
     .apply-content {
-        margin: 1.5rem auto 0;
+        padding: 2rem;
     }
 
     .apply-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
 
-    .apply-text {
-        font-size: 1rem;
+    .benefits-list {
+        padding-left: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .apply-section {
+        padding: 2rem 1rem;
     }
 
-    .apply-button {
-        padding: 0.8rem 2rem;
-        font-size: 1.1rem;
+    .apply-content {
+        padding: 1.5rem;
+    }
+
+    .apply-title {
+        font-size: 1.8rem;
     }
 }
 
