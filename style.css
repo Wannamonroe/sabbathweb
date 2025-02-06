@@ -1,5 +1,5 @@
 :root {
-    --lime: #32CD32;
+    --lime: #8dde00;
     --black: #000000;
     --white: #ffffff;
 }
@@ -28,8 +28,8 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 15% 50%, rgba(50, 205, 50, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 85% 30%, rgba(50, 205, 50, 0.03) 0%, transparent 50%);
+        radial-gradient(circle at 15% 50%, rgba(141, 222, 0, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(141, 222, 0, 0.03) 0%, transparent 50%);
     animation: glowingBG 10s ease-in-out infinite alternate;
     pointer-events: none;
     z-index: 0;
@@ -76,7 +76,7 @@ body::before {
 
 /* Efecto hover en el logo */
 .banner-logo:hover {
-    filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4));
+    filter: drop-shadow(0 0 15px rgba(141, 222, 0, 0.4));
 }
 
 /* Animaciones */
@@ -95,10 +95,10 @@ body::before {
 
 @keyframes glow {
     0%, 100% { 
-        filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2));
+        filter: drop-shadow(0 0 10px rgba(141, 222, 0, 0.2));
     }
     50% { 
-        filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4));
+        filter: drop-shadow(0 0 15px rgba(141, 222, 0, 0.4));
     }
 }
 
@@ -114,8 +114,8 @@ body::before {
     justify-content: center; /* Centrar contenido */
     align-items: center;
     z-index: 1000;
-    border-top: 1px solid rgba(50, 205, 50, 0.2); /* Línea superior */
-    border-bottom: 1px solid rgba(50, 205, 50, 0.2);
+    border-top: 1px solid rgba(141, 222, 0, 0.2); /* Línea superior */
+    border-bottom: 1px solid rgba(141, 222, 0, 0.2);
     margin-bottom: 1;
     padding-bottom: 2;
 }
@@ -190,8 +190,8 @@ body::before {
     background-color: var(--black);
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
+        linear-gradient(45deg, rgba(141, 222, 0, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(141, 222, 0, 0.1) 25%, transparent 25%);
     background-size: cover, 50px 50px, 50px 50px;
     background-position: center;
     position: relative;
@@ -215,7 +215,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(141, 222, 0, 0.1) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -225,7 +225,7 @@ body::before {
     padding: 2rem;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 15px;
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     backdrop-filter: blur(5px);
     width: auto;
     max-width: 800px;
@@ -242,17 +242,17 @@ body::before {
     width: auto;
     height: auto;
     margin-bottom: -3rem;
-    filter: drop-shadow(0 0 10px rgba(50, 205, 50, 0.3));
+    filter: drop-shadow(0 0 10px rgba(141, 222, 0, 0.3));
 }
 
 /* Efecto de expansión y resplandor al hover */
 .hero-content:hover {
     transform: scale(1.02);
     box-shadow: 
-        0 0 30px rgba(50, 205, 50, 0.2),
-        0 0 60px rgba(50, 205, 50, 0.1),
-        0 0 90px rgba(50, 205, 50, 0.05);
-    border-color: rgba(50, 205, 50, 0.4);
+        0 0 30px rgba(141, 222, 0, 0.2),
+        0 0 60px rgba(141, 222, 0, 0.1),
+        0 0 90px rgba(141, 222, 0, 0.05);
+    border-color: rgba(141, 222, 0, 0.4);
 }
 
 /* Efecto de resplandor detrás del cuadro */
@@ -263,7 +263,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.2), transparent 70%);
+    background: radial-gradient(circle at center, rgba(141, 222, 0, 0.2), transparent 70%);
     z-index: -1;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -279,7 +279,7 @@ body::before {
     font-size: 3.5rem;
     margin-bottom: 1rem;
     color: var(--lime);
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+    text-shadow: 0 0 10px rgba(141, 222, 0, 0.3);
     letter-spacing: 2px;
 }
 
@@ -392,17 +392,17 @@ body::before {
 }
 
 .about-text .event-dates {
-    background: rgba(50, 205, 50, 0.1);
+    background: rgba(141, 222, 0, 0.1);
     padding: 1.5rem;
     border-radius: 10px;
     margin: 2rem 0;
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     transition: all 0.3s ease;
 }
 
 .about-text .event-dates:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(50, 205, 50, 0.2);
+    box-shadow: 0 5px 15px rgba(141, 222, 0, 0.2);
 }
 
 .about-text .event-dates p {
@@ -416,7 +416,7 @@ body::before {
 }
 
 .about-text .event-dates strong:hover {
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
+    text-shadow: 0 0 10px rgba(141, 222, 0, 0.5);
 }
 
 .about-text .event-description {
@@ -450,7 +450,7 @@ body::before {
     font-size: 2rem;
     animation: bounce 2s infinite;
     cursor: url('img/ratonfix.png') 16 16, pointer;
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
+    text-shadow: 0 0 10px rgba(141, 222, 0, 0.5);
     z-index: 2;
     transition: all 0.3s ease;
 }
@@ -503,7 +503,7 @@ body::before {
     padding: 4rem 0;
     margin-top: 0;
     padding-top: 2rem;
-    border-top: 1px solid rgba(50, 205, 50, 0.1);
+    border-top: 1px solid rgba(141, 222, 0, 0.1);
 }
 
 .footer-content {
@@ -533,7 +533,7 @@ body::before {
 .social-link i {
     font-size: 1.8rem;
     color: var(--lime);
-    filter: drop-shadow(0 0 5px rgba(50, 205, 50, 0.3));
+    filter: drop-shadow(0 0 5px rgba(141, 222, 0, 0.3));
 }
 
 .social-link span {
@@ -547,7 +547,7 @@ body::before {
 }
 
 .social-link:hover i {
-    filter: drop-shadow(0 0 8px rgba(50, 205, 50, 0.5));
+    filter: drop-shadow(0 0 8px rgba(141, 222, 0, 0.5));
 }
 
 .footer-bottom {
@@ -573,8 +573,8 @@ body::before {
     background-color: var(--black);
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
-        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
+        linear-gradient(45deg, rgba(141, 222, 0, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(141, 222, 0, 0.1) 25%, transparent 25%);
     background-size: cover, 50px 50px, 50px 50px;
     background-position: center;
     position: relative;
@@ -590,7 +590,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(50, 205, 50, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(141, 222, 0, 0.1) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -610,7 +610,7 @@ body::before {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+    text-shadow: 0 0 10px rgba(141, 222, 0, 0.3);
     position: relative;
 }
 
@@ -629,7 +629,7 @@ body::before {
     color: inherit;
     display: flex;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     border-radius: 15px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -651,8 +651,8 @@ body::before {
     transform: translateY(-5px) scale(1.02);
     border-color: var(--lime);
     box-shadow: 
-        0 0 30px rgba(50, 205, 50, 0.2),
-        0 0 60px rgba(50, 205, 50, 0.1);
+        0 0 30px rgba(141, 222, 0, 0.2),
+        0 0 60px rgba(141, 222, 0, 0.1);
 }
 
 .round-image {
@@ -708,7 +708,7 @@ body::before {
     font-size: 1.8rem;
     margin-bottom: 1rem;
     letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+    text-shadow: 0 0 10px rgba(141, 222, 0, 0.3);
     transition: color 0.3s ease;
 }
 
@@ -807,8 +807,8 @@ body::before {
     right: 0;
     bottom: 0;
     background: 
-        linear-gradient(45deg, transparent 45%, rgba(50, 205, 50, 0.1) 50%, transparent 55%) 0 0 / 15px 15px,
-        linear-gradient(-45deg, transparent 45%, rgba(50, 205, 50, 0.1) 50%, transparent 55%) 0 0 / 15px 15px;
+        linear-gradient(45deg, transparent 45%, rgba(141, 222, 0, 0.1) 50%, transparent 55%) 0 0 / 15px 15px,
+        linear-gradient(-45deg, transparent 45%, rgba(141, 222, 0, 0.1) 50%, transparent 55%) 0 0 / 15px 15px;
     animation: backgroundShift 20s linear infinite;
 }
 
@@ -820,7 +820,7 @@ body::before {
     text-transform: uppercase;
     letter-spacing: 3px;
     font-weight: 600;
-    text-shadow: 0 0 15px rgba(50, 205, 50, 0.3);
+    text-shadow: 0 0 15px rgba(141, 222, 0, 0.3);
     animation: glowPulse 2s ease-in-out infinite alternate;
     margin-bottom: 1rem;
 }
@@ -852,8 +852,8 @@ body::before {
     background-color: var(--black);
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
-        linear-gradient(45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(50, 205, 50, 0.1) 25%, transparent 25%);
+        linear-gradient(45deg, rgba(141, 222, 0, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(141, 222, 0, 0.1) 25%, transparent 25%);
     background-size: cover, 50px 50px, 50px 50px;
     background-position: center;
     position: relative;
@@ -903,7 +903,7 @@ body::before {
     aspect-ratio: 1;
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     position: relative;
     cursor: url('img/ratonfix.png') 16 16, pointer;
 }
@@ -922,7 +922,7 @@ body::before {
     bottom: 20%;
     left: 50%;
     transform: translate(-50%, 50%);
-    background: rgba(50, 205, 50, 0.9);
+    background: rgba(141, 222, 0, 0.9);
     color: var(--black);
     padding: 8px 16px;
     border-radius: 20px;
@@ -966,7 +966,7 @@ body::before {
 /* Efecto hover en el botón */
 .teleport-button:hover {
     background: var(--lime);
-    box-shadow: 0 0 20px rgba(50, 205, 50, 0.4);
+    box-shadow: 0 0 20px rgba(141, 222, 0, 0.4);
     transform: translate(-50%, 50%) scale(1.05);
 }
 
@@ -1034,10 +1034,10 @@ body::before {
 /* Animaciones */
 @keyframes glowPulse {
     from {
-        text-shadow: 0 0 15px rgba(50, 205, 50, 0.3);
+        text-shadow: 0 0 15px rgba(141, 222, 0, 0.3);
     }
     to {
-        text-shadow: 0 0 25px rgba(50, 205, 50, 0.5);
+        text-shadow: 0 0 25px rgba(141, 222, 0, 0.5);
     }
 }
 
@@ -1073,7 +1073,7 @@ body::before {
     max-width: 1200px;
     z-index: 1000;
     border: 2px solid var(--lime);
-    box-shadow: 0 0 50px rgba(50, 205, 50, 0.3);
+    box-shadow: 0 0 50px rgba(141, 222, 0, 0.3);
 }
 
 .gallery-item.expanded img {
@@ -1100,7 +1100,7 @@ body::before {
     object-fit: contain;
     border: 2px solid var(--lime);
     border-radius: 10px;
-    box-shadow: 0 0 30px rgba(50, 205, 50, 0.3);
+    box-shadow: 0 0 30px rgba(141, 222, 0, 0.3);
 }
 
 .overlay {
@@ -1168,7 +1168,7 @@ body::before {
 .shape {
     position: absolute;
     border-radius: 50%;
-    background: rgba(50, 205, 50, 0.05);
+    background: rgba(141, 222, 0, 0.05);
     filter: blur(60px);
     animation: moveShape 20s infinite alternate;
     pointer-events: none;
@@ -1180,7 +1180,7 @@ body::before {
     top: -250px;
     left: -250px;
     animation-delay: 0s;
-    background: rgba(50, 205, 50, 0.15);
+    background: rgba(141, 222, 0, 0.15);
 }
 
 .shape:nth-child(2) {
@@ -1189,7 +1189,7 @@ body::before {
     bottom: -200px;
     right: -200px;
     animation-delay: -5s;
-    background: rgba(50, 205, 50, 0.1);
+    background: rgba(141, 222, 0, 0.1);
 }
 
 .shape:nth-child(3) {
@@ -1199,7 +1199,7 @@ body::before {
     left: 50%;
     transform: translate(-50%, -50%);
     animation-delay: -10s;
-    background: rgba(50, 205, 50, 0.12);
+    background: rgba(141, 222, 0, 0.12);
 }
 
 .line {
@@ -1208,8 +1208,8 @@ body::before {
     height: 1px;
     background: linear-gradient(90deg, 
         transparent,
-        rgba(50, 205, 50, 0.3),
-        rgba(50, 205, 50, 0.3),
+        rgba(141, 222, 0, 0.3),
+        rgba(141, 222, 0, 0.3),
         transparent
     );
     animation: moveLine 15s linear infinite;
@@ -1259,7 +1259,7 @@ body::before {
     max-width: 800px;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     padding: 3rem;
     backdrop-filter: blur(5px);
 }
@@ -1318,7 +1318,7 @@ body::before {
 .apply-button:hover {
     background: var(--white);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(50, 205, 50, 0.3);
+    box-shadow: 0 5px 15px rgba(141, 222, 0, 0.3);
 }
 
 .button-text {
@@ -1469,20 +1469,20 @@ textarea {
     width: 3px;
     height: 100%;
     background: linear-gradient(to bottom, 
-        rgba(77, 255, 77, 0.1),
-        rgba(77, 255, 77, 0.4),
-        rgba(77, 255, 77, 0.1)
+        rgba(141, 222, 0, 0.1),
+        rgba(141, 222, 0, 0.4),
+        rgba(141, 222, 0, 0.1)
     );
     transform: rotate(12deg);
     z-index: 3;
-    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
+    box-shadow: 0 0 15px rgba(141, 222, 0, 0.3);
 }
 
 .simple-carousel-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    box-shadow: 0 0 25px rgba(77, 255, 77, 0.2);
+    box-shadow: 0 0 25px rgba(141, 222, 0, 0.2);
     transition: all 0.3s ease;
     clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
 }
@@ -1491,9 +1491,9 @@ textarea {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(77, 255, 77, 0.15);
-    border: 2px solid rgba(77, 255, 77, 0.4);
-    color: #4dff4d;
+    background: rgba(141, 222, 0, 0.15);
+    border: 2px solid rgba(141, 222, 0, 0.4);
+    color: #8dde00;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -1507,9 +1507,9 @@ textarea {
 }
 
 .simple-carousel-btn:hover {
-    background: rgba(77, 255, 77, 0.25);
+    background: rgba(141, 222, 0, 0.25);
     transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
+    box-shadow: 0 0 15px rgba(141, 222, 0, 0.3);
 }
 
 .simple-carousel-btn:active {
@@ -1535,7 +1535,7 @@ textarea {
     background: rgba(0, 0, 0, 0.6);
     border-radius: 25px;
     z-index: 10;
-    border: 1px solid rgba(77, 255, 77, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     backdrop-filter: blur(5px);
 }
 
@@ -1543,21 +1543,21 @@ textarea {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(77, 255, 77, 0.3);
+    background: rgba(141, 222, 0, 0.3);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .indicator:hover {
-    background: rgba(77, 255, 77, 0.5);
+    background: rgba(141, 222, 0, 0.5);
     transform: scale(1.1);
 }
 
 .indicator.active {
-    background: #4dff4d;
+    background: #8dde00;
     transform: scale(1.2);
-    box-shadow: 0 0 10px rgba(77, 255, 77, 0.5);
+    box-shadow: 0 0 10px rgba(141, 222, 0, 0.5);
 }
 
 /* Estilos para el contenedor del logo */
@@ -1570,8 +1570,8 @@ textarea {
         repeating-linear-gradient(45deg, 
             transparent,
             transparent 10px,
-            rgba(77, 255, 77, 0.015) 10px,
-            rgba(77, 255, 77, 0.015) 20px
+            rgba(141, 222, 0, 0.015) 10px,
+            rgba(141, 222, 0, 0.015) 20px
         );
     overflow: hidden;
 }
@@ -1585,7 +1585,7 @@ textarea {
     height: 1px;
     background: linear-gradient(90deg, 
         transparent,
-        rgba(77, 255, 77, 0.1),
+        rgba(141, 222, 0, 0.1),
         transparent
     );
     animation: lineMove 8s linear infinite;
@@ -1604,12 +1604,12 @@ textarea {
 .logo {
     position: relative;
     transition: all 0.3s ease;
-    filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2));
+    filter: drop-shadow(0 0 10px rgba(141, 222, 0, 0.2));
 }
 
 /* Efecto hover en el logo */
 .logo:hover {
-    filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4));
+    filter: drop-shadow(0 0 15px rgba(141, 222, 0, 0.4));
     transform: scale(1.02);
 }
 
@@ -1620,8 +1620,8 @@ textarea {
 }
 
 @keyframes glow {
-    0%, 100% { filter: drop-shadow(0 0 10px rgba(77, 255, 77, 0.2)); }
-    50% { filter: drop-shadow(0 0 15px rgba(77, 255, 77, 0.4)); }
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(141, 222, 0, 0.2)); }
+    50% { filter: drop-shadow(0 0 15px rgba(141, 222, 0, 0.4)); }
 }
 
 .event-button-container {
@@ -1636,9 +1636,9 @@ textarea {
     position: relative;
     padding: 1.2rem 3rem;
     font-size: 1.3rem;
-    color: #4dff4d;
+    color: #8dde00;
     background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #4dff4d;
+    border: 2px solid #8dde00;
     text-transform: uppercase;
     letter-spacing: 3px;
     text-decoration: none;
@@ -1646,7 +1646,7 @@ textarea {
     transition: all 0.3s ease;
     cursor: pointer;
     font-weight: bold;
-    box-shadow: 0 0 15px rgba(77, 255, 77, 0.2);
+    box-shadow: 0 0 15px rgba(141, 222, 0, 0.2);
 }
 
 .event-button::before {
@@ -1659,7 +1659,7 @@ textarea {
     background: linear-gradient(
         120deg,
         transparent,
-        rgba(77, 255, 77, 0.3),
+        rgba(141, 222, 0, 0.3),
         transparent
     );
     transition: all 0.6s ease;
@@ -1673,7 +1673,7 @@ textarea {
     height: 200%;
     background: radial-gradient(
         circle,
-        rgba(77, 255, 77, 0.1) 0%,
+        rgba(141, 222, 0, 0.1) 0%,
         transparent 70%
     );
     pointer-events: none;
@@ -1683,8 +1683,8 @@ textarea {
 
 .event-button:hover {
     color: #fff;
-    background: rgba(77, 255, 77, 0.1);
-    box-shadow: 0 0 30px rgba(77, 255, 77, 0.4);
+    background: rgba(141, 222, 0, 0.1);
+    box-shadow: 0 0 30px rgba(141, 222, 0, 0.4);
     transform: translateY(-3px);
     letter-spacing: 5px;
 }
@@ -1699,7 +1699,7 @@ textarea {
 
 .event-button:active {
     transform: translateY(0);
-    box-shadow: 0 0 15px rgba(77, 255, 77, 0.3);
+    box-shadow: 0 0 15px rgba(141, 222, 0, 0.3);
 }
 
 /* Separador estilizado */
@@ -1720,7 +1720,7 @@ textarea {
     height: 1px;
     background: linear-gradient(90deg, 
         transparent,
-        rgba(77, 255, 77, 0.5)
+        rgba(141, 222, 0, 0.5)
     );
     left: 15%;
 }
@@ -1732,7 +1732,7 @@ textarea {
     height: 1px;
     background: linear-gradient(-90deg, 
         transparent,
-        rgba(77, 255, 77, 0.5)
+        rgba(141, 222, 0, 0.5)
     );
     right: 15%;
 }
@@ -1740,17 +1740,17 @@ textarea {
 .separator-icon {
     width: 8px;
     height: 8px;
-    background: rgba(77, 255, 77, 0.8);
+    background: rgba(141, 222, 0, 0.8);
     transform: rotate(45deg);
     animation: glow 2s infinite ease-in-out;
 }
 
 @keyframes glow {
     0%, 100% { 
-        box-shadow: 0 0 5px rgba(77, 255, 77, 0.5);
+        box-shadow: 0 0 5px rgba(141, 222, 0, 0.5);
     }
     50% { 
-        box-shadow: 0 0 15px rgba(77, 255, 77, 0.8);
+        box-shadow: 0 0 15px rgba(141, 222, 0, 0.8);
     }
 }
 
@@ -1775,7 +1775,7 @@ textarea {
     min-width: 300px;
     max-width: 500px;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(50, 205, 50, 0.2);
+    border: 1px solid rgba(141, 222, 0, 0.2);
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -1787,7 +1787,7 @@ textarea {
 .apply-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    border-color: rgba(50, 205, 50, 0.4);
+    border-color: rgba(141, 222, 0, 0.4);
 }
 
 .apply-card h2 {
