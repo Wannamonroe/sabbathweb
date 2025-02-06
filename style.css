@@ -135,11 +135,14 @@ body::before {
 
 /* Eliminar todos los estilos del dropdown */
 .nav-links a {
+    font-family: 'Bebas Kai', Arial, sans-serif;
     color: var(--lime);
     text-decoration: none;
     padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     position: relative;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
 }
 
 .nav-links a:hover {
@@ -1807,4 +1810,14 @@ textarea {
     color: var(--lime);
     font-size: 2.5rem;
     margin-bottom: 1rem;
+}
+
+/* Importar la fuente Bebas Kai */
+@font-face {
+    font-family: 'Bebas Kai';
+    src: url('../fonts/BebasKai.otf') format('opentype');
+    /* Aseguramos que la fuente se cargue correctamente */
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
 }
