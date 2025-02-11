@@ -1821,3 +1821,117 @@ textarea {
     font-weight: normal;
     font-style: normal;
 }
+
+/* Estilos para los requisitos */
+.requirements-title {
+    color: var(--lime);
+    font-size: 1.8rem;
+    margin: 2rem 0 1.5rem;
+    text-align: center;
+}
+
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+}
+
+.requirements-list li {
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+    padding-left: 1rem;
+}
+
+/* Estilos para el banner de Round */
+.round-banner {
+    position: relative;
+    width: 100%;
+    height: 35vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.round-header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--lime);
+}
+
+.round-header-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--lime);
+}
+
+.round-date {
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .round-banner {
+        height: 25vh;
+    }
+
+    .round-header-content h1 {
+        font-size: 2rem;
+    }
+
+    .round-date {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .round-banner {
+        height: 20vh;
+    }
+
+    .round-header-content h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Ajustes para el banner de Round */
+.banner-section .round-header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.round-header-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--lime);
+}
+
+.round-date {
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+/* Mantener los estilos existentes del banner y video */
+.banner-section {
+    position: relative;
+    width: 100%;
+    height: 35vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.banner-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
