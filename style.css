@@ -994,7 +994,7 @@ body::before {
 
 .gallery-item-title {
     color: var(--lime);
-    font-size: 1rem;
+    font-size: 1.3rem;
     text-align: center;
     opacity: 0.8;
     transition: all 0.3s ease;
