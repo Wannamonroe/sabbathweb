@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SABBATH EVENT - MAY 2025 ROUND</title>
+  <link rel="icon" type="image/png" href="../img/logopage.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+</head>
+<body>
+  <!-- Banner -->
+  <section class="banner-section">
+    <video class="banner-video" autoplay loop muted playsinline>
+      <source src="../img/sabbathcropped (online-video-cutter.com)-2.mp4" type="video/mp4" />
+    </video>
+    <div class="round-header-content">
+      <h1>SABBATH EVENT - MAY 2025 ROUND</h1>
+      <p class="round-date">May 21st - June 11th</p>
+    </div>
+  </section>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="../img/sabbath_logo.png" alt="Sabbath Logo" class="logo" />
+    </div>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../Apply.html">Apply</a>
+      <a href="../Rounds.html">Rounds</a>
+      <a href="../giveaway.html">Giveaway</a>
+    </div>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- Gallery -->
+  <section class="round-gallery">
+    <div class="container">
+      <div class="gallery-grid" id="gallery-container"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="social-links">
+          <a href="https://www.flickr.com/photos/192849221@N06/" target="_blank"><i class="fab fa-flickr"></i> Flickr</a>
+          <a href="https://www.instagram.com/sabbathevent.sl/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="https://www.facebook.com/groups/3425981114290586" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Sabbath Events. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <script>
+    Fancybox.bind("[data-fancybox]", {});
+  </script>
+  <script>
+    const galleryItems = [
+      "4AEM.png", "ABEABI.png", "ABOUT LOVE.webp", "ANTAYA.png",
+      "AXIA.webp", "BABYBOO.webp", "BARE.png", "BLACK LOTUS.jpg", "BOUTIQUE 187.jpg",
+      "BUFFY.webp", "CANDLE AND CAULDRON.jpg", "CHANDRA.webp", "CODEX.png", "CULT.jpg",
+      "Detention.png", "DEZZBANKS.webp", "DIABOLI DESIGN.png", "DOMUS.webp", "GHB.png",
+      "HEIKE.webp", "HEXED.webp", "HUMAN.webp", "JIGOKU.png", "KARNA.png",
+      "KNIFU.png", "KNIFU.webp", "LA MALDITA BRUJA.webp", "LAVU.png", "LE MOON.png",
+      "LORE.png", "LUDIC.webp", "MADAME NOIR.png", "MARTYR.webp", "MINUIT.webp",
+      "MISSBLACK.jpg", "MISSBLACK.jpg", "Moon Coven The Lich Rings Set PIX.jpg", "OLIVIA GOLDEN.webp", "OPIUM.png",
+      "ORPHIC.webp", "OZZY.png", "PHEDORA.jpg", "PIXEL ART.jpg",
+      "ROSIER.webp", "Solagne.png", "Stiff.webp", "TRASH.webp", "TSUKI.webp",
+      "VELLUM.webp", "VIOLETILITY.jpg", "XIUXIU.webp"
+    ];
+
+    const container = document.getElementById("gallery-container");
+
+    galleryItems.forEach(filename => {
+      const title = filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      container.insertAdjacentHTML("beforeend", `
+        <div class="gallery-item">
+          <div class="gallery-item-container">
+            <a href="/img/MAY25/${filename}" data-fancybox="gallery">
+              <img src="/img/MAY25/${filename}" alt="${title}" />
+            </a>
+            <a href="https://marketplace.secondlife.com/" target="_blank" class="teleport-button">
+              <i class="fas fa-map-marker-alt"></i> Teleport to Site
+            </a>
+          </div>
+          <h3 class="gallery-item-title">${title}</h3>
+        </div>
+      `);
+    });
+  </script>
+
+  <!-- Optional background animation -->
+  <div class="animated-background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+
+  <script src="../app.js"></script>
+</body>
+</html>
