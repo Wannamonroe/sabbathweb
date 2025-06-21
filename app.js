@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventButton = document.querySelector('.event-button');
     const banner = document.querySelector('.banner-section');
     const logo = document.querySelector('.banner-logo');
-
+//test
     let currentIndex = 0;
     const totalSlides = slides.length;
 
