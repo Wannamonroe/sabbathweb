@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SABBATH EVENT - JULY 2025 ROUND</title>
+  <link rel="icon" type="image/png" href="../img/logopage.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+</head>
+<body>
+  <!-- Banner -->
+  <section class="banner-section">
+    <video class="banner-video" autoplay loop muted playsinline>
+      <source src="../img/sabbathcropped (online-video-cutter.com)-2.mp4" type="video/mp4" />
+    </video>
+    <div class="round-header-content">
+      <h1>SABBATH EVENT - JULY 2025 ROUND</h1>
+      <p class="round-date">July 21st - August 11th</p>
+    </div>
+  </section>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="../img/sabbath_logo.png" alt="Sabbath Logo" class="logo" />
+    </div>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../Apply.html">Apply</a>
+      <a href="../Rounds.html">Rounds</a>
+      <a href="../giveaway.html">Giveaway</a>
+    </div>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- Gallery -->
+  <section class="round-gallery">
+    <div class="container">
+      <div class="gallery-grid" id="gallery-container"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="social-links">
+          <a href="https://www.flickr.com/photos/192849221@N06/" target="_blank"><i class="fab fa-flickr"></i> Flickr</a>
+          <a href="https://www.instagram.com/sabbathevent.sl/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="https://www.facebook.com/groups/3425981114290586" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Sabbath Events. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <script>
+    Fancybox.bind("[data-fancybox]", {});
+  </script>
+  <script>
+    const galleryItems2 = [
+        "4AEM.png", "ABEABI.png", "ARCHITECT.png", "BABYBOO.jpg", "BARE.png", "BIRTH.jpg", "BLACK LOTUS.png", "BLACK LOTUS.jpg", "BUFFYS.jpg", "CAMO.png", "CARAI.png",
+        "CELESTICAT.jpg", "CELESTICAT.png", "CHANDRA.png", "CODEX.png", "CULT.jpg", "DEEZBANKS.jpg", "DEEZBANKS.png", "DIABOLI.png", "DOMUS.png", "EPITOME.png", "ETHRL.png",
+        "HARSHBOY.png", "HEIKE.png", "HERME.png", "JIGOKU.png", "KARNA.png", "KNIFU.png", "LA MALDITA BRUJA.jpg", "LA MALDITA BRUJA.png", "LAVU.png", "LE MOON.png", "LITTEN.png",
+        "LORE.jpg", "LORE.png", "MACABRA.png", "MARTYR.png", "MINUIT.png", "MISSBLACK.png", "MISSBLACK.jpg", "MOON COVEN.jpg", "NARMATTARU.png", "ORPHIC.png", "OZZY.png", "OZZY.jpg",
+        "PIXIT.png", "ROSIER.png", "SCUANCH.png", "STIFF.png", "STIFF.jpg", "SUPERNATURAL.png", "SXS.png", "TRASH.png", "VELLUM.png", "VELVETVUE.png",
+        "VELVETVUE.jpg", "VELVETVUE.webp", "VIOLETILITY.jpg", "YUEBIN.png"
+
+    ];
+
+    const container = document.getElementById("gallery-container");
+
+    galleryItems2.forEach(filename => {
+      const title = filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      container.insertAdjacentHTML("beforeend", `
+        <div class="gallery-item">
+          <div class="gallery-item-container">
+            <a href="/img/JULY25/${filename}" data-fancybox="gallery">
+              <img src="/img/JULY25/${filename}" alt="${title}" />
+            </a>
+            <a href="https://marketplace.secondlife.com/" target="_blank" class="teleport-button">
+              <i class="fas fa-map-marker-alt"></i> Teleport to Site
+            </a>
+          </div>
+          <h3 class="gallery-item-title">${title}</h3>
+        </div>
+      `);
+    });
+  </script>
+
+  <!-- Optional background animation -->
+  <div class="animated-background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+
+  <script src="../app.js"></script>
+</body>
+</html>
