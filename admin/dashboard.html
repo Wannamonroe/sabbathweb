@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sabbath Event</title>
+    <link rel="icon" type="image/png" href="../img/logopage.png">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-section {
+            padding: 120px 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn-logout {
+            padding: 0.5rem 1rem;
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .create-round-card {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .btn-create {
+            width: 100%;
+            padding: 1rem;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .rounds-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .round-item {
+            background: #111;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        .round-item h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .round-item p {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="../img/sabbath_logo.png" alt="Sabbath Logo" class="logo">
+        </div>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../Rounds.html">Rounds</a>
+            <span id="userEmail" style="color: #fff; margin-left: 1rem;"></span>
+        </div>
+    </nav>
+
+    <section class="dashboard-section">
+        <div class="dashboard-header">
+            <h2>Admin Dashboard</h2>
+            <button id="logoutBtn" class="btn-logout">Logout</button>
+        </div>
+
+        <div class="create-round-card">
+            <h3>Create New Round</h3>
+            <form id="createRoundForm">
+                <div class="form-group">
+                    <label for="roundName">Round Name (e.g., SABBATH EVENT - 30TH ROUND)</label>
+                    <input type="text" id="roundName" required>
+                </div>
+                <div class="form-group">
+                    <label for="participants">Participants</label>
+                    <textarea id="participants" rows="4" required placeholder="List of participants..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dates">Dates (e.g., 21 February - 11 March)</label>
+                    <input type="text" id="dates" required>
+                </div>
+                <div class="form-group">
+                    <label for="imageUrl">Image URL (Optional)</label>
+                    <input type="text" id="imageUrl" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn-create">Create Round</button>
+            </form>
+        </div>
+
+        <h3>Existing Rounds</h3>
+        <div id="roundsList" class="rounds-list">
+            <!-- Rounds will be loaded here -->
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="../js/admin.js"></script>
+</body>
+
+</html>

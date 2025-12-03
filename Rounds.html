@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Banner Section -->
     <section class="banner-section">
@@ -26,6 +28,7 @@
             <a href="Apply.html">Apply</a>
             <a href="Rounds.html">Rounds</a>
             <a href="giveaway.html">Giveaway</a>
+            <a href="admin/login.html" class="admin-link"><i class="fas fa-user-shield"></i></a>
         </div>
         <div class="hamburger">
             <span></span>
@@ -33,31 +36,30 @@
             <span></span>
         </div>
     </nav>
-    
+
     <section class="rounds">
         <div class="container">
             <h2>Rounds</h2>
-            <div class="rounds-container">
-            <!--Pega aqui abajo-->
-            
+            <div id="rounds-container" class="rounds-container">
+                <!-- Rounds will be loaded here dynamically -->
+                <div class="loading-spinner" style="text-align: center; color: white;">Loading rounds...</div>
+            </div>
 
-            <!--Copia desde aqui-->
-                <a href="rounds/round1.html" class="round-card">
+            <!-- Template for a round card (hidden) -->
+            <template id="round-card-template">
+                <a href="#" class="round-card">
                     <div class="round-image">
-                        <img src="img/eventest.jpg" alt="Round 3">
+                        <img src="" alt="Round Image">
                     </div>
                     <div class="round-content">
-                        <h3>SABBATH EVENT - 29TH ROUND</h3>
-                        <p>CAMO - SUICIDAL UNBORN - BLACK LOTUS - LUDIC - NOIR - ORACLE - BUFFY - S-RANK - ROSIER - CARAI - MISSBLACK - DETENTION - PIXIT - VIENA - LA MALDITA BRUJA - 4AEM - CHANDRA - MINUIT - ANTISOCIAL - MACABRA - VERBOTEN - VELVETVUE - VELLUM - AEONE - ANTAYA - SNOOKIE - HOLIK - DELTA - NAR MATTARU - babyboo - TRASH - SUPERNATURAL - VIOLETILITY - HEXED - STIFF - PIXEL ART - AXIA - OZZY - MOTODESIGN - MOON COVEN - CODEX - AMADEUS - CHAOS - BADWILL - EPITOME - LORE - BOUTIQUE 187 - CULT - WILDFLOWER - SCUANCH - TRAPBROTHERS - FACESHOP - DEZZBANKS - PLAYDEVIL - DOMUS (45) - WORN - Le moon</p>
+                        <h3></h3>
+                        <p class="participants"></p>
                         <div class="round-dates">
-                            <span>21 February - 11 March</span>
+                            <span></span>
                         </div>
                     </div>
                 </a>
-            <!--Hasta aquí-->
-
-
-            </div>
+            </template>
         </div>
     </section>
 
@@ -85,6 +87,63 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { SUPABASE_URL, SUPABASE_KEY } from './js/config.js';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const roundsContainer = document.getElementById('rounds-container');
+        const template = document.getElementById('round-card-template');
+
+        async function loadRounds() {
+            try {
+                const { data: rounds, error } = await supabase
+                    .from('rounds')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                roundsContainer.innerHTML = ''; // Clear loading spinner
+
+                if (rounds.length === 0) {
+                    roundsContainer.innerHTML = '<p style="color: white; text-align: center;">No rounds found.</p>';
+                    return;
+                }
+
+                rounds.forEach(round => {
+                    const clone = template.content.cloneNode(true);
+                    const card = clone.querySelector('.round-card');
+
+                    // Link to a generic round page or specific one if we had it. 
+                    // For now, linking to # or a detail page we might create later.
+                    // User said: "configuraremos otro apartado en el que podremos entrar en cada Round"
+                    // I'll link to a detail page passing the ID, e.g., round-detail.html?id=...
+                    // But for now, let's keep it simple or link to the existing round1.html as placeholder?
+                    // User said "replicating what each section has".
+                    // I'll link to `round-detail.html?id=${round.id}` (which I haven't created yet, but is good practice)
+                    // Or just `#` for now.
+                    card.href = `round-detail.html?id=${round.id}`;
+
+                    const img = clone.querySelector('img');
+                    img.src = round.image_url || 'img/eventest.jpg'; // Fallback image
+                    img.alt = round.name;
+
+                    clone.querySelector('h3').textContent = round.name;
+                    clone.querySelector('.participants').textContent = round.participants;
+                    clone.querySelector('.round-dates span').textContent = round.dates;
+
+                    roundsContainer.appendChild(clone);
+                });
+            } catch (error) {
+                console.error('Error loading rounds:', error);
+                roundsContainer.innerHTML = '<p style="color: red; text-align: center;">Error loading rounds.</p>';
+            }
+        }
+
+        loadRounds();
+    </script>
     <script src="app.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round Detail - Sabbath Event</title>
+    <link rel="icon" type="image/png" href="img/logopage.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Banner Section -->
+    <section class="banner-section">
+        <video class="banner-video" autoplay loop muted playsinline>
+            <source src="img/sabbathcropped (online-video-cutter.com)-2.mp4" type="video/mp4">
+        </video>
+        <div class="round-header-content">
+            <h1 id="roundName">Loading...</h1>
+            <p class="round-date" id="roundDates"></p>
+        </div>
+    </section>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="img/sabbath_logo.png" alt="Sabbath Logo" class="logo">
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="Apply.html">Apply</a>
+            <a href="Rounds.html">Rounds</a>
+            <a href="giveaway.html">Giveaway</a>
+            <a href="admin/login.html" class="admin-link"><i class="fas fa-user-shield"></i></a>
+        </div>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <section class="round-gallery">
+        <div class="container">
+            <div class="round-info" style="color: white; text-align: center; margin-bottom: 2rem;">
+                <h3>Participants</h3>
+                <p id="roundParticipants" style="max-width: 800px; margin: 0 auto; line-height: 1.6;"></p>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Gallery placeholder for future implementation -->
+                <div class="gallery-item">
+                    <div class="gallery-item-container">
+                        <a href="#" id="mainImageLink">
+                            <img src="" alt="Round Image" id="mainImage">
+                        </a>
+                    </div>
+                    <h3 class="gallery-item-title">Main Image</h3>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem; color: #aaa;">
+                <p><em>Gallery feature coming soon...</em></p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="https://www.flickr.com/photos/192849221@N06/" target="_blank" class="social-link">
+                        <i class="fab fa-flickr"></i>
+                        <span>Flickr</span>
+                    </a>
+                    <a href="https://www.instagram.com/sabbathevent.sl/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/groups/3425981114290586" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </a>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Sabbath Events. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { SUPABASE_URL, SUPABASE_KEY } from './js/config.js';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const roundId = urlParams.get('id');
+
+        if (!roundId) {
+            window.location.href = 'Rounds.html';
+        }
+
+        async function loadRoundDetail() {
+            try {
+                const { data: round, error } = await supabase
+                    .from('rounds')
+                    .select('*')
+                    .eq('id', roundId)
+                    .single();
+
+                if (error) throw error;
+
+                if (round) {
+                    document.title = `${round.name} | Sabbath Event`;
+                    document.getElementById('roundName').textContent = round.name;
+                    document.getElementById('roundDates').textContent = round.dates;
+                    document.getElementById('roundParticipants').textContent = round.participants;
+
+                    const img = document.getElementById('mainImage');
+                    img.src = round.image_url || 'img/eventest.jpg';
+                    document.getElementById('mainImageLink').href = round.image_url || 'img/eventest.jpg';
+                }
+            } catch (error) {
+                console.error('Error loading round:', error);
+                document.getElementById('roundName').textContent = 'Round not found';
+            }
+        }
+
+        loadRoundDetail();
+    </script>
+</body>
+
+</html>
