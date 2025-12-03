@@ -63,9 +63,7 @@
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 2rem; color: #aaa;">
-                <p><em>Gallery feature coming soon...</em></p>
-            </div>
+
         </div>
     </section>
 
@@ -123,10 +121,60 @@
                     document.getElementById('roundDates').textContent = round.dates;
                     document.getElementById('roundParticipants').textContent = round.participants;
 
-                    const img = document.getElementById('mainImage');
-                    img.src = round.image_url || 'img/eventest.jpg';
-                    document.getElementById('mainImageLink').href = round.image_url || 'img/eventest.jpg';
-                    document.getElementById('imageTitle').textContent = round.name;
+                    // Load Main Image (keep existing logic for backward compatibility or as featured image)
+                    // You might want to remove this if the new gallery replaces it entirely, 
+                    // but for now I'll keep it as the "Main" image if no gallery images exist, 
+                    // or just render it as part of the gallery if you prefer.
+                    // For this request, I will append the new images to the gallery.
+
+                    const galleryGrid = document.querySelector('.gallery-grid');
+                    galleryGrid.innerHTML = ''; // Clear placeholder
+
+                    // Fetch Gallery Images
+                    const { data: images, error: imagesError } = await supabase
+                        .from('round_images')
+                        .select('*')
+                        .eq('round_id', roundId)
+                        .order('created_at', { ascending: false });
+
+                    if (imagesError) throw imagesError;
+
+                    if (images && images.length > 0) {
+                        images.forEach(img => {
+                            const item = document.createElement('div');
+                            item.className = 'gallery-item';
+                            item.innerHTML = `
+                                <div class="gallery-item-container">
+                                    <a href="${img.image_url}" target="_blank">
+                                        <img src="${img.image_url}" alt="${img.name || 'Round Image'}">
+                                        <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Teleport to Site
+                                        </a>
+                                    </a>
+                                </div>
+                                <h3 class="gallery-item-title">${img.name || ''}</h3>
+                            `;
+                            galleryGrid.appendChild(item);
+                        });
+                    } else if (round.image_url) {
+                        // Fallback to main image if no gallery images
+                        const item = document.createElement('div');
+                        item.className = 'gallery-item';
+                        item.innerHTML = `
+                            <div class="gallery-item-container">
+                                <a href="${round.image_url}" target="_blank">
+                                    <img src="${round.image_url}" alt="${round.name}">
+                                    <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Teleport to Site
+                                    </a>
+                                </a>
+                            </div>
+                            <h3 class="gallery-item-title">${round.name}</h3>
+                        `;
+                        galleryGrid.appendChild(item);
+                    }
                 }
             } catch (error) {
                 console.error('Error loading round:', error);

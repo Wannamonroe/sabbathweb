@@ -214,10 +214,13 @@ if (isDashboard) {
             roundsList.innerHTML = rounds.map(round => `
                 <div class="round-item">
                     <div class="round-actions">
-                        <button class="btn-action btn-edit" onclick="editRound('${round.id}')">
+                        <button class="btn-action btn-edit" onclick="editRound('${round.id}')" title="Edit Round">
                             <i class="fas fa-pencil-alt"></i>
                         </button>
-                        <button class="btn-action btn-delete" onclick="deleteRound('${round.id}')">
+                        <button class="btn-action btn-images" onclick="manageImages('${round.id}', '${round.name}')" title="Manage Images">
+                            <i class="fas fa-images"></i>
+                        </button>
+                        <button class="btn-action btn-delete" onclick="deleteRound('${round.id}')" title="Delete Round">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -276,4 +279,188 @@ if (isDashboard) {
             console.error('Error loading rounds:', error);
         }
     }
+
+    // Image Management Modal Logic
+    const imageModal = document.getElementById('imageModal');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const imageNameInput = document.getElementById('imageName');
+    const modalDropZone = document.getElementById('modalDropZone');
+    const modalImageFileInput = document.getElementById('modalImageFile');
+    const modalImagePreview = document.getElementById('modalImagePreview');
+    const saveImageBtn = document.getElementById('saveImageBtn');
+    const roundImagesList = document.getElementById('roundImagesList');
+
+    let currentRoundId = null;
+    let selectedModalFile = null;
+
+    // Close Modal
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            imageModal.style.display = 'none';
+            resetModalForm();
+        });
+    }
+
+    window.onclick = (event) => {
+        if (event.target == imageModal) {
+            imageModal.style.display = 'none';
+            resetModalForm();
+        }
+    };
+
+    // Drag & Drop for Modal
+    if (modalDropZone) {
+        modalDropZone.addEventListener('click', () => modalImageFileInput.click());
+
+        modalDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            modalDropZone.classList.add('dragover');
+        });
+
+        modalDropZone.addEventListener('dragleave', () => {
+            modalDropZone.classList.remove('dragover');
+        });
+
+        modalDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            modalDropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                handleModalFileSelect(e.dataTransfer.files[0]);
+            }
+        });
+    }
+
+    if (modalImageFileInput) {
+        modalImageFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleModalFileSelect(e.target.files[0]);
+            }
+        });
+    }
+
+    function handleModalFileSelect(file) {
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+        selectedModalFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            modalImagePreview.src = e.target.result;
+            modalImagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function resetModalForm() {
+        imageNameInput.value = '';
+        selectedModalFile = null;
+        modalImagePreview.style.display = 'none';
+        modalImagePreview.src = '';
+        modalImageFileInput.value = '';
+    }
+
+    // Open Modal
+    window.manageImages = async (roundId, roundName) => {
+        currentRoundId = roundId;
+        modalTitle.textContent = `Manage Images for ${roundName}`;
+        imageModal.style.display = 'block';
+        loadRoundImages(roundId);
+    };
+
+    // Load Images
+    async function loadRoundImages(roundId) {
+        try {
+            const { data: images, error } = await supabase
+                .from('round_images')
+                .select('*')
+                .eq('round_id', roundId)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            roundImagesList.innerHTML = images.map(img => `
+                <div class="round-item" style="padding: 0.5rem; position: relative;">
+                    <button class="btn-action btn-delete" onclick="deleteImage('${img.id}')" title="Delete Image" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <img src="${img.image_url}" alt="${img.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px; margin-bottom: 0.5rem;">
+                    <p style="color: #fff; margin: 0; font-size: 0.9rem;">${img.name || 'Untitled'}</p>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error loading images:', error);
+            alert('Error loading images: ' + error.message);
+        }
+    }
+
+    // Save Image
+    if (saveImageBtn) {
+        saveImageBtn.addEventListener('click', async () => {
+            if (!selectedModalFile) {
+                alert('Please select an image first.');
+                return;
+            }
+
+            const name = imageNameInput.value || 'Untitled';
+
+            try {
+                saveImageBtn.disabled = true;
+                saveImageBtn.textContent = 'Uploading...';
+
+                const fileExt = selectedModalFile.name.split('.').pop();
+                const fileName = `gallery/${currentRoundId}/${Date.now()}.${fileExt}`;
+
+                const { data, error: uploadError } = await supabase.storage
+                    .from('round-images')
+                    .upload(fileName, selectedModalFile);
+
+                if (uploadError) throw uploadError;
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('round-images')
+                    .getPublicUrl(fileName);
+
+                const { error: insertError } = await supabase
+                    .from('round_images')
+                    .insert([{
+                        round_id: currentRoundId,
+                        image_url: publicUrl,
+                        name: name
+                    }]);
+
+                if (insertError) throw insertError;
+
+                alert('Image added successfully!');
+                resetModalForm();
+                loadRoundImages(currentRoundId);
+
+            } catch (error) {
+                console.error('Error saving image:', error);
+                alert('Error saving image: ' + error.message);
+            } finally {
+                saveImageBtn.disabled = false;
+                saveImageBtn.textContent = 'Save Image';
+            }
+        });
+    }
+
+    // Delete Image
+    window.deleteImage = async (imageId) => {
+        if (confirm('Are you sure you want to delete this image?')) {
+            try {
+                const { error } = await supabase
+                    .from('round_images')
+                    .delete()
+                    .eq('id', imageId);
+
+                if (error) throw error;
+
+                loadRoundImages(currentRoundId);
+            } catch (error) {
+                alert('Error deleting image: ' + error.message);
+            }
+        }
+    };
 }

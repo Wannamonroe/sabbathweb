@@ -220,6 +220,36 @@
         </div>
     </section>
 
+    <!-- Image Management Modal -->
+    <div id="imageModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto;">
+        <div class="modal-content" style="background: #111; margin: 5% auto; padding: 2rem; width: 90%; max-width: 800px; border-radius: 10px; border: 1px solid #333; position: relative;">
+            <span class="close-modal" style="position: absolute; top: 1rem; right: 1rem; color: #fff; font-size: 2rem; cursor: pointer;">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 1.5rem;">Manage Round Images</h2>
+            
+            <div class="upload-section" style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #333;">
+                <h3>Add New Image</h3>
+                <div class="form-group">
+                    <label for="imageName">Image Name</label>
+                    <input type="text" id="imageName" placeholder="Enter image name...">
+                </div>
+                <div id="modalDropZone" class="drop-zone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & Drop image here or click to select</p>
+                    <input type="file" id="modalImageFile" accept="image/*" style="display: none;">
+                    <img id="modalImagePreview" alt="Preview" style="display: none; max-width: 100%; max-height: 200px; margin-top: 1rem; border-radius: 5px;">
+                </div>
+                <button id="saveImageBtn" class="btn-create" style="margin-top: 1rem;">Save Image</button>
+            </div>
+
+            <div class="images-list-section">
+                <h3>Current Images</h3>
+                <div id="roundImagesList" class="rounds-list" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    <!-- Images will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="../js/admin.js"></script>
 </body>
