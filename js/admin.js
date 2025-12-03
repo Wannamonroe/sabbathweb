@@ -58,7 +58,56 @@ if (isDashboard) {
     const datesInput = document.getElementById('dates');
     const imageUrlInput = document.getElementById('imageUrl');
 
+    // File Upload Elements
+    const dropZone = document.getElementById('dropZone');
+    const imageFileInput = document.getElementById('imageFile');
+    const imagePreview = document.getElementById('imagePreview');
+    let selectedFile = null;
+
     let isEditing = false;
+
+    // Drag & Drop Events
+    dropZone.addEventListener('click', () => imageFileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+
+        if (e.dataTransfer.files.length) {
+            handleFileSelect(e.dataTransfer.files[0]);
+        }
+    });
+
+    imageFileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            handleFileSelect(e.target.files[0]);
+        }
+    });
+
+    function handleFileSelect(file) {
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+        selectedFile = file;
+
+        // Preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
 
     // Protect Route
     const checkAuth = async () => {
@@ -85,10 +134,30 @@ if (isDashboard) {
         const name = roundNameInput.value;
         const participants = participantsInput.value;
         const dates = datesInput.value;
-        const imageUrl = imageUrlInput.value;
+        let imageUrl = imageUrlInput.value;
         const id = roundIdInput.value;
 
         try {
+            // Upload Image if selected
+            if (selectedFile) {
+                const fileExt = selectedFile.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                const filePath = `${fileName}`;
+
+                const { data, error: uploadError } = await supabase.storage
+                    .from('round-images')
+                    .upload(filePath, selectedFile);
+
+                if (uploadError) throw uploadError;
+
+                // Get Public URL
+                const { data: { publicUrl } } = supabase.storage
+                    .from('round-images')
+                    .getPublicUrl(filePath);
+
+                imageUrl = publicUrl;
+            }
+
             let error;
             if (isEditing && id) {
                 // Update
@@ -125,6 +194,11 @@ if (isDashboard) {
         formTitle.textContent = 'Create New Round';
         submitBtn.textContent = 'Create Round';
         cancelEditBtn.style.display = 'none';
+
+        // Reset File
+        selectedFile = null;
+        imagePreview.style.display = 'none';
+        imagePreview.src = '';
     }
 
     // Load Rounds
@@ -163,6 +237,14 @@ if (isDashboard) {
                     participantsInput.value = round.participants;
                     datesInput.value = round.dates;
                     imageUrlInput.value = round.image_url || '';
+
+                    // Show preview if image exists
+                    if (round.image_url) {
+                        imagePreview.src = round.image_url;
+                        imagePreview.style.display = 'block';
+                    } else {
+                        imagePreview.style.display = 'none';
+                    }
 
                     formTitle.textContent = 'Edit Round';
                     submitBtn.textContent = 'Update Round';

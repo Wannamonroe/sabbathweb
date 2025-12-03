@@ -53,9 +53,13 @@
                     <div class="gallery-item-container">
                         <a href="#" id="mainImageLink">
                             <img src="" alt="Round Image" id="mainImage">
+                            <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Teleport to Site
+                            </a>
                         </a>
                     </div>
-                    <h3 class="gallery-item-title">Main Image</h3>
+                    <h3 class="gallery-item-title" id="imageTitle">Round Image</h3>
                 </div>
             </div>
 
@@ -122,6 +126,7 @@
                     const img = document.getElementById('mainImage');
                     img.src = round.image_url || 'img/eventest.jpg';
                     document.getElementById('mainImageLink').href = round.image_url || 'img/eventest.jpg';
+                    document.getElementById('imageTitle').textContent = round.name;
                 }
             } catch (error) {
                 console.error('Error loading round:', error);
