@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event Listeners
     nextButton.addEventListener('click', () => {
         clearInterval(autoplayInterval);
-        updateSlides(currentIndex + 1);5000
+        updateSlides(currentIndex + 1); 5000
         autoplayInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
     });
 
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = eventButton.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         const glow = eventButton.querySelector('.button-glow');
         glow.style.transform = `translate(${x - rect.width}px, ${y - rect.height}px)`;
     });
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     eventButton.addEventListener('click', (e) => {
         e.preventDefault();
         eventButton.style.transform = 'scale(0.98)';
-        
+
         setTimeout(() => {
             eventButton.style.transform = 'scale(1)';
             window.location.href = eventButton.href;
@@ -84,11 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('mousedown', () => {
             button.style.transform = 'translateY(-50%) scale(0.95)';
         });
-        
+
         button.addEventListener('mouseup', () => {
             button.style.transform = 'translateY(-50%) scale(1.1)';
         });
-        
+
         button.addEventListener('mouseleave', () => {
             button.style.transform = 'translateY(-50%) scale(1)';
         });
