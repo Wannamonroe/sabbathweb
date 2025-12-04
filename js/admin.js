@@ -127,6 +127,47 @@ if (isDashboard) {
         window.location.href = 'login.html';
     });
 
+    // Optimize Image Function
+    const optimizeImage = (file, maxWidth = 1200, quality = 0.8) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            reject(new Error('Canvas is empty'));
+                            return;
+                        }
+                        const optimizedFile = new File([blob], file.name, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now(),
+                        });
+                        resolve(optimizedFile);
+                    }, 'image/jpeg', quality);
+                };
+                img.onerror = (error) => reject(error);
+            };
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
     // Create / Update Round
     createRoundForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -140,13 +181,14 @@ if (isDashboard) {
         try {
             // Upload Image if selected
             if (selectedFile) {
-                const fileExt = selectedFile.name.split('.').pop();
+                const optimizedFile = await optimizeImage(selectedFile);
+                const fileExt = 'jpg'; // Always converting to jpg
                 const fileName = `${Date.now()}.${fileExt}`;
                 const filePath = `${fileName}`;
 
                 const { data, error: uploadError } = await supabase.storage
                     .from('round-images')
-                    .upload(filePath, selectedFile);
+                    .upload(filePath, optimizedFile);
 
                 if (uploadError) throw uploadError;
 
@@ -460,34 +502,39 @@ if (isDashboard) {
 
                 for (const file of selectedModalFiles) {
                     uploadedCount++;
-                    saveImageBtn.textContent = `Uploading ${uploadedCount}/${totalFiles}...`;
+                    saveImageBtn.textContent = `Optimizing & Uploading ${uploadedCount}/${totalFiles}...`;
 
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = `gallery/${currentRoundId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+                    try {
+                        const optimizedFile = await optimizeImage(file);
+                        const fileExt = 'jpg';
+                        const fileName = `gallery/${currentRoundId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-                    const { data, error: uploadError } = await supabase.storage
-                        .from('round-images')
-                        .upload(fileName, file);
+                        const { data, error: uploadError } = await supabase.storage
+                            .from('round-images')
+                            .upload(fileName, optimizedFile);
 
-                    if (uploadError) {
-                        console.error(`Error uploading ${file.name}:`, uploadError);
-                        continue; // Skip this file and try next
-                    }
+                        if (uploadError) {
+                            console.error(`Error uploading ${file.name}:`, uploadError);
+                            continue; // Skip this file and try next
+                        }
 
-                    const { data: { publicUrl } } = supabase.storage
-                        .from('round-images')
-                        .getPublicUrl(fileName);
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('round-images')
+                            .getPublicUrl(fileName);
 
-                    const { error: insertError } = await supabase
-                        .from('round_images')
-                        .insert([{
-                            round_id: currentRoundId,
-                            image_url: publicUrl,
-                            name: 'SIN NOMBRE'
-                        }]);
+                        const { error: insertError } = await supabase
+                            .from('round_images')
+                            .insert([{
+                                round_id: currentRoundId,
+                                image_url: publicUrl,
+                                name: 'SIN NOMBRE'
+                            }]);
 
-                    if (insertError) {
-                        console.error(`Error inserting record for ${file.name}:`, insertError);
+                        if (insertError) {
+                            console.error(`Error inserting record for ${file.name}:`, insertError);
+                        }
+                    } catch (optError) {
+                        console.error(`Error optimizing ${file.name}:`, optError);
                     }
                 }
 
