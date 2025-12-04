@@ -525,12 +525,14 @@ if (isDashboard) {
         });
     }
 
-    // Close on click outside
+    // Close on click outside removed as per user request
+    /* 
     if (renameModal) {
         renameModal.addEventListener('click', (e) => {
             if (e.target === renameModal) closeRenameModal();
         });
     }
+    */
 
     if (renameInput) {
         renameInput.addEventListener('keypress', (e) => {
