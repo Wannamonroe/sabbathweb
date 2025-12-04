@@ -569,4 +569,138 @@ if (isDashboard) {
             }
         }
     };
+
+    // Carousel Management Logic
+    const carouselDropZone = document.getElementById('carouselDropZone');
+    const carouselImageInput = document.getElementById('carouselImageFile');
+    const uploadCarouselBtn = document.getElementById('uploadCarouselBtn');
+    const carouselImagesList = document.getElementById('carouselImagesList');
+    let selectedCarouselFiles = [];
+
+    if (carouselDropZone) {
+        carouselDropZone.addEventListener('click', () => carouselImageInput.click());
+
+        carouselDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            carouselDropZone.classList.add('dragover');
+        });
+
+        carouselDropZone.addEventListener('dragleave', () => {
+            carouselDropZone.classList.remove('dragover');
+        });
+
+        carouselDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            carouselDropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                handleCarouselFileSelect(e.dataTransfer.files);
+            }
+        });
+    }
+
+    if (carouselImageInput) {
+        carouselImageInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleCarouselFileSelect(e.target.files);
+            }
+        });
+    }
+
+    function handleCarouselFileSelect(files) {
+        selectedCarouselFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        if (selectedCarouselFiles.length > 0) {
+            alert(`${selectedCarouselFiles.length} files selected for carousel.`);
+        }
+    }
+
+    async function loadCarouselImages() {
+        if (!carouselImagesList) return;
+
+        try {
+            const { data: images, error } = await supabase
+                .from('carousel_images')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            carouselImagesList.innerHTML = images.map(img => `
+                <div class="round-item" style="padding: 0.5rem; position: relative;">
+                    <button class="btn-action btn-delete" onclick="deleteCarouselImage('${img.id}')" title="Delete Image" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-trash" style="font-size: 0.9rem;"></i>
+                    </button>
+                    <img src="${img.image_url}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error loading carousel images:', error);
+        }
+    }
+
+    if (uploadCarouselBtn) {
+        uploadCarouselBtn.addEventListener('click', async () => {
+            if (selectedCarouselFiles.length === 0) {
+                alert('Please select images first.');
+                return;
+            }
+
+            try {
+                uploadCarouselBtn.disabled = true;
+                uploadCarouselBtn.textContent = 'Uploading...';
+
+                for (const file of selectedCarouselFiles) {
+                    // NO OPTIMIZATION for carousel images as requested
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+                    const { error: uploadError } = await supabase.storage
+                        .from('carousel-images')
+                        .upload(fileName, file);
+
+                    if (uploadError) {
+                        console.error(`Error uploading ${file.name}:`, uploadError);
+                        continue;
+                    }
+
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('carousel-images')
+                        .getPublicUrl(fileName);
+
+                    const { error: insertError } = await supabase
+                        .from('carousel_images')
+                        .insert([{ image_url: publicUrl }]);
+
+                    if (insertError) console.error('Error inserting DB record:', insertError);
+                }
+
+                alert('Carousel images uploaded!');
+                selectedCarouselFiles = [];
+                loadCarouselImages();
+            } catch (error) {
+                alert('Error uploading: ' + error.message);
+            } finally {
+                uploadCarouselBtn.disabled = false;
+                uploadCarouselBtn.textContent = 'Upload to Carousel';
+            }
+        });
+    }
+
+    window.deleteCarouselImage = async (id) => {
+        if (confirm('Delete this carousel image?')) {
+            try {
+                const { error } = await supabase
+                    .from('carousel_images')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+                loadCarouselImages();
+            } catch (error) {
+                alert('Error deleting: ' + error.message);
+            }
+        }
+    };
+
+    // Initial Load
+    loadCarouselImages();
 }
