@@ -239,19 +239,22 @@
 
             <div class="upload-section"
                 style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #333;">
-                <h3>Add New Image</h3>
-                <div class="form-group">
+                <h3>Add New Images</h3>
+                <div class="form-group" style="display: none;">
                     <label for="imageName">Image Name</label>
                     <input type="text" id="imageName" placeholder="Enter image name...">
                 </div>
                 <div id="modalDropZone" class="drop-zone">
                     <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Drag & Drop image here or click to select</p>
-                    <input type="file" id="modalImageFile" accept="image/*" style="display: none;">
-                    <img id="modalImagePreview" alt="Preview"
-                        style="display: none; max-width: 100%; max-height: 200px; margin-top: 1rem; border-radius: 5px;">
+                    <p>Drag & Drop images here or click to select (Multiple allowed)</p>
+                    <input type="file" id="modalImageFile" accept="image/*" multiple style="display: none;">
+                    <div id="modalPreviewContainer" style="display: none; margin-top: 1rem;">
+                        <p id="fileCount" style="color: #fff; margin-bottom: 0.5rem;"></p>
+                        <div id="modalImagePreview"
+                            style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;"></div>
+                    </div>
                 </div>
-                <button id="saveImageBtn" class="btn-create" style="margin-top: 1rem;">Save Image</button>
+                <button id="saveImageBtn" class="btn-create" style="margin-top: 1rem;">Save Images</button>
             </div>
 
             <div class="images-list-section">

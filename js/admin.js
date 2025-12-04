@@ -287,12 +287,14 @@ if (isDashboard) {
     const imageNameInput = document.getElementById('imageName');
     const modalDropZone = document.getElementById('modalDropZone');
     const modalImageFileInput = document.getElementById('modalImageFile');
+    const modalPreviewContainer = document.getElementById('modalPreviewContainer');
     const modalImagePreview = document.getElementById('modalImagePreview');
+    const fileCount = document.getElementById('fileCount');
     const saveImageBtn = document.getElementById('saveImageBtn');
     const roundImagesList = document.getElementById('roundImagesList');
 
     let currentRoundId = null;
-    let selectedModalFile = null;
+    let selectedModalFiles = [];
 
     // Close Modal
     if (closeModalBtn) {
@@ -326,7 +328,7 @@ if (isDashboard) {
             e.preventDefault();
             modalDropZone.classList.remove('dragover');
             if (e.dataTransfer.files.length) {
-                handleModalFileSelect(e.dataTransfer.files[0]);
+                handleModalFileSelect(e.dataTransfer.files);
             }
         });
     }
@@ -334,30 +336,54 @@ if (isDashboard) {
     if (modalImageFileInput) {
         modalImageFileInput.addEventListener('change', (e) => {
             if (e.target.files.length) {
-                handleModalFileSelect(e.target.files[0]);
+                handleModalFileSelect(e.target.files);
             }
         });
     }
 
-    function handleModalFileSelect(file) {
-        if (!file.type.startsWith('image/')) {
-            alert('Please select an image file.');
+    function handleModalFileSelect(files) {
+        selectedModalFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+
+        if (selectedModalFiles.length === 0) {
+            alert('Please select valid image files.');
             return;
         }
-        selectedModalFile = file;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            modalImagePreview.src = e.target.result;
-            modalImagePreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
+
+        modalPreviewContainer.style.display = 'block';
+        fileCount.textContent = `${selectedModalFiles.length} file(s) selected`;
+        modalImagePreview.innerHTML = '';
+
+        // Show previews for up to 5 images
+        selectedModalFiles.slice(0, 5).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '60px';
+                img.style.height = '60px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '4px';
+                modalImagePreview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        if (selectedModalFiles.length > 5) {
+            const more = document.createElement('div');
+            more.textContent = `+${selectedModalFiles.length - 5}`;
+            more.style.color = '#aaa';
+            more.style.display = 'flex';
+            more.style.alignItems = 'center';
+            modalImagePreview.appendChild(more);
+        }
     }
 
     function resetModalForm() {
-        imageNameInput.value = '';
-        selectedModalFile = null;
-        modalImagePreview.style.display = 'none';
-        modalImagePreview.src = '';
+        if (imageNameInput) imageNameInput.value = '';
+        selectedModalFiles = [];
+        modalPreviewContainer.style.display = 'none';
+        modalImagePreview.innerHTML = '';
+        fileCount.textContent = '';
         modalImageFileInput.value = '';
     }
 
@@ -395,53 +421,62 @@ if (isDashboard) {
         }
     }
 
-    // Save Image
+    // Save Images (Bulk Upload)
     if (saveImageBtn) {
         saveImageBtn.addEventListener('click', async () => {
-            if (!selectedModalFile) {
-                alert('Please select an image first.');
+            if (selectedModalFiles.length === 0) {
+                alert('Please select images first.');
                 return;
             }
 
-            const name = imageNameInput.value || 'Untitled';
-
             try {
                 saveImageBtn.disabled = true;
-                saveImageBtn.textContent = 'Uploading...';
+                const totalFiles = selectedModalFiles.length;
+                let uploadedCount = 0;
 
-                const fileExt = selectedModalFile.name.split('.').pop();
-                const fileName = `gallery/${currentRoundId}/${Date.now()}.${fileExt}`;
+                for (const file of selectedModalFiles) {
+                    uploadedCount++;
+                    saveImageBtn.textContent = `Uploading ${uploadedCount}/${totalFiles}...`;
 
-                const { data, error: uploadError } = await supabase.storage
-                    .from('round-images')
-                    .upload(fileName, selectedModalFile);
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `gallery/${currentRoundId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-                if (uploadError) throw uploadError;
+                    const { data, error: uploadError } = await supabase.storage
+                        .from('round-images')
+                        .upload(fileName, file);
 
-                const { data: { publicUrl } } = supabase.storage
-                    .from('round-images')
-                    .getPublicUrl(fileName);
+                    if (uploadError) {
+                        console.error(`Error uploading ${file.name}:`, uploadError);
+                        continue; // Skip this file and try next
+                    }
 
-                const { error: insertError } = await supabase
-                    .from('round_images')
-                    .insert([{
-                        round_id: currentRoundId,
-                        image_url: publicUrl,
-                        name: name
-                    }]);
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('round-images')
+                        .getPublicUrl(fileName);
 
-                if (insertError) throw insertError;
+                    const { error: insertError } = await supabase
+                        .from('round_images')
+                        .insert([{
+                            round_id: currentRoundId,
+                            image_url: publicUrl,
+                            name: 'SIN NOMBRE'
+                        }]);
 
-                alert('Image added successfully!');
+                    if (insertError) {
+                        console.error(`Error inserting record for ${file.name}:`, insertError);
+                    }
+                }
+
+                alert('Images upload process completed!');
                 resetModalForm();
                 loadRoundImages(currentRoundId);
 
             } catch (error) {
-                console.error('Error saving image:', error);
-                alert('Error saving image: ' + error.message);
+                console.error('Error saving images:', error);
+                alert('Error saving images: ' + error.message);
             } finally {
                 saveImageBtn.disabled = false;
-                saveImageBtn.textContent = 'Save Image';
+                saveImageBtn.textContent = 'Save Images';
             }
         });
     }
