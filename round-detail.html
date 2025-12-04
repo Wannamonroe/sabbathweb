@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="img/logopage.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
 </head>
 
 <body>
@@ -88,6 +89,12 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+        Fancybox.bind("[data-fancybox]", {
+            // Your custom options
+        });
+    </script>
     <script src="app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module">
@@ -142,12 +149,12 @@
                             item.className = 'gallery-item';
                             item.innerHTML = `
                                 <div class="gallery-item-container">
-                                    <a href="${img.image_url}" target="_blank">
+                                    <a href="${img.image_url}" data-fancybox="gallery" data-caption="${img.name || ''}">
                                         <img src="${img.image_url}" alt="${img.name || 'Round Image'}">
-                                        <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            Teleport to Site
-                                        </a>
+                                    </a>
+                                    <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Teleport to Site
                                     </a>
                                 </div>
                                 <h3 class="gallery-item-title">${img.name || ''}</h3>
@@ -160,12 +167,12 @@
                         item.className = 'gallery-item';
                         item.innerHTML = `
                             <div class="gallery-item-container">
-                                <a href="${round.image_url}" target="_blank">
+                                <a href="${round.image_url}" data-fancybox="gallery" data-caption="${round.name}">
                                     <img src="${round.image_url}" alt="${round.name}">
-                                    <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        Teleport to Site
-                                    </a>
+                                </a>
+                                <a href="https://marketplace.secondlife.com" target="_blank" class="teleport-button">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Teleport to Site
                                 </a>
                             </div>
                             <h3 class="gallery-item-title">${round.name}</h3>
