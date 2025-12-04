@@ -142,6 +142,53 @@
     </footer>
 
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { SUPABASE_URL, SUPABASE_KEY } from './js/config.js';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadCarousel() {
+            try {
+                const { data: images, error } = await supabase
+                    .from('carousel_images')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (images && images.length > 0) {
+                    const track = document.querySelector('.simple-carousel-track');
+                    const indicators = document.querySelector('.simple-carousel-indicators');
+
+                    // Clear existing content
+                    track.innerHTML = '';
+                    indicators.innerHTML = '';
+
+                    images.forEach((img, index) => {
+                        // Create Slide
+                        const slide = document.createElement('div');
+                        slide.className = 'simple-carousel-slide';
+                        slide.innerHTML = `<img src="${img.image_url}" alt="Carousel Image ${index + 1}">`;
+                        track.appendChild(slide);
+
+                        // Create Indicator
+                        const indicator = document.createElement('button');
+                        indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+                        indicators.appendChild(indicator);
+                    });
+
+                    // Initialize Carousel Logic
+                    if (window.initCarousel) {
+                        window.initCarousel();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading carousel:', error);
+            }
+        }
+
+        loadCarousel();
+    </script>
 </body>
 
 </html>

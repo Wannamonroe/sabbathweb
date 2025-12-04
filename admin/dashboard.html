@@ -222,6 +222,31 @@
             </form>
         </div>
 
+    </section>
+
+    <section class="dashboard-section" style="padding-top: 0;">
+        <div class="create-round-card">
+            <h3>Manage Homepage Carousel</h3>
+            <p style="color: #aaa; margin-bottom: 1rem;">Upload 4-7 high-resolution images. These will NOT be
+                compressed.</p>
+
+            <div class="upload-section" style="margin-bottom: 2rem;">
+                <div id="carouselDropZone" class="drop-zone">
+                    <i class="fas fa-images"></i>
+                    <p>Drag & Drop carousel images here or click to select</p>
+                    <input type="file" id="carouselImageFile" accept="image/*" multiple style="display: none;">
+                </div>
+                <button id="uploadCarouselBtn" class="btn-create">Upload to Carousel</button>
+            </div>
+
+            <div id="carouselImagesList" class="rounds-list"
+                style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+                <!-- Carousel images will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-section" style="padding-top: 0;">
         <h3>Existing Rounds</h3>
         <div id="roundsList" class="rounds-list">
             <!-- Rounds will be loaded here -->
