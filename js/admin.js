@@ -576,6 +576,7 @@ if (isDashboard) {
     const uploadCarouselBtn = document.getElementById('uploadCarouselBtn');
     const carouselImagesList = document.getElementById('carouselImagesList');
     let selectedCarouselFiles = [];
+    let carouselImagesData = []; // Store DB images
 
     if (carouselDropZone) {
         carouselDropZone.addEventListener('click', () => carouselImageInput.click());
@@ -607,10 +608,54 @@ if (isDashboard) {
     }
 
     function handleCarouselFileSelect(files) {
-        selectedCarouselFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-        if (selectedCarouselFiles.length > 0) {
-            alert(`${selectedCarouselFiles.length} files selected for carousel.`);
+        const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        // Append new files instead of replacing
+        selectedCarouselFiles = [...selectedCarouselFiles, ...newFiles];
+
+        if (newFiles.length > 0) {
+            renderCarouselList();
         }
+    }
+
+    // Remove pending file
+    window.removePendingFile = (index) => {
+        selectedCarouselFiles.splice(index, 1);
+        renderCarouselList();
+    };
+
+    // Combined Render Function
+    function renderCarouselList() {
+        if (!carouselImagesList) return;
+
+        let html = '';
+
+        // 1. Render Pending Files (Previews)
+        selectedCarouselFiles.forEach((file, index) => {
+            const objectUrl = URL.createObjectURL(file);
+            html += `
+                <div class="round-item" style="padding: 0.5rem; position: relative; border: 2px dashed #4CAF50;">
+                    <button class="btn-action btn-delete" onclick="removePendingFile(${index})" title="Remove Pending" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; z-index: 10;">
+                        <i class="fas fa-times" style="font-size: 0.9rem;"></i>
+                    </button>
+                    <div style="position: absolute; bottom: 0.5rem; left: 0.5rem; background: #4CAF50; color: white; padding: 2px 5px; border-radius: 3px; font-size: 0.7rem;">Pending</div>
+                    <img src="${objectUrl}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px; opacity: 0.8;">
+                </div>
+            `;
+        });
+
+        // 2. Render Uploaded Images (DB)
+        carouselImagesData.forEach(img => {
+            html += `
+                <div class="round-item" style="padding: 0.5rem; position: relative;">
+                    <button class="btn-action btn-delete" onclick="deleteCarouselImage('${img.id}')" title="Delete Image" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-trash" style="font-size: 0.9rem;"></i>
+                    </button>
+                    <img src="${img.image_url}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
+                </div>
+            `;
+        });
+
+        carouselImagesList.innerHTML = html;
     }
 
     async function loadCarouselImages() {
@@ -624,14 +669,9 @@ if (isDashboard) {
 
             if (error) throw error;
 
-            carouselImagesList.innerHTML = images.map(img => `
-                <div class="round-item" style="padding: 0.5rem; position: relative;">
-                    <button class="btn-action btn-delete" onclick="deleteCarouselImage('${img.id}')" title="Delete Image" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-trash" style="font-size: 0.9rem;"></i>
-                    </button>
-                    <img src="${img.image_url}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
-                </div>
-            `).join('');
+            carouselImagesData = images; // Store data
+            renderCarouselList(); // Render combined list
+
         } catch (error) {
             console.error('Error loading carousel images:', error);
         }
@@ -674,8 +714,8 @@ if (isDashboard) {
                 }
 
                 alert('Carousel images uploaded!');
-                selectedCarouselFiles = [];
-                loadCarouselImages();
+                selectedCarouselFiles = []; // Clear pending
+                loadCarouselImages(); // Refresh DB list
             } catch (error) {
                 alert('Error uploading: ' + error.message);
             } finally {
