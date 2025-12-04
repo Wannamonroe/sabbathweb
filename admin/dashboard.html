@@ -292,6 +292,26 @@
         </div>
     </div>
 
+    <!-- Rename Image Modal -->
+    <div id="renameModal" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1100; align-items: center; justify-content: center;">
+        <div class="modal-content"
+            style="background: #111; padding: 2rem; width: 90%; max-width: 400px; border-radius: 10px; border: 1px solid #333; position: relative; text-align: center; box-shadow: 0 0 20px rgba(141, 222, 0, 0.2);">
+            <h3
+                style="color: #8dde00; margin-bottom: 1.5rem; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">
+                Rename Image</h3>
+            <input type="text" id="renameInput"
+                style="width: 100%; padding: 0.8rem; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 1.5rem; font-size: 1rem; outline: none; transition: border-color 0.3s;"
+                placeholder="Enter new name">
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button id="cancelRenameBtn" class="btn-create"
+                    style="background: #444; color: #fff; flex: 1; transition: background 0.3s;">Cancel</button>
+                <button id="confirmRenameBtn" class="btn-create"
+                    style="background: #8dde00; color: #000; flex: 1; transition: transform 0.2s;">Save</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="../js/admin.js"></script>
 </body>

@@ -469,23 +469,76 @@ if (isDashboard) {
     }
 
     // Edit Image Name
-    window.editImageName = async (imageId, currentName) => {
-        const newName = prompt('Enter new name for the image:', currentName);
-        if (newName !== null && newName !== currentName) {
+    // Rename Image Modal Logic
+    const renameModal = document.getElementById('renameModal');
+    const renameInput = document.getElementById('renameInput');
+    const cancelRenameBtn = document.getElementById('cancelRenameBtn');
+    const confirmRenameBtn = document.getElementById('confirmRenameBtn');
+
+    let currentRenameImageId = null;
+
+    // Edit Image Name
+    window.editImageName = (imageId, currentName) => {
+        currentRenameImageId = imageId;
+        renameInput.value = currentName || '';
+        renameModal.style.display = 'flex';
+        renameInput.focus();
+    };
+
+    const closeRenameModal = () => {
+        renameModal.style.display = 'none';
+        currentRenameImageId = null;
+        renameInput.value = '';
+    };
+
+    if (cancelRenameBtn) {
+        cancelRenameBtn.addEventListener('click', closeRenameModal);
+    }
+
+    if (confirmRenameBtn) {
+        confirmRenameBtn.addEventListener('click', async () => {
+            const newName = renameInput.value.trim();
+            if (!newName) {
+                alert('Please enter a name');
+                return;
+            }
+
             try {
+                confirmRenameBtn.disabled = true;
+                confirmRenameBtn.textContent = 'Saving...';
+
                 const { error } = await supabase
                     .from('round_images')
                     .update({ name: newName })
-                    .eq('id', imageId);
+                    .eq('id', currentRenameImageId);
 
                 if (error) throw error;
 
+                closeRenameModal();
                 loadRoundImages(currentRoundId);
             } catch (error) {
                 alert('Error updating image name: ' + error.message);
+            } finally {
+                confirmRenameBtn.disabled = false;
+                confirmRenameBtn.textContent = 'Save';
             }
-        }
-    };
+        });
+    }
+
+    // Close on click outside
+    if (renameModal) {
+        renameModal.addEventListener('click', (e) => {
+            if (e.target === renameModal) closeRenameModal();
+        });
+    }
+
+    if (renameInput) {
+        renameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmRenameBtn.click();
+            }
+        });
+    }
 
     // Save Images (Bulk Upload)
     if (saveImageBtn) {
