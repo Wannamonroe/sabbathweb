@@ -26,17 +26,39 @@ if (isLoginPage) {
         const password = document.getElementById('password').value;
 
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data: { user }, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
             if (error) throw error;
 
+            // Check User Role
+            const { data: roleData, error: roleError } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', user.id)
+                .single();
+
+            if (roleError && roleError.code !== 'PGRST116') { // Ignore "Row not found" for now, treat as no access or default
+                throw roleError;
+            }
+
+            const userRole = roleData ? roleData.role : 'no_access'; // Default to no_access if not found
+
+            if (userRole === 'no_access') {
+                await supabase.auth.signOut();
+                alert('Access denied. Your account does not have permission to access the admin panel.');
+                window.location.href = '../index.html';
+                return;
+            }
+
             window.location.href = 'dashboard.html';
         } catch (error) {
             errorMessage.textContent = error.message;
             errorMessage.style.display = 'block';
+            // If role check fails, ensure logout
+            await supabase.auth.signOut();
         }
     });
 }
@@ -109,14 +131,42 @@ if (isDashboard) {
         reader.readAsDataURL(file);
     }
 
-    // Protect Route
+    // Protect Route & Role Check
     const checkAuth = async () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
             window.location.href = 'login.html';
             return;
         }
-        userEmailSpan.textContent = session.user.email;
+
+        // Fetch Role
+        const { data: roleData, error: roleError } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', session.user.id)
+            .single();
+
+        const userRole = roleData ? roleData.role : 'no_access';
+
+        if (userRole === 'no_access') {
+            await supabase.auth.signOut();
+            alert('Access revoked.');
+            window.location.href = '../index.html';
+            return;
+        }
+
+        // Expose role for UI logic
+        window.currentUserRole = userRole;
+
+        // Show Superadmin features
+        if (userRole === 'superadmin') {
+            const accountManagementBtn = document.getElementById('accountManagementBtn');
+            if (accountManagementBtn) {
+                accountManagementBtn.style.display = 'block';
+            }
+        }
+
+        userEmailSpan.textContent = `${session.user.email} (${userRole})`;
         loadRounds();
     };
     checkAuth();

@@ -185,7 +185,13 @@
     <section class="dashboard-section">
         <div class="dashboard-header">
             <h2>Admin Dashboard</h2>
-            <button id="logoutBtn" class="btn-logout">Logout</button>
+            <div style="display: flex; gap: 1rem;">
+                <button id="accountManagementBtn" class="btn-create"
+                    style="display: none; background: #8dde00; color: #000; width: auto; padding: 0.5rem 1rem;">
+                    <i class="fas fa-users-cog"></i> Account Management
+                </button>
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            </div>
         </div>
 
         <div class="create-round-card">
