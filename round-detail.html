@@ -42,10 +42,7 @@
 
     <section class="round-gallery">
         <div class="container">
-            <div class="round-info" style="color: white; text-align: center; margin-bottom: 2rem;">
-                <h3>Participants</h3>
-                <p id="roundParticipants" style="max-width: 800px; margin: 0 auto; line-height: 1.6;"></p>
-            </div>
+
 
             <div class="gallery-grid">
                 <!-- Gallery placeholder for future implementation -->
@@ -119,7 +116,7 @@
                     document.title = `${round.name} | Sabbath Event`;
                     document.getElementById('roundName').textContent = round.name;
                     document.getElementById('roundDates').textContent = round.dates;
-                    document.getElementById('roundParticipants').textContent = round.participants;
+
 
                     // Load Main Image (keep existing logic for backward compatibility or as featured image)
                     // You might want to remove this if the new gallery replaces it entirely, 
