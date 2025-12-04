@@ -408,9 +408,14 @@ if (isDashboard) {
 
             roundImagesList.innerHTML = images.map(img => `
                 <div class="round-item" style="padding: 0.5rem; position: relative;">
-                    <button class="btn-action btn-delete" onclick="deleteImage('${img.id}')" title="Delete Image" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%;">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div style="position: absolute; top: 0.5rem; right: 0.5rem; display: flex; gap: 5px;">
+                        <button class="btn-action btn-edit" onclick="editImageName('${img.id}', '${img.name || ''}')" title="Edit Name" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-pencil-alt" style="font-size: 0.9rem;"></i>
+                        </button>
+                        <button class="btn-action btn-delete" onclick="deleteImage('${img.id}')" title="Delete Image" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-trash" style="font-size: 0.9rem;"></i>
+                        </button>
+                    </div>
                     <img src="${img.image_url}" alt="${img.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px; margin-bottom: 0.5rem;">
                     <p style="color: #fff; margin: 0; font-size: 0.9rem;">${img.name || 'Untitled'}</p>
                 </div>
@@ -420,6 +425,25 @@ if (isDashboard) {
             alert('Error loading images: ' + error.message);
         }
     }
+
+    // Edit Image Name
+    window.editImageName = async (imageId, currentName) => {
+        const newName = prompt('Enter new name for the image:', currentName);
+        if (newName !== null && newName !== currentName) {
+            try {
+                const { error } = await supabase
+                    .from('round_images')
+                    .update({ name: newName })
+                    .eq('id', imageId);
+
+                if (error) throw error;
+
+                loadRoundImages(currentRoundId);
+            } catch (error) {
+                alert('Error updating image name: ' + error.message);
+            }
+        }
+    };
 
     // Save Images (Bulk Upload)
     if (saveImageBtn) {
