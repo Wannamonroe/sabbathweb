@@ -157,3 +157,107 @@ begin
   delete from auth.users where id = target_user_id;
 end;
 $$;
+
+-- Enable pgcrypto for password hashing
+create extension if not exists pgcrypto;
+
+-- Function to create a new user by superadmin
+create or replace function public.create_user_by_superadmin(
+  new_email text,
+  new_password text,
+  new_role text
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_user_id uuid;
+begin
+  -- 1. Check if requester is superadmin
+  if not exists (
+    select 1 from public.user_roles ur
+    where ur.user_id = auth.uid() and ur.role = 'superadmin'
+  ) then
+    raise exception 'Access denied';
+  end if;
+
+  -- 2. Validate role
+  if new_role not in ('superadmin', 'admin', 'no_access') then
+    raise exception 'Invalid role';
+  end if;
+
+  -- 3. Check if email already exists
+  if exists (select 1 from auth.users where email = new_email) then
+    raise exception 'Email already exists';
+  end if;
+
+  -- 4. Generate new User ID
+  new_user_id := gen_random_uuid();
+
+  -- 5. Insert into auth.users
+  -- We need to manually handle password hashing and required fields
+  insert into auth.users (
+    instance_id,
+    id,
+    aud,
+    role,
+    email,
+    encrypted_password,
+    email_confirmed_at,
+    recovery_sent_at,
+    last_sign_in_at,
+    raw_app_meta_data,
+    raw_user_meta_data,
+    created_at,
+    updated_at,
+    confirmation_token,
+    email_change,
+    email_change_token_new,
+    recovery_token
+  ) values (
+    '00000000-0000-0000-0000-000000000000', -- Default instance_id
+    new_user_id,
+    'authenticated',
+    'authenticated',
+    new_email,
+    crypt(new_password, gen_salt('bf')), -- Hash password
+    now(), -- Auto-confirm email
+    null,
+    null,
+    '{"provider": "email", "providers": ["email"]}',
+    '{}',
+    now(),
+    now(),
+    '',
+    '',
+    '',
+    ''
+  );
+
+  -- 6. Insert into public.user_roles
+  insert into public.user_roles (user_id, role)
+  values (new_user_id, new_role);
+
+  -- 7. Insert into auth.identities (Required for login to work properly in some versions, though email/password might be enough)
+  insert into auth.identities (
+    id,
+    user_id,
+    identity_data,
+    provider,
+    last_sign_in_at,
+    created_at,
+    updated_at
+  ) values (
+    gen_random_uuid(),
+    new_user_id,
+    format('{"sub": "%s", "email": "%s"}', new_user_id::text, new_email)::jsonb,
+    'email',
+    null,
+    now(),
+    now()
+  );
+
+end;
+$$;

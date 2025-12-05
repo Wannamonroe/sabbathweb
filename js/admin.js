@@ -953,4 +953,75 @@ if (isDashboard) {
             usersTableBody.innerHTML = `<tr><td colspan="4" style="padding: 1rem; color: #ff4444;">Error loading users: ${error.message}</td></tr>`;
         }
     }
+
+    // Create Account Logic
+    const createUserBtn = document.getElementById('createUserBtn');
+    const createUserModal = document.getElementById('createUserModal');
+    const closeCreateUserModal = document.getElementById('closeCreateUserModal');
+    const createUserForm = document.getElementById('createUserForm');
+
+    console.log('Create User Elements:', { createUserBtn, createUserModal, closeCreateUserModal, createUserForm });
+
+    if (createUserBtn) {
+        createUserBtn.addEventListener('click', () => {
+            console.log('Create User Button Clicked');
+            createUserModal.style.display = 'flex';
+        });
+    } else {
+        console.error('Create User Button NOT found');
+    }
+
+    if (closeCreateUserModal) {
+        closeCreateUserModal.addEventListener('click', () => {
+            createUserModal.style.display = 'none';
+        });
+    }
+
+    if (createUserModal) {
+        createUserModal.addEventListener('click', (e) => {
+            if (e.target === createUserModal) {
+                createUserModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (createUserForm) {
+        createUserForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('newUserEmail').value;
+            const password = document.getElementById('newUserPassword').value;
+            const role = document.getElementById('newUserRole').value;
+            const submitBtn = createUserForm.querySelector('button[type="submit"]');
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Creating...';
+
+                const { error } = await supabase.rpc('create_user_by_superadmin', {
+                    new_email: email,
+                    new_password: password,
+                    new_role: role
+                });
+
+                if (error) throw error;
+
+                alert('User created successfully!');
+                createUserModal.style.display = 'none';
+                createUserForm.reset();
+                loadUsers(); // Refresh list
+
+            } catch (error) {
+                alert('Error creating user: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+            }
+        });
+    }
 }
