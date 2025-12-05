@@ -350,6 +350,38 @@
         </div>
     </div>
 
+    <!-- Create User Modal -->
+    <div id="createUserModal" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1200; align-items: center; justify-content: center;">
+        <div class="modal-content"
+            style="background: #111; padding: 2rem; width: 90%; max-width: 400px; border-radius: 10px; border: 1px solid #333; position: relative;">
+            <span id="closeCreateUserModal"
+                style="position: absolute; top: 1rem; right: 1rem; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</span>
+            <h3 style="color: #8dde00; margin-bottom: 1.5rem;">Create New Account</h3>
+            <form id="createUserForm">
+                <div class="form-group">
+                    <label for="newUserEmail">Email</label>
+                    <input type="email" id="newUserEmail" required placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="newUserPassword">Password</label>
+                    <input type="password" id="newUserPassword" required placeholder="Enter password">
+                </div>
+                <div class="form-group">
+                    <label for="newUserRole">Role</label>
+                    <select id="newUserRole"
+                        style="width: 100%; padding: 0.8rem; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px;">
+                        <option value="no_access">No Access</option>
+                        <option value="admin">Admin</option>
+                        <option value="superadmin">Superadmin</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-create" style="background: #8dde00; color: #000;">Create
+                    Account</button>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="../js/admin.js"></script>
 </body>

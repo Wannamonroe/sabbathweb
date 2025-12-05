@@ -960,15 +960,10 @@ if (isDashboard) {
     const closeCreateUserModal = document.getElementById('closeCreateUserModal');
     const createUserForm = document.getElementById('createUserForm');
 
-    console.log('Create User Elements:', { createUserBtn, createUserModal, closeCreateUserModal, createUserForm });
-
     if (createUserBtn) {
         createUserBtn.addEventListener('click', () => {
-            console.log('Create User Button Clicked');
             createUserModal.style.display = 'flex';
         });
-    } else {
-        console.error('Create User Button NOT found');
     }
 
     if (closeCreateUserModal) {
