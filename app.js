@@ -23,15 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index < 0) index = totalSlides - 1;
             if (index >= totalSlides) index = 0;
 
-            const offset = -(index * 90);
-            track.style.transform = `translateX(${offset}%)`;
+            // Reset all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'next-slide');
+                slide.style.zIndex = '0';
+            });
 
+            // Set active slide
+            slides[index].classList.add('active');
+            slides[index].style.zIndex = '10';
+
+            // Set next slide (to be visible under the cut)
+            const nextIndex = (index + 1) % totalSlides;
+            slides[nextIndex].classList.add('next-slide');
+            slides[nextIndex].style.zIndex = '5';
+
+            // Update dots
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === index);
             });
 
             currentIndex = index;
-            updateActiveSlides(index);
         }
 
         // Clear any existing interval if this function is called multiple times
@@ -40,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Autoplay
         window.carouselInterval = setInterval(() => {
             updateSlides((currentIndex + 1) % totalSlides);
-        }, 3000);
+        }, 4000); // Slower interval for better viewing
 
         // Event Listeners
         if (nextButton) {
             nextButton.onclick = () => {
                 clearInterval(window.carouselInterval);
                 updateSlides(currentIndex + 1);
-                window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
+                window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 4000);
             };
         }
 
@@ -55,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             prevButton.onclick = () => {
                 clearInterval(window.carouselInterval);
                 updateSlides(currentIndex - 1);
-                window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
+                window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 4000);
             };
         }
 
@@ -63,13 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
             dot.onclick = () => {
                 clearInterval(window.carouselInterval);
                 updateSlides(index);
-                window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
+                window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 4000);
             };
         });
 
         track.onmouseenter = () => clearInterval(window.carouselInterval);
         track.onmouseleave = () => {
-            window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 3000);
+            window.carouselInterval = setInterval(() => updateSlides((currentIndex + 1) % totalSlides), 4000);
         };
 
         updateSlides(0);
@@ -87,33 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             button.onmouseleave = () => {
                 button.style.transform = 'translateY(-50%) scale(1)';
-            };
-        });
-
-        // Actualizar la función updateActiveSlides
-        function updateActiveSlides(currentIndex) {
-            slides.forEach((slide, index) => {
-                const distance = Math.abs(index - currentIndex);
-                slide.style.opacity = '1'; // Mantener opacidad completa
-                slide.style.transform = distance === 0 ? 'scale(1.02)' : 'scale(1)';
-                slide.classList.toggle('active', index === currentIndex);
-            });
-        }
-
-        // Actualizar el efecto hover
-        slides.forEach(slide => {
-            slide.onmouseenter = () => {
-                if (!slide.classList.contains('active')) {
-                    slide.style.opacity = '1';
-                    slide.style.transform = 'scale(1.01)';
-                }
-            };
-
-            slide.onmouseleave = () => {
-                if (!slide.classList.contains('active')) {
-                    slide.style.opacity = '1';
-                    slide.style.transform = 'scale(1)';
-                }
             };
         });
     };
