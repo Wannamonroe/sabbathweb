@@ -50,3 +50,110 @@ values
   ('1e00c27e-c984-4f95-bfc0-16acd1f12329', 'superadmin'),
   ('521cd671-fed3-4b9e-9300-8b67a7eceb46', 'superadmin')
 on conflict (user_id) do update set role = EXCLUDED.role;
+
+-- Function to get all users with their roles
+-- Returns a JSON object to easily handle in frontend
+create or replace function public.get_users_with_roles()
+returns table (
+  user_id uuid,
+  email varchar,
+  role text,
+  created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  -- Check if the requesting user is a superadmin
+  if not exists (
+    select 1 from public.user_roles 
+    where user_id = auth.uid() and role = 'superadmin'
+  ) then
+    raise exception 'Access denied';
+  end if;
+
+  return query
+  select 
+    au.id as user_id,
+    au.email::varchar,
+    coalesce(ur.role, 'no_access') as role,
+    au.created_at
+  from auth.users au
+  left join public.user_roles ur on au.id = ur.user_id
+  order by au.created_at desc;
+end;
+$$;
+
+-- Function to update user role
+create or replace function public.update_user_role_by_superadmin(
+  target_user_id uuid,
+  new_role text
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  -- 1. Check if requester is superadmin
+  if not exists (
+    select 1 from public.user_roles 
+    where user_id = auth.uid() and role = 'superadmin'
+  ) then
+    raise exception 'Access denied';
+  end if;
+
+  -- 2. Check if target user is a superadmin (PROTECTION)
+  if exists (
+    select 1 from public.user_roles 
+    where user_id = target_user_id and role = 'superadmin'
+  ) then
+    raise exception 'Cannot modify a Superadmin';
+  end if;
+
+  -- 3. Validate new role
+  if new_role not in ('superadmin', 'admin', 'no_access') then
+    raise exception 'Invalid role';
+  end if;
+
+  -- 4. Update or Insert role
+  insert into public.user_roles (user_id, role)
+  values (target_user_id, new_role)
+  on conflict (user_id) do update
+  set role = EXCLUDED.role;
+end;
+$$;
+
+-- Function to delete user
+create or replace function public.delete_user_by_superadmin(
+  target_user_id uuid
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  -- 1. Check if requester is superadmin
+  if not exists (
+    select 1 from public.user_roles 
+    where user_id = auth.uid() and role = 'superadmin'
+  ) then
+    raise exception 'Access denied';
+  end if;
+
+  -- 2. Check if target user is a superadmin (PROTECTION)
+  if exists (
+    select 1 from public.user_roles 
+    where user_id = target_user_id and role = 'superadmin'
+  ) then
+    raise exception 'Cannot delete a Superadmin';
+  end if;
+
+  -- 3. Delete from auth.users (Cascades to user_roles usually, but let's be safe)
+  -- Note: This requires the Postgres role to have permissions on auth.users, 
+  -- which SECURITY DEFINER usually grants if the creator (postgres) has it.
+  delete from auth.users where id = target_user_id;
+end;
+$$;

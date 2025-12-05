@@ -230,6 +230,33 @@
 
     </section>
 
+    </section>
+
+    <!-- User Management Section (Superadmin Only) -->
+    <section id="userManagementSection" class="dashboard-section" style="padding-top: 0; display: none;">
+        <div class="create-round-card">
+            <h3>User Management</h3>
+            <p style="color: #aaa; margin-bottom: 1rem;">Manage users and their roles. Superadmins cannot be modified
+                here.</p>
+
+            <div class="rounds-list" style="grid-template-columns: 1fr;">
+                <table style="width: 100%; border-collapse: collapse; color: #fff;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #333; text-align: left;">
+                            <th style="padding: 1rem;">Email</th>
+                            <th style="padding: 1rem;">Role</th>
+                            <th style="padding: 1rem;">Created At</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
     <section class="dashboard-section" style="padding-top: 0;">
         <div class="create-round-card">
             <h3>Manage Homepage Carousel</h3>

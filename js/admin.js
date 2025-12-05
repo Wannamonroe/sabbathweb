@@ -164,6 +164,11 @@ if (isDashboard) {
             if (accountManagementBtn) {
                 accountManagementBtn.style.display = 'block';
             }
+            const userManagementSection = document.getElementById('userManagementSection');
+            if (userManagementSection) {
+                userManagementSection.style.display = 'block';
+                loadUsers();
+            }
         }
 
         userEmailSpan.textContent = `${session.user.email} (${userRole})`;
@@ -848,4 +853,104 @@ if (isDashboard) {
 
     // Initial Load
     loadCarouselImages();
+
+    // User Management Logic (Superadmin Only)
+    async function loadUsers() {
+        const usersTableBody = document.getElementById('usersTableBody');
+        if (!usersTableBody) return;
+
+        try {
+            const { data: users, error } = await supabase
+                .rpc('get_users_with_roles');
+
+            if (error) throw error;
+
+            usersTableBody.innerHTML = users.map(user => {
+                const isSuperadmin = user.role === 'superadmin';
+                const isSelf = user.user_id === (supabase.auth.getUser()?.data?.user?.id); // Note: getUser is async usually, but we have session
+
+                let actionButtons = '';
+                if (!isSuperadmin) {
+                    actionButtons = `
+                        <select onchange="updateUserRole('${user.user_id}', this.value)" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px; border-radius: 4px; margin-right: 10px;">
+                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            <option value="no_access" ${user.role === 'no_access' ? 'selected' : ''}>No Access</option>
+                        </select>
+                        <button class="btn-action btn-delete" onclick="deleteUser('${user.user_id}')" title="Delete User" style="color: #ff4444;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                } else {
+                    actionButtons = '<span style="color: #8dde00; font-size: 0.9rem;">Superadmin (Protected)</span>';
+                }
+
+                return `
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 1rem;">${user.email}</td>
+                        <td style="padding: 1rem;">
+                            <span style="
+                                padding: 2px 8px; 
+                                border-radius: 4px; 
+                                background: ${user.role === 'superadmin' ? '#8dde00' : (user.role === 'admin' ? '#4444ff' : '#333')}; 
+                                color: ${user.role === 'superadmin' ? '#000' : '#fff'};
+                                font-size: 0.8rem;
+                            ">
+                                ${user.role.toUpperCase()}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">${new Date(user.created_at).toLocaleDateString()}</td>
+                        <td style="padding: 1rem;">
+                            ${actionButtons}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Expose functions
+            window.updateUserRole = async (userId, newRole) => {
+                if (!confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
+                    loadUsers(); // Reset select
+                    return;
+                }
+
+                try {
+                    const { error } = await supabase
+                        .rpc('update_user_role_by_superadmin', {
+                            target_user_id: userId,
+                            new_role: newRole
+                        });
+
+                    if (error) throw error;
+                    alert('User role updated successfully.');
+                    loadUsers();
+                } catch (error) {
+                    alert('Error updating role: ' + error.message);
+                    loadUsers(); // Reset select
+                }
+            };
+
+            window.deleteUser = async (userId) => {
+                if (!confirm('Are you sure you want to DELETE this user? This action cannot be undone.')) {
+                    return;
+                }
+
+                try {
+                    const { error } = await supabase
+                        .rpc('delete_user_by_superadmin', {
+                            target_user_id: userId
+                        });
+
+                    if (error) throw error;
+                    alert('User deleted successfully.');
+                    loadUsers();
+                } catch (error) {
+                    alert('Error deleting user: ' + error.message);
+                }
+            };
+
+        } catch (error) {
+            console.error('Error loading users:', error);
+            usersTableBody.innerHTML = `<tr><td colspan="4" style="padding: 1rem; color: #ff4444;">Error loading users: ${error.message}</td></tr>`;
+        }
+    }
 }
