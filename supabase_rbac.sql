@@ -67,8 +67,8 @@ as $$
 begin
   -- Check if the requesting user is a superadmin
   if not exists (
-    select 1 from public.user_roles 
-    where user_id = auth.uid() and role = 'superadmin'
+    select 1 from public.user_roles ur
+    where ur.user_id = auth.uid() and ur.role = 'superadmin'
   ) then
     raise exception 'Access denied';
   end if;
@@ -98,16 +98,16 @@ as $$
 begin
   -- 1. Check if requester is superadmin
   if not exists (
-    select 1 from public.user_roles 
-    where user_id = auth.uid() and role = 'superadmin'
+    select 1 from public.user_roles ur
+    where ur.user_id = auth.uid() and ur.role = 'superadmin'
   ) then
     raise exception 'Access denied';
   end if;
 
   -- 2. Check if target user is a superadmin (PROTECTION)
   if exists (
-    select 1 from public.user_roles 
-    where user_id = target_user_id and role = 'superadmin'
+    select 1 from public.user_roles ur
+    where ur.user_id = target_user_id and ur.role = 'superadmin'
   ) then
     raise exception 'Cannot modify a Superadmin';
   end if;
@@ -137,16 +137,16 @@ as $$
 begin
   -- 1. Check if requester is superadmin
   if not exists (
-    select 1 from public.user_roles 
-    where user_id = auth.uid() and role = 'superadmin'
+    select 1 from public.user_roles ur
+    where ur.user_id = auth.uid() and ur.role = 'superadmin'
   ) then
     raise exception 'Access denied';
   end if;
 
   -- 2. Check if target user is a superadmin (PROTECTION)
   if exists (
-    select 1 from public.user_roles 
-    where user_id = target_user_id and role = 'superadmin'
+    select 1 from public.user_roles ur
+    where ur.user_id = target_user_id and ur.role = 'superadmin'
   ) then
     raise exception 'Cannot delete a Superadmin';
   end if;
