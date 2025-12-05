@@ -151,9 +151,10 @@ begin
     raise exception 'Cannot delete a Superadmin';
   end if;
 
-  -- 3. Delete from auth.users (Cascades to user_roles usually, but let's be safe)
-  -- Note: This requires the Postgres role to have permissions on auth.users, 
-  -- which SECURITY DEFINER usually grants if the creator (postgres) has it.
+  -- 3. Delete from public.user_roles first (to avoid FK constraint violation)
+  delete from public.user_roles where user_id = target_user_id;
+
+  -- 4. Delete from auth.users
   delete from auth.users where id = target_user_id;
 end;
 $$;
