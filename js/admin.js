@@ -921,13 +921,28 @@ if (isDashboard) {
                 uploadCarouselBtn.textContent = 'Uploading...';
 
                 for (const file of selectedCarouselFiles) {
-                    // NO OPTIMIZATION for carousel images as requested
+                    // Compress Image: Max 1920px width, 0.85 quality
+                    // This ensures files are well below 20MB while keeping high quality
+                    let fileToUpload = file;
+                    try {
+                        const optimizedBlob = await optimizeImage(file, 1920, 0.85);
+                        fileToUpload = new File([optimizedBlob], file.name, { type: file.type });
+
+                        // Safety check for 20MB limit (20 * 1024 * 1024 bytes)
+                        if (fileToUpload.size > 20 * 1024 * 1024) {
+                            alert(`File ${file.name} is still too large (>20MB) after compression. Skipped.`);
+                            continue;
+                        }
+                    } catch (optError) {
+                        console.warn('Compression failed, trying original file:', optError);
+                    }
+
                     const fileExt = file.name.split('.').pop();
                     const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
 
                     const { error: uploadError } = await supabase.storage
                         .from('carousel-images')
-                        .upload(fileName, file);
+                        .upload(fileName, fileToUpload);
 
                     if (uploadError) {
                         console.error(`Error uploading ${file.name}:`, uploadError);
