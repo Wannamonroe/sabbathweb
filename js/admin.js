@@ -405,8 +405,48 @@ if (isDashboard) {
             };
 
             window.deleteRound = async (id) => {
-                if (confirm('Are you sure you want to delete this round? This action cannot be undone.')) {
+                if (confirm('Are you sure you want to delete this round? ALL associated images will be permanently deleted.')) {
                     try {
+                        // 1. Get Round Data (for Main Image)
+                        const { data: roundData, error: roundError } = await supabase
+                            .from('rounds')
+                            .select('image_url')
+                            .eq('id', id)
+                            .single();
+
+                        if (roundError) throw roundError;
+
+                        // 2. Delete Main Image from Storage
+                        if (roundData && roundData.image_url) {
+                            const urlParts = roundData.image_url.split('/round-images/');
+                            if (urlParts.length > 1) {
+                                await supabase.storage.from('round-images').remove([urlParts[1]]);
+                            }
+                        }
+
+                        // 3. Get All Gallery Images for this Round
+                        const { data: galleryImages, error: galleryError } = await supabase
+                            .from('round_images')
+                            .select('image_url')
+                            .eq('round_id', id);
+
+                        if (galleryError) throw galleryError;
+
+                        // 4. Delete Gallery Images from Storage
+                        if (galleryImages && galleryImages.length > 0) {
+                            const pathsToDelete = galleryImages
+                                .map(img => {
+                                    const parts = img.image_url.split('/round-images/');
+                                    return parts.length > 1 ? parts[1] : null;
+                                })
+                                .filter(path => path !== null);
+
+                            if (pathsToDelete.length > 0) {
+                                await supabase.storage.from('round-images').remove(pathsToDelete);
+                            }
+                        }
+
+                        // 5. Delete Round from DB (Cascade should handle round_images records)
                         const { error } = await supabase
                             .from('rounds')
                             .delete()
@@ -415,6 +455,7 @@ if (isDashboard) {
                         if (error) throw error;
 
                         loadRounds(); // Refresh list
+                        loadStorageUsage(); // Update storage display
                     } catch (error) {
                         alert('Error deleting round: ' + error.message);
                     }
