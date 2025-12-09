@@ -307,7 +307,12 @@
             <p style="color: #aaa; margin-bottom: 1rem;">Upload 4-7 high-resolution images. These will NOT be
                 compressed.</p>
 
-            <div class="header-actions">
+            <div class="upload-section" style="margin-bottom: 2rem;">
+                <div id="carouselDropZone" class="drop-zone">
+                    <i class="fas fa-images"></i>
+                    <p>Drag & Drop carousel images here or click to select</p>
+                    <input type="file" id="carouselImageFile" accept="image/*" multiple style="display: none;">
+                </div>
                 <button id="uploadCarouselBtn" class="btn-create">Upload to Carousel</button>
             </div>
         </div>

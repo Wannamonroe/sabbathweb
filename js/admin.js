@@ -947,8 +947,6 @@ if (isDashboard) {
 
                 alert('Carousel images uploaded!');
                 selectedCarouselFiles = []; // Clear pending
-                alert('Carousel images uploaded!');
-                selectedCarouselFiles = []; // Clear pending
                 loadCarouselImages(); // Refresh DB list
                 loadStorageUsage();
             } catch (error) {
