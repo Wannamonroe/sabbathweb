@@ -27,6 +27,17 @@ async function testConnection() {
         } else {
             console.log('Connection successful!');
             console.log('Rounds table accessed. Rows found:', data.length);
+
+            // Test RPC function
+            console.log('Testing get_storage_usage RPC function...');
+            const { data: storageData, error: storageError } = await supabase.rpc('get_storage_usage');
+
+            if (storageError) {
+                console.error('RPC function check failed:', storageError.message);
+                console.log('IMPORTANT: Please run the SQL from supabase_storage_usage.sql in your Supabase SQL Editor.');
+            } else {
+                console.log('RPC function working! Current storage usage:', storageData, 'bytes');
+            }
         }
     } catch (err) {
         console.error('Unexpected error:', err);

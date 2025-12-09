@@ -167,6 +167,45 @@
             border-radius: 5px;
             display: none;
         }
+
+        /* Storage Widget Styles */
+        .storage-widget {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 200px;
+        }
+
+        .storage-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #ddd;
+            margin-bottom: 2px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4285f4;
+            /* Google Blue */
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 3px;
+        }
+
+        .storage-text {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
     </style>
 </head>
 
@@ -268,19 +307,29 @@
             <p style="color: #aaa; margin-bottom: 1rem;">Upload 4-7 high-resolution images. These will NOT be
                 compressed.</p>
 
-            <div class="upload-section" style="margin-bottom: 2rem;">
-                <div id="carouselDropZone" class="drop-zone">
-                    <i class="fas fa-images"></i>
-                    <p>Drag & Drop carousel images here or click to select</p>
-                    <input type="file" id="carouselImageFile" accept="image/*" multiple style="display: none;">
-                </div>
+            <div class="header-actions">
                 <button id="uploadCarouselBtn" class="btn-create">Upload to Carousel</button>
             </div>
+        </div>
 
-            <div id="carouselImagesList" class="rounds-list"
-                style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
-                <!-- Carousel images will be loaded here -->
+        <div class="storage-card"
+            style="background: #111; padding: 1.5rem; border-radius: 10px; border: 1px solid #333; margin-bottom: 2rem; max-width: 400px;">
+            <div class="storage-widget">
+                <div class="storage-header">
+                    <i class="fas fa-cloud"></i> Almacenamiento
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="storageProgressBar"></div>
+                </div>
+                <div class="storage-text">
+                    <span id="storageUsed">Calculando...</span> de 500 MB usado
+                </div>
             </div>
+        </div>
+        <div id="carouselImagesList" class="rounds-list"
+            style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+            <!-- Carousel images will be loaded here -->
+        </div>
         </div>
     </section>
 

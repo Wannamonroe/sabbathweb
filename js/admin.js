@@ -79,6 +79,7 @@ if (isDashboard) {
     const participantsInput = document.getElementById('participants');
     const datesInput = document.getElementById('dates');
     const imageUrlInput = document.getElementById('imageUrl');
+    const storageUsedSpan = document.getElementById('storageUsed');
 
     // File Upload Elements
     const dropZone = document.getElementById('dropZone');
@@ -171,10 +172,58 @@ if (isDashboard) {
             }
         }
 
-        userEmailSpan.textContent = `${session.user.email} (${userRole})`;
+        userEmailSpan.textContent = session.user.email;
         loadRounds();
+        loadStorageUsage();
     };
     checkAuth();
+
+    // Storage Usage
+    async function loadStorageUsage() {
+        if (!storageUsedSpan) return;
+
+        const progressBar = document.getElementById('storageProgressBar');
+
+        try {
+            const { data, error } = await supabase.rpc('get_storage_usage');
+
+            if (error) {
+                console.error('Error fetching storage usage:', error);
+                storageUsedSpan.textContent = 'Error';
+                return;
+            }
+
+            const bytes = data || 0;
+            const megabytes = (bytes / (1024 * 1024)).toFixed(2);
+            const percentage = Math.min((megabytes / 500) * 100, 100);
+
+            // Format display: show GB if > 1000MB, otherwise MB
+            let displayValue;
+            if (megabytes > 1000) {
+                displayValue = (megabytes / 1024).toFixed(2) + ' GB';
+            } else {
+                displayValue = megabytes + ' MB';
+            }
+
+            storageUsedSpan.textContent = displayValue;
+
+            if (progressBar) {
+                progressBar.style.width = `${percentage}%`;
+
+                // Color change based on usage
+                if (percentage > 90) {
+                    progressBar.style.backgroundColor = '#d93025'; // Red
+                } else if (percentage > 75) {
+                    progressBar.style.backgroundColor = '#f4b400'; // Yellow
+                } else {
+                    progressBar.style.backgroundColor = '#4285f4'; // Blue
+                }
+            }
+
+        } catch (error) {
+            console.error('Error loading storage usage:', error);
+        }
+    }
 
     // Logout
     logoutBtn.addEventListener('click', async () => {
@@ -651,6 +700,7 @@ if (isDashboard) {
                 alert('Images upload process completed!');
                 resetModalForm();
                 loadRoundImages(currentRoundId);
+                loadStorageUsage();
 
             } catch (error) {
                 console.error('Error saving images:', error);
@@ -666,6 +716,36 @@ if (isDashboard) {
     window.deleteImage = async (imageId) => {
         if (confirm('Are you sure you want to delete this image?')) {
             try {
+                // 1. Get Image URL first
+                const { data: imgData, error: fetchError } = await supabase
+                    .from('round_images')
+                    .select('image_url')
+                    .eq('id', imageId)
+                    .single();
+
+                if (fetchError) throw fetchError;
+
+                if (imgData && imgData.image_url) {
+                    // 2. Extract path from URL
+                    // URL format: .../storage/v1/object/public/round-images/path/to/file.jpg
+                    const urlParts = imgData.image_url.split('/round-images/');
+                    if (urlParts.length > 1) {
+                        const filePath = urlParts[1];
+
+                        // 3. Delete from Storage
+                        const { error: storageError } = await supabase.storage
+                            .from('round-images')
+                            .remove([filePath]);
+
+                        if (storageError) {
+                            console.error('Error deleting file from storage:', storageError);
+                            // We continue to delete from DB even if storage fails, 
+                            // or maybe we should warn? For now, just log.
+                        }
+                    }
+                }
+
+                // 4. Delete from DB
                 const { error } = await supabase
                     .from('round_images')
                     .delete()
@@ -674,6 +754,7 @@ if (isDashboard) {
                 if (error) throw error;
 
                 loadRoundImages(currentRoundId);
+                loadStorageUsage();
             } catch (error) {
                 alert('Error deleting image: ' + error.message);
             }
@@ -825,7 +906,10 @@ if (isDashboard) {
 
                 alert('Carousel images uploaded!');
                 selectedCarouselFiles = []; // Clear pending
+                alert('Carousel images uploaded!');
+                selectedCarouselFiles = []; // Clear pending
                 loadCarouselImages(); // Refresh DB list
+                loadStorageUsage();
             } catch (error) {
                 alert('Error uploading: ' + error.message);
             } finally {
@@ -844,7 +928,9 @@ if (isDashboard) {
                     .eq('id', id);
 
                 if (error) throw error;
+                if (error) throw error;
                 loadCarouselImages();
+                loadStorageUsage();
             } catch (error) {
                 alert('Error deleting: ' + error.message);
             }

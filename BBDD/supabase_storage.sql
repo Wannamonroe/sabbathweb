@@ -21,3 +21,24 @@ with check ( bucket_id = 'round-images' and auth.role() = 'authenticated' );
 create policy "Authenticated users can delete images"
 on storage.objects for delete
 using ( bucket_id = 'round-images' and auth.role() = 'authenticated' );
+
+-- Function to get total size of files in storage buckets
+create or replace function get_storage_usage()
+returns bigint
+language plpgsql
+security definer
+as $$
+declare
+  total_size bigint;
+begin
+  select sum(metadata->>'size')::bigint
+  into total_size
+  from storage.objects;
+  
+  if total_size is null then
+    total_size := 0;
+  end if;
+  
+  return total_size;
+end;
+$$;
