@@ -922,12 +922,35 @@ if (isDashboard) {
     window.deleteCarouselImage = async (id) => {
         if (confirm('Delete this carousel image?')) {
             try {
+                // 1. Get Image URL first
+                const { data: imgData, error: fetchError } = await supabase
+                    .from('carousel_images')
+                    .select('image_url')
+                    .eq('id', id)
+                    .single();
+
+                if (fetchError) throw fetchError;
+
+                if (imgData && imgData.image_url) {
+                    // Extract path
+                    const urlParts = imgData.image_url.split('/carousel-images/');
+                    if (urlParts.length > 1) {
+                        const filePath = urlParts[1];
+
+                        // Delete from Storage
+                        const { error: storageError } = await supabase.storage
+                            .from('carousel-images')
+                            .remove([filePath]);
+
+                        if (storageError) console.error('Error deleting file:', storageError);
+                    }
+                }
+
                 const { error } = await supabase
                     .from('carousel_images')
                     .delete()
                     .eq('id', id);
 
-                if (error) throw error;
                 if (error) throw error;
                 loadCarouselImages();
                 loadStorageUsage();
