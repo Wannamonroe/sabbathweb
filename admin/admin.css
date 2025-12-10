@@ -71,6 +71,19 @@
     border-radius: 5px;
     border: 1px solid #333;
     position: relative;
+    /* Styles for Drag & Drop */
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.round-item.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    border: 2px dashed #8dde00;
+}
+
+.round-item.drag-over {
+    border: 2px solid #8dde00;
+    transform: scale(1.02);
 }
 
 .round-item h3 {

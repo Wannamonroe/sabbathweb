@@ -583,19 +583,24 @@ if (isDashboard) {
     };
 
     // Load Images
+    // Load Images with Drag & Drop Support
     async function loadRoundImages(roundId) {
         try {
             const { data: images, error } = await supabase
                 .from('round_images')
                 .select('*')
                 .eq('round_id', roundId)
+                .order('display_order', { ascending: true, nullsFirst: false })
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
 
             roundImagesList.innerHTML = images.map(img => `
-                <div class="round-item" style="padding: 0.5rem; position: relative;">
-                    <div style="position: absolute; top: 0.5rem; right: 0.5rem; display: flex; gap: 5px;">
+                <div class="round-item" 
+                     draggable="true" 
+                     data-id="${img.id}"
+                     style="padding: 0.5rem; position: relative;">
+                    <div style="position: absolute; top: 0.5rem; right: 0.5rem; display: flex; gap: 5px; z-index: 10;">
                         <button class="btn-action btn-edit" onclick="editImageName('${img.id}', '${img.name || ''}')" title="Edit Name" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-pencil-alt" style="font-size: 0.9rem;"></i>
                         </button>
@@ -603,13 +608,135 @@ if (isDashboard) {
                             <i class="fas fa-trash" style="font-size: 0.9rem;"></i>
                         </button>
                     </div>
-                    <img src="${img.image_url}" alt="${img.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px; margin-bottom: 0.5rem;">
+                    <img src="${img.image_url}" alt="${img.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px; margin-bottom: 0.5rem; pointer-events: none;">
                     <p style="color: #fff; margin: 0; font-size: 0.9rem;">${img.name || 'Untitled'}</p>
                 </div>
             `).join('');
+
+            initializeDragAndDrop();
+
+            // Show Save Order Button if items > 1
+            const saveOrderBtn = document.getElementById('saveOrderBtn');
+            if (saveOrderBtn) {
+                saveOrderBtn.style.display = images.length > 1 ? 'block' : 'none';
+                saveOrderBtn.onclick = saveImageOrder;
+            }
+
         } catch (error) {
             console.error('Error loading images:', error);
             alert('Error loading images: ' + error.message);
+        }
+    }
+
+    // Drag & Drop Logic
+    function initializeDragAndDrop() {
+        const items = roundImagesList.querySelectorAll('.round-item');
+
+        items.forEach(item => {
+            item.addEventListener('dragstart', handleDragStart);
+            item.addEventListener('dragenter', handleDragEnter);
+            item.addEventListener('dragover', handleDragOver);
+            item.addEventListener('dragleave', handleDragLeave);
+            item.addEventListener('drop', handleDrop);
+            item.addEventListener('dragend', handleDragEnd);
+        });
+    }
+
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.outerHTML);
+        this.classList.add('dragging');
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    function handleDragEnter(e) {
+        this.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+
+        if (dragSrcEl !== this) {
+            // Swap logic: Insert dragged element before or after target
+            // Simple approach: Swap HTML (might break listeners, better to move DOM nodes)
+
+            // Re-attaching nodes
+            const container = roundImagesList;
+            const items = Array.from(container.children);
+            const srcIndex = items.indexOf(dragSrcEl);
+            const targetIndex = items.indexOf(this);
+
+            if (srcIndex < targetIndex) {
+                this.after(dragSrcEl);
+            } else {
+                this.before(dragSrcEl);
+            }
+        }
+        return false;
+    }
+
+    function handleDragEnd(e) {
+        this.classList.remove('dragging');
+        const items = roundImagesList.querySelectorAll('.round-item');
+        items.forEach(item => item.classList.remove('drag-over'));
+    }
+
+    // Save Order Function
+    async function saveImageOrder() {
+        const saveBtn = document.getElementById('saveOrderBtn');
+        const originalText = saveBtn.textContent;
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+
+        try {
+            const items = roundImagesList.querySelectorAll('.round-item');
+            const updates = [];
+
+            items.forEach((item, index) => {
+                const id = item.dataset.id;
+                updates.push({
+                    id: id,
+                    display_order: index
+                });
+            });
+
+            // Upsert updates
+            // Since Supabase JS client doesn't support bulk update with different values easily in v2 without rpc or loop,
+            // we will loop for now or use upsert if we select all columns.
+            // Efficient bulk update is tricky. Let's do parallel requests for now as N is small (max ~20 images).
+
+            const promises = updates.map(update =>
+                supabase
+                    .from('round_images')
+                    .update({ display_order: update.display_order })
+                    .eq('id', update.id)
+            );
+
+            await Promise.all(promises);
+
+            alert('Order saved successfully!');
+        } catch (error) {
+            console.error('Error saving order:', error);
+            alert('Error saving order: ' + error.message);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = originalText;
         }
     }
 
