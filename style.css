@@ -4,6 +4,8 @@
     --white: #ffffff;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -144,7 +146,7 @@ body::before {
 
 /* Eliminar todos los estilos del dropdown */
 .nav-links a {
-    font-family: 'Bebas Kai', Arial, sans-serif;
+    font-family: 'Bebas Neue', Arial, sans-serif;
     color: var(--lime);
     text-decoration: none;
     padding: 0.5rem 1rem;
