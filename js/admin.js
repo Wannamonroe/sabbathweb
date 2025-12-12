@@ -2,9 +2,12 @@ import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+console.log('Admin JS loaded'); // DEBUG: Verify script load
+console.log('Current Path:', window.location.pathname); // DEBUG: Verify path
+
 // Check if we are on the login page or dashboard
-const isLoginPage = window.location.pathname.includes('login.html');
-const isDashboard = window.location.pathname.includes('dashboard.html');
+const isLoginPage = window.location.pathname.includes('login');
+const isDashboard = window.location.pathname.includes('dashboard');
 
 // Login Logic
 if (isLoginPage) {
