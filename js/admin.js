@@ -25,6 +25,7 @@ if (isLoginPage) {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
+        try {
             console.log('Attempting login...'); // DEBUG
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
