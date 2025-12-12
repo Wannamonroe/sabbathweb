@@ -25,26 +25,34 @@ if (isLoginPage) {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        try {
-            const { data: { user }, error } = await supabase.auth.signInWithPassword({
+            console.log('Attempting login...'); // DEBUG
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
+            console.log('Login result:', data, error); // DEBUG
+
             if (error) throw error;
+            
+            const user = data.user;
 
             // Check User Role
+            console.log('Checking role for user:', user.id); // DEBUG
             const { data: roleData, error: roleError } = await supabase
                 .from('user_roles')
                 .select('role')
                 .eq('user_id', user.id)
                 .single();
+            
+            console.log('Role result:', roleData, roleError); // DEBUG
 
             if (roleError && roleError.code !== 'PGRST116') { // Ignore "Row not found" for now, treat as no access or default
                 throw roleError;
             }
 
             const userRole = roleData ? roleData.role : 'no_access'; // Default to no_access if not found
+            console.log('Final User Role:', userRole); // DEBUG
 
             if (userRole === 'no_access') {
                 await supabase.auth.signOut();
@@ -53,7 +61,7 @@ if (isLoginPage) {
                 return;
             }
 
-            window.location.href = 'dashboard.html';
+            console.log('Redirecting to dashboard...'); // DEBUG
             window.location.href = 'dashboard.html';
         } catch (error) {
             console.error('Login error:', error);
