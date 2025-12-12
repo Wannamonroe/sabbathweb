@@ -54,9 +54,27 @@ if (isLoginPage) {
             }
 
             window.location.href = 'dashboard.html';
+            window.location.href = 'dashboard.html';
         } catch (error) {
-            errorMessage.textContent = error.message;
-            errorMessage.style.display = 'block';
+            console.error('Login error:', error);
+            
+            let message = 'Ha ocurrido un error desconocido.';
+            
+            // Map specific errors
+            if (error.message.includes('Invalid login credentials')) {
+                message = 'Correo o contraseña incorrectos.';
+            } else if (error.message.includes('Email not confirmed')) {
+                message = 'Por favor, confirma tu correo electrónico antes de iniciar sesión.';
+            } else if (error.message.includes('Failed to fetch')) {
+                message = 'Error de conexión. Verifica tu internet.';
+            } else {
+                // Fallback for other errors (optional translation)
+                message = error.message;
+            }
+
+            errorMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${message}</span>`;
+            errorMessage.style.display = 'flex';
+            
             // If role check fails, ensure logout
             await supabase.auth.signOut();
         }
