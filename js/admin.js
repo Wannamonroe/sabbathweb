@@ -38,7 +38,7 @@ if (isLoginPage) {
             console.log('Login result:', data, error); // DEBUG
 
             if (error) throw error;
-            
+
             const user = data.user;
 
             // Check User Role
@@ -48,7 +48,7 @@ if (isLoginPage) {
                 .select('role')
                 .eq('user_id', user.id)
                 .single();
-            
+
             console.log('Role result:', roleData, roleError); // DEBUG
 
             if (roleError && roleError.code !== 'PGRST116') { // Ignore "Row not found" for now, treat as no access or default
@@ -69,9 +69,9 @@ if (isLoginPage) {
             window.location.href = 'dashboard.html';
         } catch (error) {
             console.error('Login error:', error);
-            
+
             let message = 'Ha ocurrido un error desconocido.';
-            
+
             // Map specific errors
             if (error.message.includes('Invalid login credentials')) {
                 message = 'Correo o contraseña incorrectos.';
@@ -86,7 +86,7 @@ if (isLoginPage) {
 
             errorMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${message}</span>`;
             errorMessage.style.display = 'flex';
-            
+
             // If role check fails, ensure logout
             await supabase.auth.signOut();
         }
@@ -631,7 +631,7 @@ if (isDashboard) {
                      data-id="${img.id}"
                      style="padding: 0.5rem; position: relative;">
                     <div style="position: absolute; top: 0.5rem; right: 0.5rem; display: flex; gap: 5px; z-index: 10;">
-                        <button class="btn-action btn-edit" onclick="editImageName('${img.id}', '${img.name || ''}')" title="Edit Name" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                        <button class="btn-action btn-edit" onclick="editImageDetails('${img.id}', '${(img.name || '').replace(/'/g, "\\'")}', '${(img.teleport_link || '').replace(/'/g, "\\'")}')" title="Edit Details" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-pencil-alt" style="font-size: 0.9rem;"></i>
                         </button>
                         <button class="btn-action btn-delete" onclick="deleteImage('${img.id}')" title="Delete Image" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
@@ -774,15 +774,17 @@ if (isDashboard) {
     // Rename Image Modal Logic
     const renameModal = document.getElementById('renameModal');
     const renameInput = document.getElementById('renameInput');
+    const renameLinkInput = document.getElementById('renameLinkInput');
     const cancelRenameBtn = document.getElementById('cancelRenameBtn');
     const confirmRenameBtn = document.getElementById('confirmRenameBtn');
 
     let currentRenameImageId = null;
 
-    // Edit Image Name
-    window.editImageName = (imageId, currentName) => {
+    // Edit Image Name and Link
+    window.editImageDetails = (imageId, currentName, currentLink) => {
         currentRenameImageId = imageId;
         renameInput.value = currentName || '';
+        if (renameLinkInput) renameLinkInput.value = currentLink || '';
         renameModal.style.display = 'flex';
         renameInput.focus();
     };
@@ -791,6 +793,7 @@ if (isDashboard) {
         renameModal.style.display = 'none';
         currentRenameImageId = null;
         renameInput.value = '';
+        if (renameLinkInput) renameLinkInput.value = '';
     };
 
     if (cancelRenameBtn) {
@@ -800,6 +803,8 @@ if (isDashboard) {
     if (confirmRenameBtn) {
         confirmRenameBtn.addEventListener('click', async () => {
             const newName = renameInput.value.trim();
+            const newLink = renameLinkInput ? renameLinkInput.value.trim() : '';
+
             if (!newName) {
                 alert('Please enter a name');
                 return;
@@ -809,9 +814,14 @@ if (isDashboard) {
                 confirmRenameBtn.disabled = true;
                 confirmRenameBtn.textContent = 'Saving...';
 
+                const updateData = { name: newName };
+                // If newLink is provided, save it. Otherwise send empty string or null?
+                // Request implies saving it so it can be changed.
+                updateData.teleport_link = newLink;
+
                 const { error } = await supabase
                     .from('round_images')
-                    .update({ name: newName })
+                    .update(updateData)
                     .eq('id', currentRenameImageId);
 
                 if (error) throw error;
@@ -884,7 +894,8 @@ if (isDashboard) {
                             .insert([{
                                 round_id: currentRoundId,
                                 image_url: publicUrl,
-                                name: 'SIN NOMBRE'
+                                name: 'SIN NOMBRE',
+                                teleport_link: 'http://maps.secondlife.com/secondlife/SABBATH/227/129/27'
                             }]);
 
                         if (insertError) {
