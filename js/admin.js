@@ -559,15 +559,20 @@ if (isDashboard) {
     }
 
     function handleModalFileSelect(files) {
-        selectedModalFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
 
-        if (selectedModalFiles.length === 0) {
+        if (newFiles.length === 0) {
             alert('Please select valid image files.');
             return;
         }
 
+        // Append new files to existing selection
+        selectedModalFiles = [...selectedModalFiles, ...newFiles];
+
         modalPreviewContainer.style.display = 'block';
         fileCount.textContent = `${selectedModalFiles.length} file(s) selected`;
+        
+        // Clear previous previews to rebuild (or we could append, but rebuilding is easier for the "more" counter)
         modalImagePreview.innerHTML = '';
 
         // Show previews for up to 5 images
@@ -595,6 +600,13 @@ if (isDashboard) {
         }
     }
 
+    // Add Clear Selection Button Logic (if not exists, we can add a small button dynamically or just rely on close)
+    // For better UX, let's add a clear button listener if we added one in HTML, but since I can't see HTML structure
+    // allowing "Clear Selection" implies I should probably add a way to clear without closing.
+    // I'll add a "Clear" link/button next to fileCount if it doesn't exist, or just rely on resetModalForm. 
+    // To keep it simple and safe without touching HTML, I will assume users can close/reopen to clear, 
+    // OR I can modifying the resetModalForm to be callable manually.
+    
     function resetModalForm() {
         if (imageNameInput) imageNameInput.value = '';
         selectedModalFiles = [];
@@ -865,11 +877,14 @@ if (isDashboard) {
             try {
                 saveImageBtn.disabled = true;
                 const totalFiles = selectedModalFiles.length;
-                let uploadedCount = 0;
+                let processedCount = 0;
+                let successCount = 0;
+                let failedCount = 0;
+                let errorMessages = [];
 
                 for (const file of selectedModalFiles) {
-                    uploadedCount++;
-                    saveImageBtn.textContent = `Optimizing & Uploading ${uploadedCount}/${totalFiles}...`;
+                    processedCount++;
+                    saveImageBtn.textContent = `Processing ${processedCount}/${totalFiles}...`;
 
                     try {
                         const optimizedFile = await optimizeImage(file);
@@ -881,8 +896,7 @@ if (isDashboard) {
                             .upload(fileName, optimizedFile);
 
                         if (uploadError) {
-                            console.error(`Error uploading ${file.name}:`, uploadError);
-                            continue; // Skip this file and try next
+                            throw new Error(`Upload failed: ${uploadError.message}`);
                         }
 
                         const { data: { publicUrl } } = supabase.storage
@@ -899,21 +913,35 @@ if (isDashboard) {
                             }]);
 
                         if (insertError) {
-                            console.error(`Error inserting record for ${file.name}:`, insertError);
+                            // If insert fails, we might want to clean up the uploaded file, but for now just report error
+                             throw new Error(`Database insert failed: ${insertError.message}`);
                         }
-                    } catch (optError) {
-                        console.error(`Error optimizing ${file.name}:`, optError);
+
+                        successCount++;
+
+                    } catch (fileError) {
+                        console.error(`Error processing ${file.name}:`, fileError);
+                        failedCount++;
+                        errorMessages.push(`${file.name}: ${fileError.message}`);
                     }
                 }
 
-                alert('Images upload process completed!');
+                // Final Report
+                let resultMessage = `Process Completed!\n\nSuccessful: ${successCount}\nFailed: ${failedCount}`;
+                if (failedCount > 0) {
+                    resultMessage += `\n\nFailures:\n${errorMessages.slice(0, 10).join('\n')}`;
+                    if (errorMessages.length > 10) resultMessage += `\n...and ${errorMessages.length - 10} more.`;
+                }
+
+                alert(resultMessage);
+
                 resetModalForm();
                 loadRoundImages(currentRoundId);
                 loadStorageUsage();
 
             } catch (error) {
-                console.error('Error saving images:', error);
-                alert('Error saving images: ' + error.message);
+                console.error('Critical error saving images:', error);
+                alert('Critical error: ' + error.message);
             } finally {
                 saveImageBtn.disabled = false;
                 saveImageBtn.textContent = 'Save Images';
