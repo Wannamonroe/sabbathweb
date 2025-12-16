@@ -139,6 +139,7 @@
                         .from('round_images')
                         .select('*')
                         .eq('round_id', roundId)
+                        .order('display_order', { ascending: true, nullsFirst: false })
                         .order('created_at', { ascending: false });
 
                     if (imagesError) throw imagesError;
