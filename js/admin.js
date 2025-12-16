@@ -642,6 +642,9 @@ if (isDashboard) {
                      draggable="true" 
                      data-id="${img.id}"
                      style="padding: 0.5rem; position: relative;">
+                    <div style="position: absolute; top: 0.5rem; left: 0.5rem; z-index: 10;">
+                        <input type="checkbox" class="image-checkbox" value="${img.id}" style="width: 20px; height: 20px; cursor: pointer;">
+                    </div>
                     <div style="position: absolute; top: 0.5rem; right: 0.5rem; display: flex; gap: 5px; z-index: 10;">
                         <button class="btn-action btn-edit" onclick="editImageDetails('${img.id}', '${(img.name || '').replace(/'/g, "\\'")}', '${(img.teleport_link || '').replace(/'/g, "\\'")}')" title="Edit Details" style="background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-pencil-alt" style="font-size: 0.9rem;"></i>
@@ -659,9 +662,16 @@ if (isDashboard) {
 
             // Show Save Order Button if items > 1
             const saveOrderBtn = document.getElementById('saveOrderBtn');
+            const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+            
             if (saveOrderBtn) {
                 saveOrderBtn.style.display = images.length > 1 ? 'block' : 'none';
                 saveOrderBtn.onclick = saveImageOrder;
+            }
+
+            if (deleteSelectedBtn) {
+                deleteSelectedBtn.style.display = images.length > 0 ? 'block' : 'none';
+                deleteSelectedBtn.onclick = deleteSelectedImages;
             }
 
         } catch (error) {
@@ -791,6 +801,75 @@ if (isDashboard) {
     const confirmRenameBtn = document.getElementById('confirmRenameBtn');
 
     let currentRenameImageId = null;
+
+    // Delete Selected Images (Bulk)
+    async function deleteSelectedImages() {
+        const deleteBtn = document.getElementById('deleteSelectedBtn');
+        const checkboxes = document.querySelectorAll('.image-checkbox:checked');
+        
+        if (checkboxes.length === 0) {
+            alert('Please select at least one image to delete.');
+            return;
+        }
+        
+        if (!confirm(`Are you sure you want to delete ${checkboxes.length} selected image(s)? This cannot be undone.`)) {
+            return;
+        }
+
+        const originalText = deleteBtn.textContent;
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+
+        try {
+            const idsToDelete = Array.from(checkboxes).map(cb => cb.value);
+
+            // 1. Get Image URLs to delete from Storage
+            const { data: imagesInfo, error: fetchError } = await supabase
+                .from('round_images')
+                .select('image_url')
+                .in('id', idsToDelete);
+
+            if (fetchError) throw fetchError;
+
+            // 2. Delete from Storage
+            const pathsToDelete = [];
+            if (imagesInfo && imagesInfo.length > 0) {
+                imagesInfo.forEach(img => {
+                    const urlParts = img.image_url.split('/round-images/');
+                    if (urlParts.length > 1) {
+                        pathsToDelete.push(urlParts[1]);
+                    }
+                });
+            }
+
+            if (pathsToDelete.length > 0) {
+                const { error: storageError } = await supabase.storage
+                    .from('round-images')
+                    .remove(pathsToDelete);
+                
+                if (storageError) console.error('Storage deletion partial error:', storageError);
+            }
+
+            // 3. Delete from DB
+            const { error: deleteError } = await supabase
+                .from('round_images')
+                .delete()
+                .in('id', idsToDelete);
+
+            if (deleteError) throw deleteError;
+
+            alert('Selected images deleted successfully.');
+            loadRoundImages(currentRoundId);
+            loadStorageUsage();
+
+        } catch (error) {
+            console.error('Error deleting selected images:', error);
+            alert('Error deleting images: ' + error.message);
+        } finally {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = originalText;
+        }
+    }
 
     // Edit Image Name and Link
     window.editImageDetails = (imageId, currentName, currentLink) => {

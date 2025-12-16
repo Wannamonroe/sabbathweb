@@ -177,12 +177,14 @@
             </div>
 
             <div class="images-list-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3 style="margin: 0;">Current Images</h3>
-                    <button id="saveOrderBtn" class="btn-create"
-                        style="width: auto; padding: 0.5rem 1rem; background: #8dde00; color: #000; font-size: 0.9rem; display: none;">Save
+                <h3 style="margin: 0;">Current Images</h3>
+                <div class="gallery-actions">
+                    <button id="deleteSelectedBtn" class="btn-gallery btn-delete-selected" style="display: none;">Delete
+                        Selected</button>
+                    <button id="saveOrderBtn" class="btn-gallery btn-save-order" style="display: none;">Save
                         New Order</button>
                 </div>
+            </div>
                 <div id="roundImagesList" class="rounds-list"
                     style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
                     <!-- Images will be loaded here -->

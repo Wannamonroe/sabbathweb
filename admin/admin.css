@@ -208,3 +208,39 @@
     font-size: 0.8rem;
     color: #aaa;
 }
+
+/* Gallery Styles */
+.images-list-section {
+    margin-top: 2rem;
+}
+
+.gallery-actions {
+    display: flex;
+    gap: 10px;
+    margin: 1.5rem 0; /* Add vertical spacing as requested */
+}
+
+.btn-gallery {
+    width: auto;
+    padding: 0.8rem 1.5rem; /* Increased padding */
+    font-size: 0.9rem;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-gallery:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.btn-delete-selected {
+    background: #ff4444;
+}
+
+.btn-save-order {
+    background: #8dde00;
+    color: #000;
+}
