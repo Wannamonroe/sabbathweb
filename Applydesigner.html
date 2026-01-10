@@ -41,15 +41,20 @@
     <section class="apply-section">
         <div class="container">
             <div class="apply-content">
-                <h1 class="apply-title">Join the Darkness</h1>
+                <h1 id="designerPageTitle" class="apply-title">Join the Darkness</h1>
                 <div class="apply-text">
-                    <p>Welcome to Sabbath Event, where darkness meets creativity. We're seeking visionary creators who
-                        dare to explore the depths of dark elegance and gothic aesthetics.</p>
-                    <p>If you're ready to showcase your creations in an environment that celebrates the extraordinary,
-                        we invite you to join our exclusive community.</p>
-                    <p>Submit your application below and become part of something truly unique.</p>
+                    <p id="designerPageText">Welcome to Sabbath Event, where darkness meets creativity. We're seeking
+                        visionary creators who
+                        dare to explore the depths of dark elegance and gothic aesthetics.
+                        <br><br>
+                        If you're ready to showcase your creations in an environment that celebrates the extraordinary,
+                        we invite you to join our exclusive community.
+                        <br><br>
+                        Submit your application below and become part of something truly unique.
+                    </p>
                 </div>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeX8lcQieejAYvIZ8pirgWJanxBclQtXq3ZtdNlI5vuxE0SpQ/viewform"
+                <a id="designerPageButton"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSeX8lcQieejAYvIZ8pirgWJanxBclQtXq3ZtdNlI5vuxE0SpQ/viewform"
                     target="_blank" class="apply-button">
                     <span class="button-text">Apply Now</span>
                     <i class="fas fa-arrow-right"></i>
@@ -84,6 +89,8 @@
     </footer>
 
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/apply-designer.js"></script>
 </body>
 
 </html>

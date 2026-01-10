@@ -119,6 +119,83 @@
                     <textarea id="adminAboutText" rows="6" placeholder="Enter main description..."></textarea>
                 </div>
 
+                <hr style="border: 1px solid #333; margin: 1.5rem 0;">
+
+                <!-- Apply Page Section -->
+                <h4 style="color: #8dde00; margin-bottom: 1rem;">Apply Page (Main)</h4>
+
+                <div class="form-group">
+                    <label for="adminApplyTitle">Main Page Title</label>
+                    <input type="text" id="adminApplyTitle" placeholder="e.g., Choose Your Path">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <h5
+                            style="color: #fff; margin-bottom: 0.5rem; border-bottom: 1px solid #444; padding-bottom: 0.2rem;">
+                            Designer Block</h5>
+                        <div class="form-group">
+                            <label for="adminApplyDesignerText">Text</label>
+                            <textarea id="adminApplyDesignerText" rows="4"
+                                placeholder="Description for Designer block..."></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <h5
+                            style="color: #fff; margin-bottom: 0.5rem; border-bottom: 1px solid #444; padding-bottom: 0.2rem;">
+                            Blogger Block</h5>
+                        <div class="form-group">
+                            <label for="adminApplyBloggerText">Text</label>
+                            <textarea id="adminApplyBloggerText" rows="4"
+                                placeholder="Description for Blogger block..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border: 1px solid #333; margin: 1.5rem 0;">
+
+                <!-- Designer Page Section -->
+                <h4 style="color: #8dde00; margin-bottom: 1rem;">Designer Page</h4>
+                <div class="form-group">
+                    <label for="adminDesignerPageTitle">Title</label>
+                    <input type="text" id="adminDesignerPageTitle" placeholder="e.g., Join the Darkness">
+                </div>
+                <div class="form-group">
+                    <label for="adminDesignerPageText">Description</label>
+                    <textarea id="adminDesignerPageText" rows="4" placeholder="Main description text..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="adminDesignerPageButton">Button Link</label>
+                    <input type="text" id="adminDesignerPageButton" placeholder="Google Form URL...">
+                </div>
+
+                <hr style="border: 1px solid #333; margin: 1.5rem 0;">
+
+                <!-- Blogger Page Section -->
+                <h4 style="color: #8dde00; margin-bottom: 1rem;">Blogger Page</h4>
+                <div class="form-group">
+                    <label for="adminBloggerPageTitle">Title</label>
+                    <input type="text" id="adminBloggerPageTitle" placeholder="e.g., Become a Sabbath Blogger">
+                </div>
+                <div class="form-group">
+                    <label for="adminBloggerPageSubtitle">Subtitle</label>
+                    <textarea id="adminBloggerPageSubtitle" rows="2" placeholder="Subtitle text..."></textarea>
+                </div>
+
+                <h5 style="color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">Requirements</h5>
+                <div id="bloggerRequirementsContainer" style="margin-bottom: 1rem;">
+                    <!-- Dynamic Requirements will be added here -->
+                </div>
+                <button type="button" id="addRequirementBtn" class="btn-create"
+                    style="background: #444; color: #fff; width: auto; font-size: 0.8rem; margin-bottom: 1rem;">
+                    <i class="fas fa-plus"></i> Add Requirement
+                </button>
+
+                <div class="form-group">
+                    <label for="adminBloggerPageButton">Button Link</label>
+                    <input type="text" id="adminBloggerPageButton" placeholder="Google Form URL...">
+                </div>
+
                 <button type="submit" class="btn-create" style="margin-top: 1rem; background: #8dde00; color: #000;">
                     Save Content
                 </button>

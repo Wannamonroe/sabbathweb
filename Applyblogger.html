@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Banner Section -->
     <section class="banner-section">
@@ -17,7 +19,7 @@
         <img src="img/sabbath_logo.png" alt="Sabbath Banner" class="banner-logo">
     </section>
 
-    <!-- Navbar --> 
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-brand">
             <img src="img/sabbath_logo.png" alt="Sabbath Logo" class="logo">
@@ -36,45 +38,29 @@
     </nav>
 
     <!-- Apply Section -->
-<!-- Apply Section -->
-<section class="apply-section">
-    <div class="container">
-        <div class="apply-content">
-            <h1 class="apply-title">Become a Sabbath Blogger</h1>
-            <div class="apply-text">
-                <p>Join our exclusive community of content creators and photographers who bring dark elegance to life through their unique perspective.</p>
-                
-                <h2 class="requirements-title">𝐑𝐄𝐐𝐔𝐈𝐑𝐄𝐌𝐄𝐍𝐓𝐒</h2>
-                <ul class="requirements-list">
-                    <li>𝟏) Be committed to your work and make good quality photos.</li>
-                    
-                    <li>𝟐) Display products 𝐚𝐩𝐩𝐫𝐨𝐩𝐫𝐢𝐚𝐭𝐞𝐥𝐲.</li>
-                    
-                    <li>𝟑) Don't edit or alter the products for any reason. (Be respectful to the designer).</li>
-                    
-                    <li>𝟒) It's mandatory for all the Bloggers to be in the 𝐒𝐀𝐁𝐁𝐀𝐓𝐇 𝐓𝐞𝐚𝐦 (𝐆𝐫𝐨𝐮𝐩).</li>
-                    
-                    <li>𝟓) All bloggers should post their blogs to the 𝐒𝐀𝐁𝐁𝐀𝐓𝐇 𝐄𝐯𝐞𝐧𝐭 𝐬𝐞𝐫𝐯𝐞𝐫 inside the 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 channel.<br>As well as submitting your photo to the Flickr group (without this step the post will not be accepted)</li>
-                    
-                    <li>𝟔) If you cannot fulfill your work, 𝐩𝐥𝐞𝐚𝐬𝐞 𝐢𝐧𝐟𝐨𝐫𝐦 𝐢𝐭 𝐢𝐧 𝐭𝐢𝐦𝐞.</li>
-                    
-                    <li>𝟕) 𝐌𝐢𝐧𝐢𝐦𝐮𝐦 𝟑 𝐛𝐥𝐨𝐠𝐬 𝐩𝐞𝐫 𝐫𝐨𝐮𝐧𝐝. If you decide to just do these blogs, you should use as many products as possible to create a good outfits.</li>
-                    
-                    <li>𝟖) 𝐌𝐢𝐧𝐢𝐦𝐮𝐦 𝟑 𝐢𝐭𝐞𝐦𝐬=(𝐛𝐫𝐚𝐧𝐝𝐬) 𝐩𝐞𝐫 𝐛𝐥𝐨𝐠, maximum as many as you want.</li>
-                    
-                    <li>𝟗) Distribute the posts during the round. (You can make as many blogs as you want, but blogs of 1/2 items will not be counted as part of the minimum.)</li>
-                    
-                    <li>𝟏𝟎) Blogger who takes the products and disappears for some reason with no apparent explanation. It will not be accepted if you apply again. 𝐈𝐭 𝐰𝐢𝐥𝐥 𝐛𝐞 𝐛𝐥𝐚𝐜𝐤𝐥𝐢𝐬𝐭𝐞𝐝.</li>
-                </ul>
-                
-                <a href="https://forms.google.com/your-blogger-form-link" target="_blank" class="apply-button">
-                    <span class="button-text">Apply as Blogger</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+    <!-- Apply Section -->
+    <section class="apply-section">
+        <div class="container">
+            <div class="apply-content">
+                <h1 id="bloggerPageTitle" class="apply-title">Become a Sabbath Blogger</h1>
+                <div class="apply-text">
+                    <p id="bloggerPageSubtitle">Join our exclusive community of content creators and photographers who
+                        bring dark elegance to life through their unique perspective.</p>
+
+                    <h2 class="requirements-title">𝐑𝐄𝐐𝐔𝐈𝐑𝐄𝐌𝐄𝐍𝐓𝐒</h2>
+                    <ul id="bloggerRequirementsList" class="requirements-list">
+                        <!-- Dynamic Requirements -->
+                    </ul>
+
+                    <a id="bloggerPageButton" href="https://forms.google.com/your-blogger-form-link" target="_blank"
+                        class="apply-button">
+                        <span class="button-text">Apply as Blogger</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -102,5 +88,8 @@
     </footer>
 
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/apply-blogger.js"></script>
 </body>
-</html> 
+
+</html>

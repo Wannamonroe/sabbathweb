@@ -115,26 +115,80 @@ if (isDashboard) {
     const contentManagementBtn = document.getElementById('contentManagementBtn');
     const contentManagementSection = document.getElementById('contentManagementSection');
     const contentForm = document.getElementById('contentForm');
+
+    // Home Elements
     const adminHomeEventLink = document.getElementById('adminHomeEventLink');
+
+    // About Elements
     const adminAboutType = document.getElementById('adminAboutType');
     const adminAboutOpening = document.getElementById('adminAboutOpening');
     const adminAboutClosing = document.getElementById('adminAboutClosing');
     const adminAboutText = document.getElementById('adminAboutText');
 
-    // Note: accountManagementBtn and userManagementSection are already defined if role check passes, 
-    // but better to grab them safely if we move code around.
+    // Apply Page Elements (Main)
+    const adminApplyTitle = document.getElementById('adminApplyTitle');
+    const adminApplyDesignerText = document.getElementById('adminApplyDesignerText');
+    const adminApplyBloggerText = document.getElementById('adminApplyBloggerText');
+
+    // Designer Page Elements
+    const adminDesignerPageTitle = document.getElementById('adminDesignerPageTitle');
+    const adminDesignerPageText = document.getElementById('adminDesignerPageText');
+    const adminDesignerPageButton = document.getElementById('adminDesignerPageButton');
+
+    // Blogger Page Elements
+    const adminBloggerPageTitle = document.getElementById('adminBloggerPageTitle');
+    const adminBloggerPageSubtitle = document.getElementById('adminBloggerPageSubtitle');
+    const adminBloggerPageButton = document.getElementById('adminBloggerPageButton');
+    const bloggerRequirementsContainer = document.getElementById('bloggerRequirementsContainer');
+    const addRequirementBtn = document.getElementById('addRequirementBtn');
+
+    // Dynamic Requirements Logic
+    if (addRequirementBtn) {
+        addRequirementBtn.addEventListener('click', () => {
+            addRequirementInput('');
+        });
+    }
+
+    function addRequirementInput(value = '') {
+        const div = document.createElement('div');
+        div.className = 'requirement-item';
+        div.style.display = 'flex';
+        div.style.gap = '0.5rem';
+        div.style.marginBottom = '0.5rem';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'requirement-input';
+        input.value = value;
+        input.placeholder = 'Enter requirement text...';
+        input.style.flex = '1';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        removeBtn.style.background = '#d93025';
+        removeBtn.style.color = '#fff';
+        removeBtn.style.border = 'none';
+        removeBtn.style.padding = '0.5rem';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.borderRadius = '4px';
+
+        removeBtn.onclick = () => div.remove();
+
+        div.appendChild(input);
+        div.appendChild(removeBtn);
+        bloggerRequirementsContainer.appendChild(div);
+    }
 
     // Tab Switching Logic
     const sections = {
-        'rounds': document.querySelector('.dashboard-section:first-of-type'), // Assuming first section is rounds
+        'rounds': document.querySelector('.dashboard-section:first-of-type'),
         'users': document.getElementById('userManagementSection'),
         'content': contentManagementSection,
-        'home': document.querySelector('.dashboard-section:nth-of-type(4)'), // Existing rounds list (messy selector, relying on display toggles)
+        'home': document.querySelector('.dashboard-section:nth-of-type(4)'),
     };
 
-    // Better Logic: Just hide all known sections and show target
     const hideAllSections = () => {
-        // Hide Main Sections
         document.querySelectorAll('.dashboard-section').forEach(sec => sec.style.display = 'none');
     };
 
@@ -145,23 +199,6 @@ if (isDashboard) {
             loadSiteContent();
         });
     }
-
-    // Add back button or Logic to return to Rounds?
-    // The current dashboard structure is a bit flat.
-    // Let's make "Admin Dashboard" header click reload or something, or add a "Rounds" button if we are hiding things.
-    // For now, I will assume the user can reload or I should add a "Rounds" button.
-    // Actually, looking at the UI, there isn't a "Rounds" button. The default view is Rounds.
-    // I should probably add a "Rounds" button to the header if I'm building a tab system.
-    // OR just toggle visibility.
-
-    // Let's ADD a Rounds button dynamically if not present, OR just make sure we can go back.
-    // For simplicity in this iteration: Reload page goes to default. 
-    // And I will add a simple "View Rounds" button behavior if needed.
-    // BUT the 'Dashboard' title is not a link.
-
-    // Let's add a "Rounds" button to the header in the previous step? No, I can't go back.
-    // I will add a "Dashboard / Rounds" button logic to `contentManagementBtn` siblings if possible.
-    // For now, let's just implement the Content Management view.
 
     async function loadSiteContent() {
         try {
@@ -174,22 +211,45 @@ if (isDashboard) {
             if (data) {
                 const homeData = data.find(item => item.section === 'home')?.content;
                 const aboutData = data.find(item => item.section === 'about_us')?.content;
+                const applyData = data.find(item => item.section === 'apply')?.content;
+                const designerData = data.find(item => item.section === 'apply_designer')?.content;
+                const bloggerData = data.find(item => item.section === 'apply_blogger')?.content;
 
                 if (homeData) {
                     adminHomeEventLink.value = homeData.event_link || '';
                 }
 
                 if (aboutData) {
-                    adminAboutType.value = aboutData.bottom_text || ''; // Mapping bottom_text to Event Type/Top Text based on user request "Texto de abajo" but field says "Event Type" in my HTML. wait.
-                    // User Request: "About Us: Texto del about us, tanto las fechas que hay de event opening, event closing y el texto de abajo."
-                    // My HTML: adminAboutType (Event Type / Top Text), adminAboutOpening, adminAboutClosing, adminAboutText (Description)
-                    // Let's Map:
-                    // adminAboutType -> bottom_text (or maybe 'event_type' if I add it, but user said 'texto de abajo'. actually 'event-type' class in HTML is top text 'Monthly themed...'. 'event-description' is main text.)
-                    // Let's stick to the plan:
                     adminAboutType.value = aboutData.bottom_text || 'Monthly themed virtual event.';
                     adminAboutOpening.value = aboutData.opening_date || '';
                     adminAboutClosing.value = aboutData.closing_date || '';
                     adminAboutText.value = aboutData.text || '';
+                }
+
+                if (applyData) {
+                    if (adminApplyTitle) adminApplyTitle.value = applyData.page_title || '';
+                    if (adminApplyDesignerText) adminApplyDesignerText.value = applyData.designer_text || '';
+                    if (adminApplyBloggerText) adminApplyBloggerText.value = applyData.blogger_text || '';
+                }
+
+                if (designerData) {
+                    if (adminDesignerPageTitle) adminDesignerPageTitle.value = designerData.title || '';
+                    if (adminDesignerPageText) adminDesignerPageText.value = designerData.text || '';
+                    if (adminDesignerPageButton) adminDesignerPageButton.value = designerData.button_link || '';
+                }
+
+                if (bloggerData) {
+                    if (adminBloggerPageTitle) adminBloggerPageTitle.value = bloggerData.title || '';
+                    if (adminBloggerPageSubtitle) adminBloggerPageSubtitle.value = bloggerData.subtitle || '';
+                    if (adminBloggerPageButton) adminBloggerPageButton.value = bloggerData.button_link || '';
+
+                    // Render Requirements
+                    if (bloggerRequirementsContainer) {
+                        bloggerRequirementsContainer.innerHTML = ''; // Clear existing
+                        if (bloggerData.requirements && Array.isArray(bloggerData.requirements)) {
+                            bloggerData.requirements.forEach(req => addRequirementInput(req));
+                        }
+                    }
                 }
             }
         } catch (error) {
@@ -204,30 +264,45 @@ if (isDashboard) {
 
             try {
                 // Prepare Data
-                const homeContent = {
-                    event_link: adminHomeEventLink.value
-                };
-
+                const homeContent = { event_link: adminHomeEventLink.value };
                 const aboutContent = {
                     text: adminAboutText.value,
                     opening_date: adminAboutOpening.value,
                     closing_date: adminAboutClosing.value,
                     bottom_text: adminAboutType.value
                 };
+                const applyContent = {
+                    page_title: adminApplyTitle.value,
+                    designer_text: adminApplyDesignerText.value,
+                    designer_link: 'Applydesigner.html',
+                    blogger_text: adminApplyBloggerText.value,
+                    blogger_link: 'Applyblogger.html'
+                };
+                const designerContent = {
+                    title: adminDesignerPageTitle.value,
+                    text: adminDesignerPageText.value,
+                    button_link: adminDesignerPageButton.value
+                };
 
-                // Upsert Home
-                const { error: homeError } = await supabase
-                    .from('site_content')
-                    .upsert({ section: 'home', content: homeContent });
+                // Collect Requirements
+                const requirements = [];
+                document.querySelectorAll('.requirement-input').forEach(input => {
+                    if (input.value.trim()) requirements.push(input.value.trim());
+                });
 
-                if (homeError) throw homeError;
+                const bloggerContent = {
+                    title: adminBloggerPageTitle.value,
+                    subtitle: adminBloggerPageSubtitle.value,
+                    button_link: adminBloggerPageButton.value,
+                    requirements: requirements
+                };
 
-                // Upsert About
-                const { error: aboutError } = await supabase
-                    .from('site_content')
-                    .upsert({ section: 'about_us', content: aboutContent });
-
-                if (aboutError) throw aboutError;
+                // Upsert All
+                await supabase.from('site_content').upsert({ section: 'home', content: homeContent });
+                await supabase.from('site_content').upsert({ section: 'about_us', content: aboutContent });
+                await supabase.from('site_content').upsert({ section: 'apply', content: applyContent });
+                await supabase.from('site_content').upsert({ section: 'apply_designer', content: designerContent });
+                await supabase.from('site_content').upsert({ section: 'apply_blogger', content: bloggerContent });
 
                 alert('Content updated successfully!');
 

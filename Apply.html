@@ -40,16 +40,17 @@
     <!-- Apply Options Section -->
     <section class="apply-options-section">
         <div class="container">
-            <h1 class="section-title">Choose Your Path</h1>
+            <h1 id="applyPageTitle" class="section-title">Choose Your Path</h1>
 
             <div class="apply-cards">
                 <!-- Designer Card -->
                 <div class="apply-card">
                     <h2>Designer Apply</h2>
-                    <p>Are you a creator of dark elegance? Join us as a designer and showcase your gothic creations in
+                    <p id="applyDesignerText">Are you a creator of dark elegance? Join us as a designer and showcase
+                        your gothic creations in
                         our exclusive event. Perfect for fashion designers, accessory creators, and visual artists who
                         embrace the darkness.</p>
-                    <a href="Applydesigner.html" class="apply-button">
+                    <a id="applyDesignerLink" href="Applydesigner.html" class="apply-button">
                         <span class="button-text">Apply as Designer</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -58,10 +59,11 @@
                 <!-- Blogger Card -->
                 <div class="apply-card">
                     <h2>Blogger Apply</h2>
-                    <p>Capture the essence of darkness through your lens. Join our blogger program to photograph and
+                    <p id="applyBloggerText">Capture the essence of darkness through your lens. Join our blogger program
+                        to photograph and
                         showcase the stunning creations featured in our event. Ideal for photographers and content
                         creators passionate about gothic aesthetics.</p>
-                    <a href="Applyblogger.html  " class="apply-button">
+                    <a id="applyBloggerLink" href="Applyblogger.html" class="apply-button">
                         <span class="button-text">Apply as Blogger</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -96,6 +98,8 @@
     </footer>
 
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/apply-content.js"></script>
 </body>
 
 </html>
