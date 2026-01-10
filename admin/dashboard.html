@@ -27,6 +27,10 @@
         <div class="dashboard-header">
             <h2>Admin Dashboard</h2>
             <div style="display: flex; gap: 1rem;">
+                <button id="contentManagementBtn" class="btn-create"
+                    style="background: #4285f4; color: #fff; width: auto; padding: 0.5rem 1rem;">
+                    <i class="fas fa-edit"></i> Content Management
+                </button>
                 <button id="accountManagementBtn" class="btn-create"
                     style="display: none; background: #8dde00; color: #000; width: auto; padding: 0.5rem 1rem;">
                     <i class="fas fa-users-cog"></i> Account Management
@@ -71,6 +75,55 @@
 
     </section>
 
+    </section>
+
+    <!-- Content Management Section -->
+    <section id="contentManagementSection" class="dashboard-section" style="padding-top: 0; display: none;">
+        <div class="create-round-card">
+            <h3>Content Management</h3>
+            <p style="color: #aaa; margin-bottom: 1rem;">Manage dynamic content for the website.</p>
+
+            <form id="contentForm">
+                <hr style="border: 1px solid #333; margin: 1.5rem 0;">
+
+                <!-- Home Section -->
+                <h4 style="color: #8dde00; margin-bottom: 1rem;">Home Page</h4>
+                <div class="form-group">
+                    <label for="homeEventLink">"Go to The event" Link</label>
+                    <input type="url" id="adminHomeEventLink"
+                        placeholder="Enter full URL (e.g., http://maps.secondlife.com/...)">
+                </div>
+
+                <hr style="border: 1px solid #333; margin: 1.5rem 0;">
+
+                <!-- About Us Section -->
+                <h4 style="color: #8dde00; margin-bottom: 1rem;">About Us</h4>
+                <div class="form-group">
+                    <label for="adminAboutType">Event Type / Top Text</label>
+                    <input type="text" id="adminAboutType" placeholder="e.g., Monthly themed virtual event.">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="adminAboutOpening">Opening Date Text</label>
+                        <input type="text" id="adminAboutOpening" placeholder="e.g., 21th at 12 slt Noon">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminAboutClosing">Closing Date Text</label>
+                        <input type="text" id="adminAboutClosing" placeholder="e.g., 11th at 12 slt Midnight">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminAboutText">About Description</label>
+                    <textarea id="adminAboutText" rows="6" placeholder="Enter main description..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-create" style="margin-top: 1rem; background: #8dde00; color: #000;">
+                    Save Content
+                </button>
+            </form>
+        </div>
     </section>
 
     <!-- User Management Section (Superadmin Only) -->

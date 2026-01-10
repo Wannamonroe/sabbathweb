@@ -111,6 +111,133 @@ if (isDashboard) {
     const imageUrlInput = document.getElementById('imageUrl');
     const storageUsedSpan = document.getElementById('storageUsed');
 
+    // Content Management Elements
+    const contentManagementBtn = document.getElementById('contentManagementBtn');
+    const contentManagementSection = document.getElementById('contentManagementSection');
+    const contentForm = document.getElementById('contentForm');
+    const adminHomeEventLink = document.getElementById('adminHomeEventLink');
+    const adminAboutType = document.getElementById('adminAboutType');
+    const adminAboutOpening = document.getElementById('adminAboutOpening');
+    const adminAboutClosing = document.getElementById('adminAboutClosing');
+    const adminAboutText = document.getElementById('adminAboutText');
+
+    // Note: accountManagementBtn and userManagementSection are already defined if role check passes, 
+    // but better to grab them safely if we move code around.
+
+    // Tab Switching Logic
+    const sections = {
+        'rounds': document.querySelector('.dashboard-section:first-of-type'), // Assuming first section is rounds
+        'users': document.getElementById('userManagementSection'),
+        'content': contentManagementSection,
+        'home': document.querySelector('.dashboard-section:nth-of-type(4)'), // Existing rounds list (messy selector, relying on display toggles)
+    };
+
+    // Better Logic: Just hide all known sections and show target
+    const hideAllSections = () => {
+        // Hide Main Sections
+        document.querySelectorAll('.dashboard-section').forEach(sec => sec.style.display = 'none');
+    };
+
+    if (contentManagementBtn) {
+        contentManagementBtn.addEventListener('click', () => {
+            hideAllSections();
+            if (contentManagementSection) contentManagementSection.style.display = 'block';
+            loadSiteContent();
+        });
+    }
+
+    // Add back button or Logic to return to Rounds?
+    // The current dashboard structure is a bit flat.
+    // Let's make "Admin Dashboard" header click reload or something, or add a "Rounds" button if we are hiding things.
+    // For now, I will assume the user can reload or I should add a "Rounds" button.
+    // Actually, looking at the UI, there isn't a "Rounds" button. The default view is Rounds.
+    // I should probably add a "Rounds" button to the header if I'm building a tab system.
+    // OR just toggle visibility.
+
+    // Let's ADD a Rounds button dynamically if not present, OR just make sure we can go back.
+    // For simplicity in this iteration: Reload page goes to default. 
+    // And I will add a simple "View Rounds" button behavior if needed.
+    // BUT the 'Dashboard' title is not a link.
+
+    // Let's add a "Rounds" button to the header in the previous step? No, I can't go back.
+    // I will add a "Dashboard / Rounds" button logic to `contentManagementBtn` siblings if possible.
+    // For now, let's just implement the Content Management view.
+
+    async function loadSiteContent() {
+        try {
+            const { data, error } = await supabase
+                .from('site_content')
+                .select('*');
+
+            if (error) throw error;
+
+            if (data) {
+                const homeData = data.find(item => item.section === 'home')?.content;
+                const aboutData = data.find(item => item.section === 'about_us')?.content;
+
+                if (homeData) {
+                    adminHomeEventLink.value = homeData.event_link || '';
+                }
+
+                if (aboutData) {
+                    adminAboutType.value = aboutData.bottom_text || ''; // Mapping bottom_text to Event Type/Top Text based on user request "Texto de abajo" but field says "Event Type" in my HTML. wait.
+                    // User Request: "About Us: Texto del about us, tanto las fechas que hay de event opening, event closing y el texto de abajo."
+                    // My HTML: adminAboutType (Event Type / Top Text), adminAboutOpening, adminAboutClosing, adminAboutText (Description)
+                    // Let's Map:
+                    // adminAboutType -> bottom_text (or maybe 'event_type' if I add it, but user said 'texto de abajo'. actually 'event-type' class in HTML is top text 'Monthly themed...'. 'event-description' is main text.)
+                    // Let's stick to the plan:
+                    adminAboutType.value = aboutData.bottom_text || 'Monthly themed virtual event.';
+                    adminAboutOpening.value = aboutData.opening_date || '';
+                    adminAboutClosing.value = aboutData.closing_date || '';
+                    adminAboutText.value = aboutData.text || '';
+                }
+            }
+        } catch (error) {
+            console.error('Error loading content:', error);
+            alert('Error loading content.');
+        }
+    }
+
+    if (contentForm) {
+        contentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                // Prepare Data
+                const homeContent = {
+                    event_link: adminHomeEventLink.value
+                };
+
+                const aboutContent = {
+                    text: adminAboutText.value,
+                    opening_date: adminAboutOpening.value,
+                    closing_date: adminAboutClosing.value,
+                    bottom_text: adminAboutType.value
+                };
+
+                // Upsert Home
+                const { error: homeError } = await supabase
+                    .from('site_content')
+                    .upsert({ section: 'home', content: homeContent });
+
+                if (homeError) throw homeError;
+
+                // Upsert About
+                const { error: aboutError } = await supabase
+                    .from('site_content')
+                    .upsert({ section: 'about_us', content: aboutContent });
+
+                if (aboutError) throw aboutError;
+
+                alert('Content updated successfully!');
+
+            } catch (error) {
+                console.error('Error saving content:', error);
+                alert('Error saving content: ' + error.message);
+            }
+        });
+    }
+
     // File Upload Elements
     const dropZone = document.getElementById('dropZone');
     const imageFileInput = document.getElementById('imageFile');
@@ -571,7 +698,7 @@ if (isDashboard) {
 
         modalPreviewContainer.style.display = 'block';
         fileCount.textContent = `${selectedModalFiles.length} file(s) selected`;
-        
+
         // Clear previous previews to rebuild (or we could append, but rebuilding is easier for the "more" counter)
         modalImagePreview.innerHTML = '';
 
@@ -606,7 +733,7 @@ if (isDashboard) {
     // I'll add a "Clear" link/button next to fileCount if it doesn't exist, or just rely on resetModalForm. 
     // To keep it simple and safe without touching HTML, I will assume users can close/reopen to clear, 
     // OR I can modifying the resetModalForm to be callable manually.
-    
+
     function resetModalForm() {
         if (imageNameInput) imageNameInput.value = '';
         selectedModalFiles = [];
@@ -663,7 +790,7 @@ if (isDashboard) {
             // Show Save Order Button if items > 1
             const saveOrderBtn = document.getElementById('saveOrderBtn');
             const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
-            
+
             if (saveOrderBtn) {
                 saveOrderBtn.style.display = images.length > 1 ? 'block' : 'none';
                 saveOrderBtn.onclick = saveImageOrder;
@@ -806,12 +933,12 @@ if (isDashboard) {
     async function deleteSelectedImages() {
         const deleteBtn = document.getElementById('deleteSelectedBtn');
         const checkboxes = document.querySelectorAll('.image-checkbox:checked');
-        
+
         if (checkboxes.length === 0) {
             alert('Please select at least one image to delete.');
             return;
         }
-        
+
         if (!confirm(`Are you sure you want to delete ${checkboxes.length} selected image(s)? This cannot be undone.`)) {
             return;
         }
@@ -846,7 +973,7 @@ if (isDashboard) {
                 const { error: storageError } = await supabase.storage
                     .from('round-images')
                     .remove(pathsToDelete);
-                
+
                 if (storageError) console.error('Storage deletion partial error:', storageError);
             }
 
@@ -993,7 +1120,7 @@ if (isDashboard) {
 
                         if (insertError) {
                             // If insert fails, we might want to clean up the uploaded file, but for now just report error
-                             throw new Error(`Database insert failed: ${insertError.message}`);
+                            throw new Error(`Database insert failed: ${insertError.message}`);
                         }
 
                         successCount++;

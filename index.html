@@ -84,7 +84,8 @@
 
     <!-- Botón de evento -->
     <div class="event-button-container">
-        <a href="http://maps.secondlife.com/secondlife/SABBATH/227/128/27" class="event-button" target="_blank">
+        <a id="homeEventLink" href="http://maps.secondlife.com/secondlife/SABBATH/227/128/27" class="event-button"
+            target="_blank">
             <span class="button-text">GO TO THE EVENT</span>
             <span class="button-glow"></span>
         </a>
@@ -99,14 +100,16 @@
             <h2>About Us</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p class="event-type">Monthly themed virtual event.</p>
+                    <p id="aboutUsType" class="event-type">Monthly themed virtual event.</p>
 
                     <div class="event-dates">
-                        <p><strong>Event Opening date:</strong> 21th at 12 slt Noon</p>
-                        <p><strong>Event Closing date:</strong> 11th at 12 slt Midnight</p>
+                        <p><strong>Event Opening date:</strong> <span id="aboutUsOpening">21th at 12 slt Noon</span></p>
+                        <p><strong>Event Closing date:</strong> <span id="aboutUsClosing">11th at 12 slt Midnight</span>
+                        </p>
                     </div>
 
-                    <p class="event-description">Step into a world where the shadows come alive with creativity and
+                    <p id="aboutUsText" class="event-description">Step into a world where the shadows come alive with
+                        creativity and
                         intrigue. Sabbath is more than just an event—it's a celebration of all things dark, peculiar,
                         and avant-garde. Embrace its hauntingly beautiful aesthetic and let it inspire every facet of
                         your Second Life. From your wardrobe to your home decor, from your social media content to your
