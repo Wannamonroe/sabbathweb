@@ -196,6 +196,38 @@
                     <input type="text" id="adminBloggerPageButton" placeholder="Google Form URL...">
                 </div>
 
+                <hr style="border: 1px solid #333; margin: 1.5rem 0;">
+
+                <!-- Giveaway Page Section -->
+                <h4 style="color: #8dde00; margin-bottom: 1rem;">Giveaway Page</h4>
+                <div class="form-group">
+                    <label for="adminGiveawayTitle">Title</label>
+                    <input type="text" id="adminGiveawayTitle" placeholder="e.g., SABBATH 30.000 GIVEAWAY">
+                </div>
+                <div class="form-group">
+                    <label for="adminGiveawayDescription">Description (Prize Info)</label>
+                    <textarea id="adminGiveawayDescription" rows="3" placeholder="Prize info text..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="adminGiveawaySubtitle">Subtitle (Steps Title)</label>
+                    <textarea id="adminGiveawaySubtitle" rows="2"
+                        placeholder="To enter the giveaway follow..."></textarea>
+                </div>
+
+                <h5 style="color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">Steps</h5>
+                <div id="giveawayStepsContainer" style="margin-bottom: 1rem;">
+                    <!-- Dynamic Steps will be added here -->
+                </div>
+                <button type="button" id="addStepBtn" class="btn-create"
+                    style="background: #444; color: #fff; width: auto; font-size: 0.8rem; margin-bottom: 1rem;">
+                    <i class="fas fa-plus"></i> Add Step
+                </button>
+
+                <div class="form-group">
+                    <label for="adminGiveawayButton">Button Link</label>
+                    <input type="text" id="adminGiveawayButton" placeholder="Facebook URL...">
+                </div>
+
                 <button type="submit" class="btn-create" style="margin-top: 1rem; background: #8dde00; color: #000;">
                     Save Content
                 </button>

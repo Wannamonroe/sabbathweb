@@ -142,10 +142,24 @@ if (isDashboard) {
     const bloggerRequirementsContainer = document.getElementById('bloggerRequirementsContainer');
     const addRequirementBtn = document.getElementById('addRequirementBtn');
 
+    // Giveaway Page Elements
+    const adminGiveawayTitle = document.getElementById('adminGiveawayTitle');
+    const adminGiveawayDescription = document.getElementById('adminGiveawayDescription');
+    const adminGiveawaySubtitle = document.getElementById('adminGiveawaySubtitle');
+    const adminGiveawayButton = document.getElementById('adminGiveawayButton');
+    const giveawayStepsContainer = document.getElementById('giveawayStepsContainer');
+    const addStepBtn = document.getElementById('addStepBtn');
+
     // Dynamic Requirements Logic
     if (addRequirementBtn) {
         addRequirementBtn.addEventListener('click', () => {
             addRequirementInput('');
+        });
+    }
+
+    if (addStepBtn) {
+        addStepBtn.addEventListener('click', () => {
+            addStepInput('');
         });
     }
 
@@ -178,6 +192,37 @@ if (isDashboard) {
         div.appendChild(input);
         div.appendChild(removeBtn);
         bloggerRequirementsContainer.appendChild(div);
+    }
+
+    function addStepInput(value = '') {
+        const div = document.createElement('div');
+        div.className = 'step-item';
+        div.style.display = 'flex';
+        div.style.gap = '0.5rem';
+        div.style.marginBottom = '0.5rem';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'step-input';
+        input.value = value;
+        input.placeholder = 'Enter step text...';
+        input.style.flex = '1';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        removeBtn.style.background = '#d93025';
+        removeBtn.style.color = '#fff';
+        removeBtn.style.border = 'none';
+        removeBtn.style.padding = '0.5rem';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.borderRadius = '4px';
+
+        removeBtn.onclick = () => div.remove();
+
+        div.appendChild(input);
+        div.appendChild(removeBtn);
+        giveawayStepsContainer.appendChild(div);
     }
 
     // Tab Switching Logic
@@ -214,6 +259,7 @@ if (isDashboard) {
                 const applyData = data.find(item => item.section === 'apply')?.content;
                 const designerData = data.find(item => item.section === 'apply_designer')?.content;
                 const bloggerData = data.find(item => item.section === 'apply_blogger')?.content;
+                const giveawayData = data.find(item => item.section === 'giveaway')?.content;
 
                 if (homeData) {
                     adminHomeEventLink.value = homeData.event_link || '';
@@ -251,12 +297,28 @@ if (isDashboard) {
                         }
                     }
                 }
+
+                if (giveawayData) {
+                    if (adminGiveawayTitle) adminGiveawayTitle.value = giveawayData.title || '';
+                    if (adminGiveawayDescription) adminGiveawayDescription.value = giveawayData.description || '';
+                    if (adminGiveawaySubtitle) adminGiveawaySubtitle.value = giveawayData.subtitle || '';
+                    if (adminGiveawayButton) adminGiveawayButton.value = giveawayData.button_link || '';
+
+                    // Render Steps
+                    if (giveawayStepsContainer) {
+                        giveawayStepsContainer.innerHTML = '';
+                        if (giveawayData.steps && Array.isArray(giveawayData.steps)) {
+                            giveawayData.steps.forEach(step => addStepInput(step));
+                        }
+                    }
+                }
             }
         } catch (error) {
             console.error('Error loading content:', error);
             alert('Error loading content.');
         }
     }
+
 
     if (contentForm) {
         contentForm.addEventListener('submit', async (e) => {
@@ -297,12 +359,27 @@ if (isDashboard) {
                     requirements: requirements
                 };
 
+                // Collect Steps
+                const steps = [];
+                document.querySelectorAll('.step-input').forEach(input => {
+                    if (input.value.trim()) steps.push(input.value.trim());
+                });
+
+                const giveawayContent = {
+                    title: adminGiveawayTitle.value,
+                    description: adminGiveawayDescription.value,
+                    subtitle: adminGiveawaySubtitle.value,
+                    button_link: adminGiveawayButton.value,
+                    steps: steps
+                };
+
                 // Upsert All
                 await supabase.from('site_content').upsert({ section: 'home', content: homeContent });
                 await supabase.from('site_content').upsert({ section: 'about_us', content: aboutContent });
                 await supabase.from('site_content').upsert({ section: 'apply', content: applyContent });
                 await supabase.from('site_content').upsert({ section: 'apply_designer', content: designerContent });
                 await supabase.from('site_content').upsert({ section: 'apply_blogger', content: bloggerContent });
+                await supabase.from('site_content').upsert({ section: 'giveaway', content: giveawayContent });
 
                 alert('Content updated successfully!');
 
