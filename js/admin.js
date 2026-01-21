@@ -1261,12 +1261,15 @@ if (isDashboard) {
                             .from('round-images')
                             .getPublicUrl(fileName);
 
+                        // Extract filename without extension
+                        const originalFileName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+
                         const { error: insertError } = await supabase
                             .from('round_images')
                             .insert([{
                                 round_id: currentRoundId,
                                 image_url: publicUrl,
-                                name: 'SIN NOMBRE',
+                                name: originalFileName,
                                 teleport_link: 'http://maps.secondlife.com/secondlife/SABBATH/227/129/27'
                             }]);
 
