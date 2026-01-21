@@ -942,6 +942,7 @@ if (isDashboard) {
             // Show Save Order Button if items > 1
             const saveOrderBtn = document.getElementById('saveOrderBtn');
             const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+            const deleteAllPhotosBtn = document.getElementById('deleteAllPhotosBtn');
 
             if (saveOrderBtn) {
                 saveOrderBtn.style.display = images.length > 1 ? 'block' : 'none';
@@ -951,6 +952,11 @@ if (isDashboard) {
             if (deleteSelectedBtn) {
                 deleteSelectedBtn.style.display = images.length > 0 ? 'block' : 'none';
                 deleteSelectedBtn.onclick = deleteSelectedImages;
+            }
+
+            if (deleteAllPhotosBtn) {
+                deleteAllPhotosBtn.style.display = images.length > 0 ? 'block' : 'none';
+                deleteAllPhotosBtn.onclick = deleteAllPhotos;
             }
 
         } catch (error) {
@@ -1144,6 +1150,89 @@ if (isDashboard) {
         } catch (error) {
             console.error('Error deleting selected images:', error);
             alert('Error deleting images: ' + error.message);
+        } finally {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = originalText;
+        }
+    }
+
+    // Delete All Photos from Round
+    async function deleteAllPhotos() {
+        if (!currentRoundId) {
+            alert('No round selected.');
+            return;
+        }
+
+        const { data: images, error: countError } = await supabase
+            .from('round_images')
+            .select('id')
+            .eq('round_id', currentRoundId);
+
+        if (countError) {
+            console.error('Error counting images:', countError);
+            alert('Error loading image count.');
+            return;
+        }
+
+        const imageCount = images ? images.length : 0;
+
+        if (imageCount === 0) {
+            alert('No images to delete.');
+            return;
+        }
+
+        if (!confirm(`Are you sure you want to delete ALL ${imageCount} photos from this round? This action CANNOT be undone.`)) {
+            return;
+        }
+
+        const deleteBtn = document.getElementById('deleteAllPhotosBtn');
+        const originalText = deleteBtn.textContent;
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+
+        try {
+            // 1. Get all image URLs to delete from Storage
+            const { data: imagesInfo, error: fetchError } = await supabase
+                .from('round_images')
+                .select('image_url')
+                .eq('round_id', currentRoundId);
+
+            if (fetchError) throw fetchError;
+
+            // 2. Delete from Storage
+            const pathsToDelete = [];
+            if (imagesInfo && imagesInfo.length > 0) {
+                imagesInfo.forEach(img => {
+                    const urlParts = img.image_url.split('/round-images/');
+                    if (urlParts.length > 1) {
+                        pathsToDelete.push(urlParts[1]);
+                    }
+                });
+            }
+
+            if (pathsToDelete.length > 0) {
+                const { error: storageError } = await supabase.storage
+                    .from('round-images')
+                    .remove(pathsToDelete);
+
+                if (storageError) console.error('Storage deletion partial error:', storageError);
+            }
+
+            // 3. Delete all images from DB for this round
+            const { error: deleteError } = await supabase
+                .from('round_images')
+                .delete()
+                .eq('round_id', currentRoundId);
+
+            if (deleteError) throw deleteError;
+
+            alert('All photos deleted successfully.');
+            loadRoundImages(currentRoundId);
+            loadStorageUsage();
+
+        } catch (error) {
+            console.error('Error deleting all photos:', error);
+            alert('Error deleting photos: ' + error.message);
         } finally {
             deleteBtn.disabled = false;
             deleteBtn.textContent = originalText;
